@@ -12,3 +12,7 @@ Route::get('/nabil', function () {
 Route::get('/zaidan', function () {
     return view('welcome');
 });
+
+Route::get('/cnada', function () {
+    return view('welcome');
+});
