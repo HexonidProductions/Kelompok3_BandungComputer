@@ -6,7 +6,6 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Str;
 
 class UserSeeder extends Seeder
 {
@@ -19,7 +18,7 @@ class UserSeeder extends Seeder
             'name' => 'Zaidan',
             'email' => 'hexonidproduction@gmail.com',
             'password' => Hash::make('123'),
-            'role' => 'Admin',
+            'role' => 'admin',
             'phone_number' => '081234567890',
             'address' => 'Jl. Merdeka 1',
         ]);
@@ -28,7 +27,7 @@ class UserSeeder extends Seeder
             'name' => 'Nabil',
             'email' => 'nabil@gmail.com',
             'password' => Hash::make('124'),
-            'role' => 'Cashier',
+            'role' => 'admin',
             'phone_number' => '081234567891',
             'address' => 'Jl. Merdeka 2',
         ]);
@@ -37,7 +36,7 @@ class UserSeeder extends Seeder
             'name' => 'Alif',
             'email' => 'alif@gmail.com',
             'password' => Hash::make('125'),
-            'role' => 'Cashier',
+            'role' => 'admin',
             'phone_number' => '081234567892',
             'address' => 'Jl. Merdeka 3',
         ]);
@@ -46,7 +45,7 @@ class UserSeeder extends Seeder
             'name' => 'Radit',
             'email' => 'radit@gmail.com',
             'password' => Hash::make('126'),
-            'role' => 'Customer',
+            'role' => 'customer',
             'phone_number' => '081234567893',
             'address' => 'Jl. Merdeka 4',
         ]);
@@ -55,7 +54,7 @@ class UserSeeder extends Seeder
             'name' => 'Cnada',
             'email' => 'cnada@gmail.com',
             'password' => Hash::make('127'),
-            'role' => 'Customer',
+            'role' => 'customer',
             'phone_number' => '081234567894',
             'address' => 'Jl. Merdeka 5',
         ]);

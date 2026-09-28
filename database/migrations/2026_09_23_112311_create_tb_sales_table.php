@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('receipt_number')->unique();
             $table->enum('sale_type', ['Offline', 'Online'])->default('Offline');
-            $table->foreignId('cashier_id')->nullable()->constrained('tb_users')->onDelete('set null');
+            $table->foreignId('admin_id')->nullable()->constrained('tb_users')->onDelete('set null');
             $table->foreignId('customer_id')->nullable()->constrained('tb_users')->onDelete('set null');
             $table->text('shipping_address');
             $table->enum('payment_method', ['Cash', 'Bank Transfer', 'QRIS']);

@@ -15,13 +15,13 @@ class DailyClosingSeeder extends Seeder
     public function run(): void
     {
         DailyClosing::create([
-            'cashier_id' => User::where('name', 'Nabil')->value('id'),
+            'admin_id' => User::where('name', 'Nabil')->value('id'),
             'total_income' => 1800000,
             'notes' => 'Penutupan kasir shift 1 berjalan lancar.'
         ]);
 
         DailyClosing::create([
-            'cashier_id' => User::where('name', 'Nabil')->value('id'),
+            'admin_id' => User::where('name', 'Nabil')->value('id'),
             'total_income' => 2000000,
             'notes' => 'Penutupan kasir shift 2 berjalan lancar.'
         ]);

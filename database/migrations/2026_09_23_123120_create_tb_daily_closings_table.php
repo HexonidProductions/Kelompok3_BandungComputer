@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('tb_daily_closings', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('cashier_id')->constrained('tb_users')->onDelete('cascade');
+            $table->foreignId('admin_id')->constrained('tb_users')->onDelete('cascade');
             $table->bigInteger('total_income')->unsigned();
             $table->text('notes')->nullable();
             $table->timestamps();

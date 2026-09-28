@@ -21,7 +21,6 @@ class DatabaseSeeder extends Seeder
             ProductSeeder::class,
             SaleSeeder::class,
             SaleItemSeeder::class,
-            StockEntrySeeder::class,
             DailyClosingSeeder::class,
         ]
         );

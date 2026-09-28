@@ -24,9 +24,9 @@ class User extends Authenticatable
         'password',
     ];
 
-    public function cashierSales()
+    public function adminSales()
     {
-        return $this->hasMany(Sale::class, 'cashier_id');
+        return $this->hasMany(Sale::class, 'admin_id');
     }
 
     public function customerSales()
@@ -37,11 +37,6 @@ class User extends Authenticatable
     public function isAdmin(): bool
     {
         return strtolower($this->role) === 'admin';
-    }
-
-    public function isCashier(): bool
-    {
-        return strtolower($this->role) === 'cashier';
     }
 
     public function isCustomer(): bool

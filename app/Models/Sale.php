@@ -11,7 +11,7 @@ class Sale extends Model
     protected $fillable = [
         'receipt_number',
         'sale_type',
-        'cashier_id',
+        'admin_id',
         'customer_id',
         'shipping_address',
         'payment_method',
@@ -25,9 +25,9 @@ class Sale extends Model
         'shipping_fee' => 'decimal:2',
     ];
 
-    public function cashier()
+    public function admin()
     {
-        return $this->belongsTo(User::class, 'cashier_id');
+        return $this->belongsTo(User::class, 'admin_id');
     }
 
     public function customer()
