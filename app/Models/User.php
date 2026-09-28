@@ -25,4 +25,29 @@ class User extends Authenticatable
         'password',
         'remember_token',
     ];
+
+    public function cashierSales()
+    {
+        return $this->hasMany(Sale::class, 'cashier_id');
+    }
+
+    public function customerSales()
+    {
+        return $this->hasMany(Sale::class, 'customer_id');
+    }
+
+    public function isAdmin(): bool
+    {
+        return strtolower($this->role) === 'admin';
+    }
+
+    public function isCashier(): bool
+    {
+        return strtolower($this->role) === 'cashier';
+    }
+
+    public function isCustomer(): bool
+    {
+        return strtolower($this->role) === 'customer';
+    }
 }
