@@ -30,15 +30,20 @@ code .env
 cp .env.example .env
 code .env
 ```
-### 4. Artisan migrate untuk sinkronisasi Database 
+
+#### 4. Install depedencies untuk frontend breeze/login dan run(di terminal terpisah harus tetap dijalanin)
+```zsh
+npm i ; npm run dev
+```
+### 5. Artisan migrate untuk sinkronisasi Database(di terminal lainnya)
 ```zsh
 php artisan migrate
 ```
-### 5. (Opsional) Tambahkan seeder untuk database dummy
+### 6. (Opsional) Tambahkan seeder untuk database dummy
 ```zsh
-php artisan migrate --seed
+php artisan migrate:fresh --seed
 ```
-### 6. Run projeknya
+### 7. Run projeknya
 ```zsh
 php artisan serve
 ```
