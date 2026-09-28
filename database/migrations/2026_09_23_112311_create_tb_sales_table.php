@@ -17,7 +17,7 @@ return new class extends Migration
             $table->enum('sale_type', ['Offline', 'Online'])->default('Offline');
             $table->foreignId('cashier_id')->nullable()->constrained('tb_users')->onDelete('set null');
             $table->foreignId('customer_id')->nullable()->constrained('tb_users')->onDelete('set null');
-            $table->text('shipping_adress');
+            $table->text('shipping_address');
             $table->enum('payment_method', ['Cash', 'Bank Transfer', 'QRIS']);
             $table->bigInteger('total_amount')->unsigned();
             $table->bigInteger('shipping_fee')->unsigned()->default(0);

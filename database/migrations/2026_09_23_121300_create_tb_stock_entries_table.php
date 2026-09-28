@@ -17,9 +17,8 @@ return new class extends Migration
             $table->string('supplier_name');
             $table->string('phone_number');
             $table->string('email');
-            $table->text('adress');
+            $table->text('address');
             $table->enum('status', ['Active', 'Not Active'])->default('Active');
-
             $table->timestamps();
         });
     }
