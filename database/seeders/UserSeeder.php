@@ -22,7 +22,6 @@ class UserSeeder extends Seeder
             'role' => 'Admin',
             'phone_number' => '081234567890',
             'address' => 'Jl. Merdeka 1',
-            'remember_token' => Str::random(10),
         ]);
 
         User::create([
@@ -32,7 +31,6 @@ class UserSeeder extends Seeder
             'role' => 'Cashier',
             'phone_number' => '081234567891',
             'address' => 'Jl. Merdeka 2',
-            'remember_token' => Str::random(10),
         ]);
 
         User::create([
@@ -42,7 +40,6 @@ class UserSeeder extends Seeder
             'role' => 'Cashier',
             'phone_number' => '081234567892',
             'address' => 'Jl. Merdeka 3',
-            'remember_token' => Str::random(10),
         ]);
 
         User::create([
@@ -52,7 +49,6 @@ class UserSeeder extends Seeder
             'role' => 'Customer',
             'phone_number' => '081234567893',
             'address' => 'Jl. Merdeka 4',
-            'remember_token' => Str::random(10),
         ]);
 
         User::create([
@@ -62,7 +58,6 @@ class UserSeeder extends Seeder
             'role' => 'Customer',
             'phone_number' => '081234567894',
             'address' => 'Jl. Merdeka 5',
-            'remember_token' => Str::random(10),
         ]);
 }
 }
