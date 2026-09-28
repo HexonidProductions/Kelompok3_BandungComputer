@@ -3,9 +3,12 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Sale extends Model
 {
+    use HasFactory;
+
     protected $table = 'tb_sales';
 
     protected $fillable = [
@@ -19,4 +22,24 @@ class Sale extends Model
         'shipping_fee',
         'payment_status',
     ];
+
+    protected $casts = [
+        'total_amount' => 'decimal:2',
+        'shipping_fee' => 'decimal:2',
+    ];
+
+    public function cashier()
+    {
+        return $this->belongsTo(User::class, 'cashier_id');
+    }
+
+    public function customer()
+    {
+        return $this->belongsTo(User::class, 'customer_id');
+    }
+
+    public function items()
+    {
+        return $this->hasMany(SaleItem::class, 'sale_id');
+    }
 }
