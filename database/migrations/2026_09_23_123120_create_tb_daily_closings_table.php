@@ -14,9 +14,7 @@ return new class extends Migration
         Schema::create('tb_daily_closings', function (Blueprint $table) {
             $table->id();
             $table->foreignId('cashier_id')->constrained('tb_users')->onDelete('cascade');
-            $table->bigInteger('physical_cash')->unsigned();
-            $table->bigInteger('system_cash')->unsigned();
-            $table->bigInteger('discrepancy')->unsigned();
+            $table->bigInteger('total_income')->unsigned();
             $table->text('notes')->nullable();
             $table->timestamps();
         });

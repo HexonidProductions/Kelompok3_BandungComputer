@@ -11,16 +11,12 @@ class DailyClosing extends Model
 
     protected $fillable = [
         'cashier_id',
-        'physical_cash',
-        'system_cash',
-        'discrepancy',
+        'total_income',
         'notes',
     ];
 
     protected $casts = [
-        'physical_cash' => 'decimal:2',
-        'system_cash' => 'decimal:2',
-        'discrepancy' => 'decimal:2',
+        'total_income' => 'decimal:2',
     ];
 
     public function cashier()
