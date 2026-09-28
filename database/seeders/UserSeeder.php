@@ -15,49 +15,54 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        User::factory()->create([
+        User::create([
             'name' => 'Zaidan',
             'email' => 'hexonidproduction@gmail.com',
             'password' => Hash::make('123'),
             'role' => 'Admin',
             'phone_number' => '081234567890',
             'address' => 'Jl. Merdeka 1',
+            'remember_token' => Str::random(10),
         ]);
 
-        User::factory()->create([
+        User::create([
             'name' => 'Nabil',
             'email' => 'nabil@gmail.com',
             'password' => Hash::make('124'),
             'role' => 'Cashier',
             'phone_number' => '081234567891',
             'address' => 'Jl. Merdeka 2',
+            'remember_token' => Str::random(10),
         ]);
 
-        User::factory()->create([
+        User::create([
             'name' => 'Alif',
             'email' => 'alif@gmail.com',
             'password' => Hash::make('125'),
             'role' => 'Cashier',
             'phone_number' => '081234567892',
             'address' => 'Jl. Merdeka 3',
+            'remember_token' => Str::random(10),
         ]);
 
-        User::factory()->create([
+        User::create([
             'name' => 'Radit',
             'email' => 'radit@gmail.com',
             'password' => Hash::make('126'),
             'role' => 'Customer',
             'phone_number' => '081234567893',
             'address' => 'Jl. Merdeka 4',
+            'remember_token' => Str::random(10),
         ]);
 
-        User::factory()->create([
+        User::create([
             'name' => 'Cnada',
             'email' => 'cnada@gmail.com',
             'password' => Hash::make('127'),
             'role' => 'Customer',
             'phone_number' => '081234567894',
             'address' => 'Jl. Merdeka 5',
+            'remember_token' => Str::random(10),
         ]);
 }
 }

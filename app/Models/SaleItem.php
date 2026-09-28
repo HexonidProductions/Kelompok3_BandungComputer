@@ -3,12 +3,9 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class SaleItem extends Model
 {
-    use HasFactory;
-
     protected $table = 'tb_sale_items';
 
     protected $fillable = [
