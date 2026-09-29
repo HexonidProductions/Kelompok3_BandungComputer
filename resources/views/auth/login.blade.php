@@ -7,7 +7,7 @@
         {{-- Left Side: Image Panel (md and up) --}}
         <div class="hidden md:flex md:w-1/2 bg-[#F8FAFC] justify-center items-center overflow-hidden p-2 lg:p-3">
             {{-- Ganti 'images/computer_store.jpg' dengan path gambar Anda yang sebenarnya --}}
-            <img src="{{ asset('images/banner_login_page.png') }}" alt="Computer Store" class="w-full h-full object-cover rounded-2xl">
+            <img src="{{ asset('images/banner_login_page_revision.png') }}" alt="Computer Store" class="w-full h-full object-cover rounded-2xl">
         </div>
 
         {{-- Right Side: Form Panel --}}
@@ -107,7 +107,7 @@
             <label for="remember_me" class="inline-flex items-center cursor-pointer select-none">
                 <input id="remember_me" 
                     type="checkbox" 
-                    name="remember"
+                    name="remember_me_ui"
                     class="w-4 h-4 rounded-sm border-gray-300 text-[#0D47A1] shadow-sm hover:bg-gray-300 focus:ring-0 focus:ring-offset-0 focus:outline-none transition-colors cursor-pointer">
                 <span class="ml-2 text-[#0F172A] font-medium">{{ __('Remember me') }}</span>
             </label>
