@@ -100,29 +100,45 @@
     </div>
     <x-input-error :messages="$errors->get('password')" class="mt-1" />
 </div>
+
+        {{-- Remember Me & Forgot Password --}}
+        <div class="flex items-center justify-between text-xs pt-1">
+            {{-- Checkbox Remember Me --}}
+            <label for="remember_me" class="inline-flex items-center cursor-pointer select-none">
+                <input id="remember_me" 
+                    type="checkbox" 
+                    name="remember"
+                    class="w-4 h-4 rounded-sm border-gray-300 text-[#0D47A1] shadow-sm hover:bg-gray-300 focus:ring-0 focus:ring-offset-0 focus:outline-none transition-colors cursor-pointer">
+                <span class="ml-2 text-[#0F172A] font-medium">{{ __('Remember me') }}</span>
+            </label>
+
+            {{-- Forgot Password Link --}}
+            @if (Route::has('password.request'))
+                <a href="{{ route('password.request') }}" 
+                    class="text-xs text-[#000000] hover:text-[#2563EB] font-semibold transition-colors">
+                    {{ __('Forgot Password?') }}
+                </a>
+            @endif
+        </div>
+
         {{-- Login Button --}}
         <div class="pt-2">
-            <button type="submit" class="w-full h-11 bg-[#0D47A1] hover:bg-[#0a3880] text-white font-semibold text-sm rounded-xl shadow-md transition-all flex items-center justify-center">
+            <button type="submit" class="w-full h-11 bg-[#0D47A1] hover:bg-[#F8FAFC] text-[#F8FAFC] hover:text-[#0D47A1] hover:ring-1 hover:ring-[#0D47A1] focus:outline-none font-semibold text-sm rounded-xl shadow-md transition-all flex items-center justify-center">
                 {{ __('Login') }}
             </button>
         </div>
 
         {{-- Separator --}}
         <div class="flex items-center space-x-3 py-1">
-            <div class="flex-grow border-t border-gray-200"></div>
-            <span class="text-xs text-gray-400 font-normal">OR</span>
-            <div class="flex-grow border-t border-gray-200"></div>
+            <div class="flex-grow border-t border-[#0F172A]"></div>
+            <span class="text-xs text-[#0F172A] font-normal">OR</span>
+            <div class="flex-grow border-t border-[#0F172A]"></div>
         </div>
 
         {{-- Social Login Button (Google) --}}
         <div>
-            <button type="button" class="w-full h-11 flex items-center justify-center gap-2.5 text-xs bg-white text-gray-700 font-medium border border-gray-200 rounded-xl shadow-sm hover:bg-gray-50 transition-all">
-                <svg class="w-4 h-4" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M44.5 20H24V28H35.8C34.7 33.9 29.9 38 24 38C16.3 38 10 31.7 10 24C10 16.3 16.3 10 24 10C27.3 10 30.2 11.2 32.5 13.2L38.2 7.5C34.2 3.8 29.3 1.5 24 1.5C11.6 1.5 1.5 11.6 1.5 24C1.5 36.4 11.6 46.5 24 46.5C36.4 46.5 46.5 36.4 46.5 24C46.5 22.6 46.4 21.3 46.2 20H44.5Z" fill="#EA4335"/>
-                    <path d="M44.5 20H24V28H35.8C35.1 31 33.4 33.6 31 35.4L37.1 40.2C40.6 36.8 42.8 32 43.1 27L44.5 20Z" fill="#FBBC05"/>
-                    <path d="M10.8 14.7L16.5 20.4C18 16.6 21.3 14 25.1 14C28.3 14 31.2 15.2 33.3 17.2L39 11.5C35.4 8.2 30.6 6 25.1 6C18.6 6 13.1 9.4 10.8 14.7Z" fill="#34A853"/>
-                    <path d="M24 46.5C30.6 46.5 36.3 44.3 40.2 40.6L34.1 35.8C31.5 37.6 28.1 38.6 24 38.6C17.5 38.6 12 34.2 10.1 28.2L4.3 32.6C7.6 40.9 15.3 46.5 24 46.5Z" fill="#4285F4"/>
-                </svg>
+            <button type="button" class="w-full h-11 flex items-center justify-center gap-2.5 text-xs bg-white text-gray-700 font-medium border border-[#448AFF] rounded-xl shadow-lg hover:shadow-none transition-all">
+                <img src="{{ asset('icons/material-icon-theme_google.png')}}" alt="Google Icon" class="w-8 h-8 object-contain">
                 Continue with google
             </button>
         </div>
