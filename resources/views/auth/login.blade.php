@@ -26,11 +26,11 @@
                 </div>
 
                 {{-- Logo and Welcome Text --}}
-                <div class="flex flex-col items-center">
+                <div class="flex flex-col items-center justify-center text-center w-full">
                     {{-- Logo Container (Menggunakan Gambar) --}}
-                    <div class="flex flex-col items-center">
-                     {{-- Ganti 'icons/logo.png' dengan nama file logo Anda di folder public --}}
-                    <img src="{{ asset('icons/logo_bandung_computer.png') }}" alt="Bandung Computer Logo" class="w-[225px] h-[126px] object-contain mb-8">
+                    <div class="flex justify-center items-center w-full mb-8">
+                    {{-- Ganti 'icons/logo.png' dengan nama file logo Anda di folder public --}}
+                    <img src="{{ asset('icons/logo_bandung_computer.png') }}" alt="Bandung Computer Logo" class="w-[225px] h-[126px] pr-4 object-contain mx-auto block">
                     </div>
                     {{-- Welcome Text --}}
                     <h1 class="text-[45px] font-bold text-[#0F172A]">Welcome Back</h1>
@@ -52,12 +52,12 @@
             <x-input-label for="email" :value="__('Email')" class="text-sm font-medium text-[#0F172A] mb-1" />
             <div class="relative">
                 <input id="email" 
-                       type="email" 
-                       name="email" 
-                       :value="old('email')" 
-                       required autofocus autocomplete="username" 
-                       placeholder="Enter Your Email"
-                       class="block w-full h-11 px-4 pr-10 text-sm bg-white text-gray-800 border-2 border-gray-200 rounded-xl drop-shadow-[0_2px_4px_rgba(0,0,0,0)] focus:border-gray-200 focus:ring-0 focus:outline-none focus:ring-offset-0 placeholder-gray-400 transition-colors">
+                        type="email" 
+                        name="email" 
+                        :value="old('email')" 
+                        required autofocus autocomplete="username" 
+                        placeholder="Enter Your Email"
+                        class="block w-full h-11 px-4 pr-10 text-sm bg-white text-gray-800 border-2 border-gray-200 rounded-xl drop-shadow-[0_2px_4px_rgba(0,0,0,0)] focus:border-gray-200 focus:ring-0 focus:outline-none focus:ring-offset-0 placeholder-gray-400 transition-colors">
                 
                 {{-- Input Icon --}}
                 <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
@@ -148,7 +148,7 @@
             {{-- Bottom Row: Sign Up Link --}}
             <div class="flex justify-center text-sm text-gray-600 space-x-1">
                 <p>Don't have an account?</p>
-                <a href="{{ route('register') }}" class="text-blue-600 hover:text-blue-900 font-semibold">
+                <a href="{{ route('register') }}" class="text-blue-600 hover:text-[#0F172A] hover:underline font-semibold">
                     Sign up
                 </a>
             </div>
