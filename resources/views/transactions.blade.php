@@ -13,7 +13,7 @@
     
     <aside class="sidebar">
       <div class="sidebar-header">
-        <img src="{{ asset('images/banner_login_page.png') }}" alt="Bandung Computer Logo" class="brand-logo">
+        <img src="{{ asset('images/logo_bc.png') }}" alt="Bandung Computer Logo" class="brand-logo">
       </div>
 
       <nav class="sidebar-menu">
