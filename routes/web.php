@@ -54,3 +54,7 @@ Route::get('/suppliers', function () {
 Route::get('/daily-closing', function () {
     return view('daily-closing');
 });
+
+Route::get('/login', function () {
+    return view('login');
+});
