@@ -5,17 +5,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Overview - Bandung Computer Admin</title>
   
-  <!-- Font Awesome untuk Icon -->
+  <!-- Font Awesome Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   
-  <!-- Memanggil File CSS Terpisah -->
+  <!-- File CSS Terpisah -->
   <link rel="stylesheet" href="{{ asset('css/overview.css') }}">
 </head>
 <body>
 
   <div class="dashboard-container">
     
-    <!-- Sidebar / Navigasi Kiri -->
+    <!-- Sidebar -->
     <aside class="sidebar">
       <div class="sidebar-header">
         <img src="{{ asset('images/logo_bc.png') }}" alt="Bandung Computer Logo" class="brand-logo">
@@ -26,14 +26,14 @@
           <i class="fa-solid fa-border-all"></i>
           <span>Overview</span>
         </a>
-        <a href="#" class="menu-item">
+        <a href="{{ url('/categories') }}" class="menu-item">
           <i class="fa-solid fa-tag"></i>
           <span>Categories</span>
         </a>
-        <a href="#" class="menu-item">
-          <i class="fa-solid fa-cart-shopping"></i>
-          <span>Transactions</span>
-        </a>
+        <a href="{{ url('/transactions') }}" class="menu-item">
+    <i class="fa-solid fa-cart-shopping"></i>
+    <span>Transactions</span>
+  </a>
         <a href="#" class="menu-item">
           <i class="fa-solid fa-box"></i>
           <span>Products</span>
@@ -59,13 +59,12 @@
       </div>
     </aside>
 
-    <!-- Konten Utama Dashboard -->
+    <!-- Main Content -->
     <main class="main-content">
       <header class="content-header">
         <h1>Welcome back, Bandung Computer Admin</h1>
       </header>
 
-      <!-- Grid Kartu Statistik -->
       <section class="stats-grid">
         <div class="stat-card">
           <div class="stat-info">
@@ -108,7 +107,6 @@
         </div>
       </section>
 
-      <!-- Tabel Riwayat Closing Shift -->
       <section class="table-card">
         <div class="table-header">
           <h2>Last Closing Shift History</h2>
@@ -179,7 +177,6 @@
           </table>
         </div>
 
-        <!-- Footer Tabel & Paginasi -->
         <div class="table-footer">
           <p>Showing 1-1 out of 8 Category</p>
           <div class="pagination">

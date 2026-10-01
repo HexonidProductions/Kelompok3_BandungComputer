@@ -30,3 +30,11 @@ Route::get('/', function () {
 Route::get('/overview', function () {
     return view('overview');
 });
+
+Route::get('/categories', function () {
+    return view('categories');
+});
+
+Route::get('/transactions', function () {
+    return view('transactions');
+});
