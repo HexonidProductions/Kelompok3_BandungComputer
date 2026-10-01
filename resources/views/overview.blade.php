@@ -34,22 +34,22 @@
     <i class="fa-solid fa-cart-shopping"></i>
     <span>Transactions</span>
   </a>
-        <a href="#" class="menu-item">
-          <i class="fa-solid fa-box"></i>
-          <span>Products</span>
-        </a>
-        <a href="#" class="menu-item">
-          <i class="fa-solid fa-users"></i>
-          <span>Users</span>
-        </a>
-        <a href="#" class="menu-item">
-          <i class="fa-solid fa-truck"></i>
-          <span>Suppliers</span>
-        </a>
-        <a href="#" class="menu-item">
-          <i class="fa-solid fa-key"></i>
-          <span>Daily Closing</span>
-        </a>
+        <a href="{{ url('/products') }}" class="menu-item">
+  <i class="fa-solid fa-box"></i>
+  <span>Products</span>
+</a>
+       <a href="{{ url('/users') }}" class="menu-item">
+  <i class="fa-solid fa-users"></i>
+  <span>Users</span>
+</a>
+        <a href="{{ url('/suppliers') }}" class="menu-item">
+  <i class="fa-solid fa-truck"></i>
+  <span>Suppliers</span>
+</a>
+        <a href="{{ url('/daily-closing') }}" class="menu-item">
+  <i class="fa-solid fa-key"></i>
+  <span>Daily Closing</span>
+</a>
       </nav>
 
       <div class="sidebar-footer">

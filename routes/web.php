@@ -38,3 +38,19 @@ Route::get('/categories', function () {
 Route::get('/transactions', function () {
     return view('transactions');
 });
+
+Route::get('/products', function () {
+    return view('products');
+});
+
+Route::get('/users', function () {
+    return view('users');
+});
+
+Route::get('/suppliers', function () {
+    return view('suppliers');
+});
+
+Route::get('/daily-closing', function () {
+    return view('daily-closing');
+});
