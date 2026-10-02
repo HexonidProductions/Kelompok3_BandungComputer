@@ -25,5 +25,45 @@ class DailyClosingSeeder extends Seeder
             'total_income' => 2000000,
             'notes' => 'Penutupan kasir shift 2 berjalan lancar.'
         ]);
+        DailyClosing::create([
+            'admin_id' => User::where('name', 'Nabil')->value('id'),
+            'total_income' => 2000000,
+            'notes' => 'Penutupan kasir shift 2 berjalan lancar.'
+        ]);
+        DailyClosing::create([
+            'admin_id' => User::where('name', 'Nabil')->value('id'),
+            'total_income' => 2000000,
+            'notes' => 'Penutupan kasir shift 2 berjalan lancar.'
+        ]);
+        DailyClosing::create([
+            'admin_id' => User::where('name', 'Nabil')->value('id'),
+            'total_income' => 2000000,
+            'notes' => 'Penutupan kasir shift 2 berjalan lancar.'
+        ]);
+        DailyClosing::create([
+            'admin_id' => User::where('name', 'Nabil')->value('id'),
+            'total_income' => 2000000,
+            'notes' => 'Penutupan kasir shift 2 berjalan lancar.'
+        ]);
+        DailyClosing::create([
+            'admin_id' => User::where('name', 'Nabil')->value('id'),
+            'total_income' => 2000000,
+            'notes' => 'Penutupan kasir shift 2 berjalan lancar.'
+        ]);
+        DailyClosing::create([
+            'admin_id' => User::where('name', 'Nabil')->value('id'),
+            'total_income' => 2000000,
+            'notes' => 'Penutupan kasir shift 2 berjalan lancar.'
+        ]);
+        DailyClosing::create([
+            'admin_id' => User::where('name', 'Nabil')->value('id'),
+            'total_income' => 2000000,
+            'notes' => 'Penutupan kasir shift 2 berjalan lancar.'
+        ]);
+        DailyClosing::create([
+            'admin_id' => User::where('name', 'Nabil')->value('id'),
+            'total_income' => 2000000,
+            'notes' => 'Penutupan kasir shift 2 berjalan lancar.'
+        ]);
     }
 }
