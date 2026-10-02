@@ -40,8 +40,36 @@ class DailyClosingController extends Controller
             'notes'        => $request->notes,
         ]);
 
-        return redirect()->route('daily_closings.index')->with('success', 'Daily closing berhasil ditambahkan!');
+        // DIPERBAIKI: Menggunakan nama route yang benar (daily-closings.index)
+        return redirect()->route('daily-closings.index')->with('success', 'Daily closing berhasil ditambahkan!');
     }
+
+    /**
+     * Memperbarui data penutupan kasir (Edit/Update Data).
+     */
+    public function update(Request $request, DailyClosing $dailyClosing)
+{
+    $request->validate([
+        'total_income' => 'required|numeric|min:0',
+        'notes'        => 'nullable|string',
+        'admin_name'   => 'nullable|string|max:255',
+    ]);
+
+    // 1. Update data Daily Closing
+    $dailyClosing->update([
+        'total_income' => $request->total_income,
+        'notes'        => $request->notes,
+    ]);
+
+    // 2. Update nama admin jika diisi & relasinya ada
+    if ($request->filled('admin_name') && $dailyClosing->admin) {
+        $dailyClosing->admin->update([
+            'name' => $request->admin_name,
+        ]);
+    }
+
+    return redirect()->back()->with('success', 'Data daily closing berhasil diperbarui!');
+}
 
     /**
      * Menghapus riwayat penutupan kasir.
@@ -50,6 +78,6 @@ class DailyClosingController extends Controller
     {
         $dailyClosing->delete();
 
-        return redirect()->route('daily_closings.index')->with('success', 'Data berhasil dihapus!');
+        return redirect()->back()->with('success', 'Data berhasil dihapus!');
     }
 }

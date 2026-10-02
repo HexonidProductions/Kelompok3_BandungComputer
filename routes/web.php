@@ -9,9 +9,9 @@ use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/homepage', function () {
+Route::get('/', function () {
     return view('welcome');
-});
+})->name('homepage');
 
 Route::get('/login', function () {
     return view('auth.login');
@@ -23,7 +23,7 @@ Route::get('/login', function () {
 
 Route::middleware('auth')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-    Route::resource('/daily-closings', DailyClosingController::class)->only(['index', 'store', 'destroy']);
+    Route::resource('/daily-closings', DailyClosingController::class);
     Route::resource('/categories', CategoryController::class)->except(['create', 'edit', 'show']);
     Route::resource('/products', ProductController::class);
     Route::resource('/suppliers', SupplierController::class);
