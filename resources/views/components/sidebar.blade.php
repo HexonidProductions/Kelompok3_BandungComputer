@@ -10,37 +10,37 @@
 
         <!-- Navigation Links (Full-width kotak tanpa lekukan) -->
         <nav class="space-y-0.5">
-            <a href="{{ route('dashboard') }}" class="w-full flex items-center gap-3 px-4 py-2.5 rounded-none text-xs font-normal text-white transition-all duration-150 {{ request()->routeIs('dashboard') ? 'bg-[#2563EB] text-white' : 'text-slate-400 hover:bg-slate-800/60 hover:text-white' }}">
+            <a href="{{ route('dashboard') }}" class="w-full flex items-center gap-3 px-4 py-2.5 rounded-none text-xs font-normal text-white transition-all duration-150 {{ request()->routeIs('dashboard') ? 'bg-[#2563EB]' : null }}">
                 <img src="{{ asset('icons/Overview_icon.png')}}" alt="Overview Icon" class="w-4 h-4 object-contain">
                 <span>Overview</span>
             </a>
 
-            <a href="{{ route('categories.index') }}" class="w-full flex items-center gap-3 px-4 py-2.5 rounded-none text-xs font-normal text-white transition-all duration-150 {{ request()->routeIs('categories.*') ? 'bg-[#2563EB] text-white' : 'text-slate-400 hover:bg-slate-800/60 hover:text-white' }}">
+            <a href="{{ route('categories.index') }}" class="w-full flex items-center gap-3 px-4 py-2.5 rounded-none text-xs font-normal text-white transition-all duration-150 {{ request()->routeIs('categories.*') ? 'bg-[#2563EB]' : null }}">
                 <img src="{{ asset('icons/Categories_icon.png')}}" alt="Categories Icon" class="w-4 h-4 object-contain">
                 <span>Categories</span>
             </a>
 
-            <a href="{{ route('transactions.index') }}" class="w-full flex items-center gap-3 px-4 py-2.5 rounded-none text-xs font-normal text-white transition-all duration-150 {{ request()->routeIs('transactions.*') ? 'bg-[#2563EB] text-white' : 'text-slate-400 hover:bg-slate-800/60 hover:text-white' }}">
+            <a href="{{ route('transactions.index') }}" class="w-full flex items-center gap-3 px-4 py-2.5 rounded-none text-xs font-normal text-white transition-all duration-150 {{ request()->routeIs('transactions.*') ? 'bg-[#2563EB]' : null }}">
                 <img src="{{ asset('icons/Transactions_icon.png')}}" alt="Transactions Icon" class="w-4 h-4 object-contain">
                 <span>Transactions</span>
             </a>
 
-            <a href="{{ route('products.index') }}" class="w-full flex items-center gap-3 px-4 py-2.5 rounded-none text-xs font-normal text-white transition-all duration-150 {{ request()->routeIs('products.*') ? 'bg-[#2563EB] text-white' : 'text-slate-400 hover:bg-slate-800/60 hover:text-white' }}">
+            <a href="{{ route('products.index') }}" class="w-full flex items-center gap-3 px-4 py-2.5 rounded-none text-xs font-normal text-white transition-all duration-150 {{ request()->routeIs('products.*') ? 'bg-[#2563EB]' : null }}">
                 <img src="{{ asset('icons/Products_icon.png')}}" alt="Products Icon" class="w-4 h-4 object-contain">
                 <span>Products</span>
             </a>
 
-            <a href="{{ route('users.index') }}" class="w-full flex items-center gap-3 px-4 py-2.5 rounded-none text-xs font-normal text-white transition-all duration-150 {{ request()->routeIs('users.*') ? 'bg-[#2563EB] text-white' : 'text-slate-400 hover:bg-slate-800/60 hover:text-white' }}">
+            <a href="{{ route('users.index') }}" class="w-full flex items-center gap-3 px-4 py-2.5 rounded-none text-xs font-normal text-white transition-all duration-150 {{ request()->routeIs('users.*') ? 'bg-[#2563EB]' : null }}">
                 <img src="{{ asset('icons/Users_icon.png')}}" alt="Users Icon" class="w-4 h-4 object-contain">
                 <span>Users</span>
             </a>
 
-            <a href="{{ route('suppliers.index') }}" class="w-full flex items-center gap-3 px-4 py-2.5 rounded-none text-xs font-normal text-white transition-all duration-150 {{ request()->routeIs('suppliers.*') ? 'bg-[#2563EB] text-white' : 'text-slate-400 hover:bg-slate-800/60 hover:text-white' }}">
+            <a href="{{ route('suppliers.index') }}" class="w-full flex items-center gap-3 px-4 py-2.5 rounded-none text-xs font-normal text-white transition-all duration-150 {{ request()->routeIs('suppliers.*') ? 'bg-[#2563EB]' : null }}">
                 <img src="{{ asset('icons/Suppliers_icon.png')}}" alt="Suppliers Icon" class="w-4 h-4 object-contain">
                 <span>Suppliers</span>
             </a>
 
-            <a href="{{ route('daily-closings.index') }}" class="w-full flex items-center gap-3 px-4 py-2.5 rounded-none text-xs font-normal text-white transition-all duration-150 {{ request()->routeIs('daily-closings.*') ? 'bg-[#2563EB] text-white' : 'text-slate-400 hover:bg-slate-800/60 hover:text-white' }}">
+            <a href="{{ route('daily-closings.index') }}" class="w-full flex items-center gap-3 px-4 py-2.5 rounded-none text-xs font-normal text-white transition-all duration-150 {{ request()->routeIs('daily-closings.*') ? 'bg-[#2563EB]' : null }}">
                 <img src="{{ asset('icons/DailyClosings_icon.png')}}" alt="Daily Closings Icon" class="w-4 h-4 object-contain">
                 <span>Daily Closing</span>
             </a>
@@ -52,9 +52,9 @@
         <p class="text-[10px] font-normal tracking-wider mb-0.5">Admin</p>
         <h4 class="text-xs font-bold text-white truncate mb-2.5">{{ Auth::user()->name }}</h4>
 
-        <form method="POST" action="{{ route('logout') }}">
+        <form method="POST" action="{{ route('logout') }}" onsubmit="return confirm('Are you sure you want to logout?')">
             @csrf
-            <button type="submit" class="w-full bg-[#0D47A1] hover:bg-blue-700 text-white font-semibold py-2 px-3 rounded-lg text-xs transition-colors flex items-center justify-center gap-2 shadow-sm">
+            <button type="submit" class="w-full h-10 bg-[#0D47A1] text-white font-semibold py-2 px-3 rounded-lg text-xs transition-colors flex items-center justify-center gap-2 shadow-sm">
                 <span>Logout</span>
             </button>
         </form>

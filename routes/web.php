@@ -15,7 +15,7 @@ Route::get('/homepage', function () {
 
 Route::get('/login', function () {
     return view('auth.login');
-});
+})->name('login');
 
 // Route::get('/dashboard', function () {
 //     return view('dashboard.overview.index');

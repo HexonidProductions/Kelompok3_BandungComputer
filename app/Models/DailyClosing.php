@@ -26,13 +26,11 @@ class DailyClosing extends Model
 
     public function getShiftAttribute() 
     {
-        $hour = $this->created_at->format('H');
+        $hour = $this->updated_at->format('H');
         if ($hour >= 6 && $hour < 14) {
             return 'Morning Shift';
         } elseif ($hour >= 14 && $hour < 22) {
             return 'Night Shift';
-        } else {
-            return 'Overnight Shift';
         }
 
     }
