@@ -18,7 +18,7 @@
     <div class="bg-white rounded-xl p-6 shadow-sm border border-slate-200/80">
         <div class="flex items-center justify-between mb-4">
             <h3 class="text-base font-bold text-slate-800">Last Closing Shift History</h3>
-            <a href="{{ route('daily-closings.index') }}" class="text-xs font-bold text-slate-900 hover:underline flex items-center gap-1">
+            <a href="{{ route('daily-closings.index') }}" class="text-xs font-bold text-slate-900 flex items-center gap-1">
                 See All <img src="{{ asset('icons/ic_baseline-arrow-forward.png')}}" alt="Arrow Forward Icon" class="w-4 h-4 inline-block">
             </a>
         </div>
@@ -131,7 +131,7 @@
                     </button>
 
                     <!-- 3. Save -->
-                    <button type="submit" class="w-20 h-8 flex items-center justify-center bg-[#2563EB] hover:bg-blue-700 border border-transparent text-white rounded-[5px] text-xs font-medium transition-colors shadow-sm">
+                    <button type="submit" @click="if (!confirm('Are you sure you want to save these changes in this data?')) $event.preventDefault()" class="w-20 h-8 flex items-center justify-center bg-[#2563EB] hover:bg-blue-700 border border-transparent text-white rounded-[5px] text-xs font-medium transition-colors shadow-sm">
                         Save
                     </button>
                 </div>
