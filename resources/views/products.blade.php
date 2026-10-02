@@ -34,17 +34,17 @@
           <span>Products</span>
         </a>
         <a href="{{ url('/users') }}" class="menu-item">
-  <i class="fa-solid fa-users"></i>
-  <span>Users</span>
-</a>
-<a href="{{ url('/suppliers') }}" class="menu-item">
-  <i class="fa-solid fa-truck"></i>
-  <span>Suppliers</span>
-</a>
+          <i class="fa-solid fa-users"></i>
+          <span>Users</span>
+        </a>
+        <a href="{{ url('/suppliers') }}" class="menu-item">
+          <i class="fa-solid fa-truck"></i>
+          <span>Suppliers</span>
+        </a>
         <a href="{{ url('/daily-closing') }}" class="menu-item">
-  <i class="fa-solid fa-key"></i>
-  <span>Daily Closing</span>
-</a>
+          <i class="fa-solid fa-key"></i>
+          <span>Daily Closing</span>
+        </a>
       </nav>
 
       <div class="sidebar-footer">
@@ -66,47 +66,41 @@
             <input type="text" placeholder="Search product name or code" class="search-input">
           </div>
           <select class="category-select">
-            <option value="all">Category: All</option>
-            <option value="laptop">Laptop</option>
-            <option value="smartphone">Smartphone</option>
+            <option>Category: All</option>
+            <option>Laptop</option>
+            <option>Smartphone</option>
           </select>
         </div>
 
-        <a href="#" class="btn-add">
+        <button type="button" class="btn-add" id="openAddProductModalBtn">
           <i class="fa-solid fa-plus"></i>
           <span>Add Product</span>
-        </a>
+        </button>
       </div>
 
       <section class="stats-grid">
         <div class="stat-card">
-          <div class="stat-info">
+          <div>
             <p class="stat-label">Total Registered Products</p>
-            <h3 class="stat-value">48 Unit</h3>
+            <h2 class="stat-value">48 Unit</h2>
           </div>
-          <div class="stat-icon">
-            <i class="fa-regular fa-box"></i>
-          </div>
+          <i class="fa-solid fa-box-open stat-icon"></i>
         </div>
 
         <div class="stat-card">
-          <div class="stat-info">
+          <div>
             <p class="stat-label">Products Low On Stock</p>
-            <h3 class="stat-value">3 Item</h3>
+            <h2 class="stat-value">3 Item</h2>
           </div>
-          <div class="stat-icon">
-            <i class="fa-solid fa-box-open"></i>
-          </div>
+          <i class="fa-solid fa-triangle-exclamation stat-icon"></i>
         </div>
 
         <div class="stat-card">
-          <div class="stat-info">
+          <div>
             <p class="stat-label">Active Category</p>
-            <h3 class="stat-value">3 Category</h3>
+            <h2 class="stat-value">3 Category</h2>
           </div>
-          <div class="stat-icon">
-            <i class="fa-solid fa-layer-group"></i>
-          </div>
+          <i class="fa-solid fa-tags stat-icon"></i>
         </div>
       </section>
 
@@ -132,45 +126,43 @@
             </thead>
             <tbody>
               <tr>
-                <td class="product-code">LPT-ROG14</td>
-                <td><img src="{{ asset('images/zeyprus_black_edition.png') }}" alt="Laptop" class="product-img"></td>
+                <td class="product-code">LPT-ROG10</td>
+                <td><img src="{{ asset('images/zeyprus_black_edition.png') }}" alt="Product" class="product-img"></td>
                 <td class="product-name">ASUS ROG Zephyrus G14 Black Edition</td>
                 <td>Laptop</td>
-                <td class="description-text">AMD Ryzen 9 | RTX 4060 | 16GB RAM | 1TB SSD 14.0" QHD+ 165Hz | Win 11 + OHS</td>
-                <td>Rp 21.000.000</td>
+                <td class="desc-text">AMD Ryzen 9 | RTX 4060 8GB | RAM 16GB DDR5 | SSD 1TB NVMe | 14" QHD+ 165Hz | Win 11 + OHS</td>
+                <td>Rp 21.500.000</td>
                 <td>Rp 24.500.000</td>
                 <td>12</td>
                 <td><span class="badge-available">Available</span></td>
                 <td>2026-09-18 01:15:47</td>
-                <td><button class="btn-action"><i class="fa-solid fa-ellipsis"></i></button></td>
+                <td><button type="button" class="btn-action open-edit-modal-btn"><i class="fa-solid fa-ellipsis"></i></button></td>
               </tr>
-
               <tr>
-                <td class="product-code">LPT-ROG13</td>
-                <td><img src="{{ asset('images/iphone_17_pro_silver.png') }}" alt="iPhone" class="product-img"></td>
-                <td class="product-name">iPhone 15 Pro Silver</td>
+                <td class="product-code">LPT-ROG10</td>
+                <td><img src="{{ asset('images/iphone_17_pro_silver.png') }}" alt="Product" class="product-img"></td>
+                <td class="product-name">Iphone 17 Pro Silver</td>
                 <td>Laptop</td>
-                <td class="description-text">Apple A17 Pro (3nm) | 8GB RAM | Storage 256GB | 6.1" OLED 120Hz Super Retina | Triple 48MP Camera | Titanium Silver | USB-C 3.2</td>
-                <td>Rp 21.000.000</td>
+                <td class="desc-text">Apple A18 Pro (3nm) | RAM 8GB | Storage 256GB | 6.3" OLED 120Hz ProMotion | Triple 48MP Pro Cam | Titanium Silver | USB-C 3.2</td>
+                <td>Rp 21.500.000</td>
                 <td>Rp 24.500.000</td>
                 <td>12</td>
                 <td><span class="badge-out-stock">Out of stock</span></td>
                 <td>2026-09-18 01:15:47</td>
-                <td><button class="btn-action"><i class="fa-solid fa-ellipsis"></i></button></td>
+                <td><button type="button" class="btn-action open-edit-modal-btn"><i class="fa-solid fa-ellipsis"></i></button></td>
               </tr>
-
               <tr>
-                <td class="product-code">LPT-ROG12</td>
-                 <td><img src="{{ asset('images/asus_rog_gaming_a15.png') }}" alt="laptop" class="product-img"></td>
+                <td class="product-code">LPT-ROG10</td>
+                <td><img src="{{ asset('images/asus_rog_gaming_a15.png') }}" alt="Product" class="product-img"></td>
                 <td class="product-name">ASUS ROG GAMING A15</td>
                 <td>Laptop</td>
-                <td class="description-text">AMD Ryzen 9 | RTX 4060 | 16GB RAM | 1TB SSD 14.0" QHD+ 165Hz | Win 11 + OHS</td>
-                <td>Rp 21.000.000</td>
+                <td class="desc-text">AMD Ryzen 9 | RTX 4060 8GB | RAM 16GB DDR5 | SSD 1TB NVMe | 14" QHD+ 165Hz | Win 11 + OHS</td>
+                <td>Rp 21.500.000</td>
                 <td>Rp 24.500.000</td>
                 <td>12</td>
                 <td><span class="badge-out-stock">Out of stock</span></td>
                 <td>2026-09-18 01:15:47</td>
-                <td><button class="btn-action"><i class="fa-solid fa-ellipsis"></i></button></td>
+                <td><button type="button" class="btn-action open-edit-modal-btn"><i class="fa-solid fa-ellipsis"></i></button></td>
               </tr>
             </tbody>
           </table>
@@ -189,6 +181,112 @@
     </main>
 
   </div>
+
+  <div class="modal-overlay" id="productModal">
+    <div class="modal-card">
+      <h2 class="modal-title">Add New Product</h2>
+      <form>
+        <div class="form-grid-2">
+          <div class="form-group">
+            <label>Product Name</label>
+            <input type="text" placeholder="Enter receipt number" class="form-control" required>
+          </div>
+          <div class="form-group">
+            <label>Product Code</label>
+            <input type="text" placeholder="Enter product code" class="form-control" required>
+          </div>
+        </div>
+
+        <div class="form-grid-2">
+          <div class="form-group">
+            <label>Category</label>
+            <select class="form-control">
+              <option>Select Transaction Type</option>
+              <option>Laptop</option>
+              <option>Smartphone</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Stock Amount</label>
+            <input type="number" value="0" class="form-control" required>
+          </div>
+        </div>
+
+        <div class="form-grid-2">
+          <div class="form-group">
+            <label>Buy Price</label>
+            <input type="text" placeholder="Rp 0" class="form-control" required>
+          </div>
+          <div class="form-group">
+            <label>Sell Price</label>
+            <input type="text" placeholder="Rp 0" class="form-control" required>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Buy Price</label>
+          <input type="text" placeholder="Rp 0" class="form-control">
+        </div>
+
+        <div class="form-group">
+          <label>Shipping Address</label>
+          <textarea placeholder="Enter shipping address" class="form-control"></textarea>
+        </div>
+
+        <div class="items-box">
+          <div class="items-header">
+            <label>Items</label>
+            <button type="button" class="btn-add-item">+ Add Item</button>
+          </div>
+          <div class="item-row">
+            <span>1x Input item name or code</span>
+            <div class="item-actions">
+              <span>Rp 0</span>
+              <button type="button" class="btn-icon-item"><i class="fa-regular fa-pen-to-square"></i></button>
+              <button type="button" class="btn-icon-item delete"><i class="fa-regular fa-trash-can"></i></button>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-actions">
+          <button type="button" class="btn-modal btn-cancel" id="closeProductModalBtn">Cancel</button>
+          <button type="button" class="btn-modal btn-delete-modal">Delete</button>
+          <button type="submit" class="btn-modal btn-save-modal">Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const modal = document.getElementById('productModal');
+      const openBtn = document.getElementById('openAddProductModalBtn');
+      const closeBtn = document.getElementById('closeProductModalBtn');
+      const editBtns = document.querySelectorAll('.open-edit-modal-btn');
+
+      if (openBtn && modal) {
+        openBtn.addEventListener('click', function () {
+          modal.classList.add('active');
+        });
+      }
+
+      if (closeBtn && modal) {
+        closeBtn.addEventListener('click', function () {
+          modal.classList.remove('active');
+        });
+      }
+
+      editBtns.forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          if (modal) modal.classList.add('active');
+        });
+      });
+
+      window.addEventListener('click', function (e) {
+        if (e.target === modal) modal.classList.remove('active');
+      });
+    });
+  </script>
 
 </body>
 </html>
