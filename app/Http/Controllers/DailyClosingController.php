@@ -34,8 +34,10 @@ class DailyClosingController extends Controller
             'notes'        => 'nullable|string',
         ]);
 
+        $user = \aPP\Models\User::where('name', $request->admin_name)->first();
+        $adminId = $user ? $user->id : Auth::id(); // Jika admin_name tidak ditemukan, gunakan ID admin yang login
         DailyClosing::create([
-            'admin_id'     => Auth::id(), // Otomatis terisi ID admin yang login
+            'admin_id'     => $adminId,
             'total_income' => $request->total_income,
             'notes'        => $request->notes,
         ]);

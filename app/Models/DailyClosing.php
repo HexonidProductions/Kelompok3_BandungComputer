@@ -3,10 +3,10 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon;
 
 class DailyClosing extends Model
 {
-
     protected $table = 'tb_daily_closings';
 
     protected $fillable = [
@@ -17,6 +17,8 @@ class DailyClosing extends Model
 
     protected $casts = [
         'total_income' => 'decimal:2',
+        'created_at'   => 'datetime',
+        'updated_at'   => 'datetime',
     ];
 
     public function admin()
@@ -26,12 +28,14 @@ class DailyClosing extends Model
 
     public function getShiftAttribute() 
     {
-        $hour = $this->updated_at->format('H');
+        // Gunakan created_at/updated_at, jika null gunakan waktu saat ini (now())
+        $date = $this->created_at ?? $this->updated_at ?? now();
+        $hour = (int) Carbon::parse($date)->format('H');
+
+        // Jam 06:00 - 13:59
         if ($hour >= 6 && $hour < 14) {
             return 'Morning Shift';
-        } elseif ($hour >= 14 && $hour < 22) {
-            return 'Night Shift';
         }
-
+        return 'Night Shift';
     }
 }
