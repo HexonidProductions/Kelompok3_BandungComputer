@@ -136,7 +136,6 @@
                             <span class="inline-block px-3 py-1 rounded-md text-[11px] font-semibold border-2 border-[#DC2626] text-[#000000] bg-white">
                             Not Paid
                             </span>
-                            @else
                             @endif
                             </td>
                             <td class="py-3.5 px-3 text-center">
@@ -184,7 +183,6 @@
         @method('DELETE')
     </form>
 
-    
     <!-- Modal Teleport ke Body -->
     <template x-teleport="body">
         <div x-show="createOpen || editOpen" x-cloak>
@@ -202,9 +200,11 @@
                             items: [],
                             itemModalOpen: false,
                             editingIndex: null,
+                            productId: '',
                             productName: '',
                             itemQty: 1,
                             itemPrice: 0,
+                            selectedStock: 0,
                             
                             init() {
                                 $watch('selectedTx', value => {
@@ -237,25 +237,44 @@
                             },
 
                             openAddItem() {
+                                this.productId = '';
                                 this.productName = '';
                                 this.itemQty = 1;
                                 this.itemPrice = 0;
+                                this.selectedStock = 0;
                                 this.editingIndex = null;
                                 this.itemModalOpen = true;
                             },
                             
                             openEditItem(index) {
                                 this.editingIndex = index;
+                                this.productId = this.items[index].product_id || '';
                                 this.productName = this.items[index].name || this.items[index].product_name || '';
                                 this.itemQty = this.items[index].quantity || 1;
                                 this.itemPrice = this.items[index].price || 0;
+                                this.selectedStock = 999;
                                 this.itemModalOpen = true;
                             },
 
                             saveItem() {
-                                if (this.productName.trim() === '') return;
+                                if (!this.productName.trim()) {
+                                    alert('Please select a product first!');
+                                    return;
+                                }
+
+                                if (this.editingIndex === null) {
+                                    if (this.selectedStock <= 0) {
+                                        alert('Produk ini out of stock dan tidak dapat ditambahkan!');
+                                        return;
+                                    }
+                                    if (this.itemQty > this.selectedStock) {
+                                        alert('Jumlah pesanan (' + this.itemQty + ') melebihi stok yang tersedia (' + this.selectedStock + ')!');
+                                        return;
+                                    }
+                                }
                                 
                                 const payload = {
+                                    product_id: this.productId,
                                     name: this.productName,
                                     product_name: this.productName,
                                     quantity: Number(this.itemQty) || 1,
@@ -269,9 +288,6 @@
                                 }
                                 
                                 this.itemModalOpen = false;
-                                this.productName = '';
-                                this.itemQty = 1;
-                                this.itemPrice = 0;
                             },
 
                             removeItem(index) {
@@ -283,7 +299,6 @@
                         @csrf
                         @method('PUT')
 
-                        <!-- Hidden Input JSON Items untuk Edit -->
                         <input type="hidden" name="items" :value="JSON.stringify(items)">
 
                         <div class="grid grid-cols-2 gap-4 mb-4 text-xs">
@@ -292,7 +307,6 @@
                                 <input type="text" x-model="selectedTx.receipt_number" readonly class="w-full border border-slate-200 bg-slate-50 rounded-lg px-3 py-2 text-slate-500 focus:outline-none focus:ring-0 focus:border-slate-300 placeholder:text-[13px]" placeholder="Receipt Number">
                             </div>
 
-                            <!-- Custom Dropdown Type (Edit) -->
                             <div>
                                 <label class="block font-semibold text-slate-700 mb-1">Type</label>
                                 <input type="hidden" name="sale_type" x-model="selectedTx.sale_type">
@@ -323,7 +337,6 @@
                                 <input type="text" readonly :value="selectedTx.customer?.name || '-'" class="w-full border border-slate-200 bg-slate-50 rounded-lg px-3 py-2 text-slate-500 focus:outline-none focus:ring-0 focus:border-slate-300 placeholder:text-[13px]" placeholder="Customer Name">
                             </div>
 
-                            <!-- Custom Dropdown Payment Method (Edit) -->
                             <div>
                                 <label class="block font-semibold text-slate-700 mb-1">Payment Method</label>
                                 <input type="hidden" name="payment_method" x-model="selectedTx.payment_method">
@@ -346,7 +359,6 @@
                                 </div>
                             </div>
 
-                            <!-- Custom Dropdown Payment Status (Edit) -->
                             <div>
                                 <label class="block font-semibold text-slate-700 mb-1">Payment Status</label>
                                 <input type="hidden" name="payment_status" x-model="selectedTx.payment_status">
@@ -392,14 +404,12 @@
                                 </button>
                             </div>
 
-                            <!-- Empty State -->
                             <template x-if="items.length === 0">
                                 <div class="text-slate-400 py-3 text-center">
                                     No items added yet.
                                 </div>
                             </template>
 
-                            <!-- List Items -->
                             <div class="space-y-2">
                                 <template x-for="(item, index) in items" :key="index">
                                     <div class="flex items-center justify-between py-2 text-xs">
@@ -412,11 +422,9 @@
                                             <span class="font-semibold text-slate-800" x-text="'Rp ' + Number((item.quantity || 1) * (item.price || 0)).toLocaleString('id-ID')"></span>
                                             
                                             <div class="flex items-center gap-2">
-                                                <!-- Edit Icon -->
                                                 <button type="button" @click="openEditItem(index)" class="p-1 text-slate-400 hover:text-slate-600 transition-colors">
                                                    <img src="{{ asset('icons/pencil.png') }}" alt="Edit Icon" class="w-4 h-4 object-contain">
                                                 </button>
-                                                <!-- Delete Icon -->
                                                 <button type="button" @click="removeItem(index)" class="p-1 text-rose-400 hover:text-rose-600 transition-colors">
                                                     <img src="{{ asset('icons/trash.png') }}" alt="Trash Icon" class="w-4 h-4 object-contain">
                                                 </button>
@@ -427,7 +435,7 @@
                             </div>
                         </div>
 
-                        <!-- Sub Modal Pop-Up Add/Edit Item (Edit Modal) -->
+                        <!-- Sub Modal Add/Edit Item (Edit Modal) - Custom Dropdown with Arrow Animation -->
                         <div x-show="itemModalOpen" x-cloak 
                             class="fixed inset-0 z-50 flex items-center justify-center bg-white/10 backdrop-blur-[1px] p-4 transition-all"
                             @keydown.escape.window="itemModalOpen = false">
@@ -437,18 +445,53 @@
                                 
                                 <div class="space-y-3 text-xs mb-4">
                                     <div>
-                                        <label class="block font-semibold text-slate-700 mb-1">Product Name</label>
-                                        <input type="text" x-model="productName" class="w-full border border-slate-200 rounded-lg px-3 py-2 text-slate-700 placeholder:text-xs focus:outline-none focus:ring-0 focus:border-slate-300" placeholder="Enter product name">
+                                        <label class="block font-semibold text-slate-700 mb-1">Product</label>
+                                        
+                                        <!-- Custom Dropdown Product -->
+                                        <div x-data="{ productOpen: false }" class="relative" @click.away="productOpen = false">
+                                            <button type="button" 
+                                                @click="productOpen = !productOpen" 
+                                                class="w-full h-[40px] flex items-center justify-between border border-slate-200 rounded-lg px-3 py-2 text-slate-700 bg-white focus:outline-none focus:ring-0 focus:border-slate-300 text-xs">
+                                                <span x-text="productName || 'Select Product'"></span>
+                                                <img src="{{ asset('icons/Vector_option_arrow.png') }}" 
+                                                    alt="Arrow" 
+                                                    class="w-2.5 h-2.5 object-contain transition-transform duration-200"
+                                                    :class="productOpen ? 'rotate-180' : 'rotate-0'">
+                                            </button>
+
+                                            <div x-show="productOpen" x-cloak class="absolute left-0 mt-1 w-full bg-white border border-slate-200 rounded-lg shadow-lg z-50 py-1 max-h-48 overflow-y-auto">
+                                                @foreach($products ?? [] as $prod)
+                                                    @php
+                                                        $isOut = $prod->stock <= 0 || $prod->status === 'Out of stock';
+                                                    @endphp
+                                                    @if(!$isOut)
+                                                        <div @click="
+                                                            productId = '{{ $prod->id }}';
+                                                            productName = '{{ $prod->product_name }}';
+                                                            itemPrice = Number('{{ $prod->price }}');
+                                                            selectedStock = Number('{{ $prod->stock }}');
+                                                            productOpen = false;
+                                                        " class="px-3 py-2 hover:bg-slate-50 cursor-pointer text-xs">
+                                                            {{ $prod->product_name }} (Stock: {{ $prod->stock }})
+                                                        </div>
+                                                    @else
+                                                        <div class="px-3 py-2 text-slate-300 cursor-not-allowed text-xs">
+                                                            {{ $prod->product_name }} (Out of Stock)
+                                                        </div>
+                                                    @endif
+                                                @endforeach
+                                            </div>
+                                        </div>
                                     </div>
 
                                     <div class="grid grid-cols-2 gap-3">
                                         <div>
                                             <label class="block font-semibold text-slate-700 mb-1">Quantity</label>
-                                            <input type="number" min="1" x-model.number="itemQty" class="w-full border border-slate-200 rounded-lg px-3 py-2 text-slate-700 placeholder:text-xs focus:outline-none focus:border-slate-300 focus:ring-0 [appearance: textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none" placeholder="1">
+                                            <input type="number" min="1" x-model.number="itemQty" class="w-full border border-slate-200 rounded-lg px-3 py-2 text-slate-700 focus:outline-none focus:border-slate-300 focus:ring-0 [appearance: textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none" placeholder="1">
                                         </div>
                                         <div>
                                             <label class="block font-semibold text-slate-700 mb-1">Unit Price</label>
-                                            <input type="number" min="0" x-model.number="itemPrice" class="w-full border border-slate-200 rounded-lg px-3 py-2 text-slate-700 placeholder:text-xs focus:outline-none focus:border-slate-300 focus:ring-0 [appearance: textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none" placeholder="Rp 0">
+                                            <input type="number" min="0" x-model.number="itemPrice" class="w-full border border-slate-200 rounded-lg px-3 py-2 text-slate-700 focus:outline-none focus:border-slate-300 focus:ring-0 [appearance: textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none" placeholder="Rp 0">
                                         </div>
                                     </div>
                                 </div>
@@ -464,7 +507,7 @@
                             </div>
                         </div>
 
-                        <!-- Action Buttons: Cancel | Delete | Save -->
+                        <!-- Action Buttons -->
                         <div class="flex items-center justify-end gap-2.5">
                             <button type="button" 
                                 @click="editOpen = false" 
@@ -504,30 +547,51 @@
                             items: [],
                             itemModalOpen: false,
                             editingIndex: null,
+                            productId: '',
                             productName: '',
                             itemQty: 1,
                             itemPrice: 0,
+                            selectedStock: 0,
                             
                             openAddItem() {
+                                this.productId = '';
                                 this.productName = '';
                                 this.itemQty = 1;
                                 this.itemPrice = 0;
+                                this.selectedStock = 0;
                                 this.editingIndex = null;
                                 this.itemModalOpen = true;
                             },
                             
                             openEditItem(index) {
                                 this.editingIndex = index;
+                                this.productId = this.items[index].product_id || '';
                                 this.productName = this.items[index].name || this.items[index].product_name || '';
                                 this.itemQty = this.items[index].quantity || 1;
                                 this.itemPrice = this.items[index].price || 0;
+                                this.selectedStock = 999;
                                 this.itemModalOpen = true;
                             },
 
                             saveItem() {
-                                if (this.productName.trim() === '') return;
+                                if (!this.productName.trim()) {
+                                    alert('Please select a product first!');
+                                    return;
+                                }
+
+                                if (this.editingIndex === null) {
+                                    if (this.selectedStock <= 0) {
+                                        alert('Produk ini out of stock dan tidak dapat ditambahkan!');
+                                        return;
+                                    }
+                                    if (this.itemQty > this.selectedStock) {
+                                        alert('Jumlah pesanan (' + this.itemQty + ') melebihi stok yang tersedia (' + this.selectedStock + ')!');
+                                        return;
+                                    }
+                                }
                                 
                                 const payload = {
+                                    product_id: this.productId,
                                     name: this.productName,
                                     product_name: this.productName,
                                     quantity: Number(this.itemQty) || 1,
@@ -541,9 +605,6 @@
                                 }
                                 
                                 this.itemModalOpen = false;
-                                this.productName = '';
-                                this.itemQty = 1;
-                                this.itemPrice = 0;
                             },
 
                             removeItem(index) {
@@ -565,7 +626,6 @@
                                 <input type="text" name="receipt_number" required class="w-full border border-slate-200 rounded-lg px-3 py-2 text-slate-700 focus:outline-none focus:ring-0 focus:border-slate-300 placeholder:text-[13px]" placeholder="Receipt Number">
                             </div>
 
-                            <!-- Custom Dropdown Type (Add) -->
                             <div>
                                 <label class="block font-semibold text-slate-700 mb-1">Type</label>
                                 <div x-data="{ open: false }" class="relative" @click.away="open = false">
@@ -586,7 +646,6 @@
                                 </div>
                             </div>
 
-                            <!-- Dropdown Cashier (Hanya menampilkan Admin/Cashier) -->
                             <div>
                                 <label class="block font-semibold text-slate-700 mb-1">Cashier</label>
                                 <select name="admin_id" required class="w-full h-[40px] border border-slate-200 rounded-lg px-3 py-2 text-slate-700 bg-white focus:outline-none focus:ring-0 focus:border-slate-300 text-xs">
@@ -599,7 +658,6 @@
                                 </select>
                             </div>
 
-                            <!-- Dropdown Customer (Hanya menampilkan Customer) -->
                             <div>
                                 <label class="block font-semibold text-slate-700 mb-1">Customer</label>
                                 <select name="customer_id" class="w-full h-[40px] border border-slate-200 rounded-lg px-3 py-2 text-slate-700 bg-white focus:outline-none focus:ring-0 focus:border-slate-300 text-xs">
@@ -674,14 +732,12 @@
                                 </button>
                             </div>
 
-                            <!-- Empty State -->
                             <template x-if="items.length === 0">
                                 <div class="text-slate-400 py-3 text-center">
                                     No items added yet.
                                 </div>
                             </template>
 
-                            <!-- List Items -->
                             <div class="space-y-2">
                                 <template x-for="(item, index) in items" :key="index">
                                     <div class="flex items-center justify-between py-2 text-xs">
@@ -694,11 +750,9 @@
                                             <span class="font-semibold text-slate-800" x-text="'Rp ' + Number((item.quantity || 1) * (item.price || 0)).toLocaleString('id-ID')"></span>
                                             
                                             <div class="flex items-center gap-2">
-                                                <!-- Edit Icon -->
                                                 <button type="button" @click="openEditItem(index)" class="p-1 text-slate-400 hover:text-slate-600 transition-colors">
                                                      <img src="{{ asset('icons/pencil.png') }}" alt="Edit Icon" class="w-4 h-4 object-contain">
                                                 </button>
-                                                <!-- Delete Icon -->
                                                 <button type="button" @click="removeItem(index)" class="p-1 text-rose-400 hover:text-rose-600 transition-colors">
                                                      <img src="{{ asset('icons/trash.png') }}" alt="Trash Icon" class="w-4 h-4 object-contain">
                                                 </button>
@@ -709,7 +763,7 @@
                             </div>
                         </div>
 
-                        <!-- Sub Modal Pop-Up Add/Edit Item (Add Modal) -->
+                        <!-- Sub Modal Add/Edit Item (Add Modal) - Custom Dropdown with Arrow Animation -->
                         <div x-show="itemModalOpen" x-cloak 
                             class="fixed inset-0 z-50 flex items-center justify-center bg-white/10 backdrop-blur-[1px] p-4 transition-all"
                             @keydown.escape.window="itemModalOpen = false">
@@ -719,18 +773,53 @@
                                 
                                 <div class="space-y-3 text-xs mb-4">
                                     <div>
-                                        <label class="block font-semibold text-slate-700 mb-1">Product Name</label>
-                                        <input type="text" x-model="productName" class="w-full border border-slate-200 rounded-lg px-3 py-2 text-slate-700 placeholder:text-xs focus:outline-none focus:ring-0 focus:border-slate-300" placeholder="Enter product name">
+                                        <label class="block font-semibold text-slate-700 mb-1">Product</label>
+                                        
+                                        <!-- Custom Dropdown Product -->
+                                        <div x-data="{ productOpen: false }" class="relative" @click.away="productOpen = false">
+                                            <button type="button" 
+                                                @click="productOpen = !productOpen" 
+                                                class="w-full h-[40px] flex items-center justify-between border border-slate-200 rounded-lg px-3 py-2 text-slate-700 bg-white focus:outline-none focus:ring-0 focus:border-slate-300 text-xs">
+                                                <span x-text="productName || 'Select Product'"></span>
+                                                <img src="{{ asset('icons/Vector_option_arrow.png') }}" 
+                                                    alt="Arrow" 
+                                                    class="w-2.5 h-2.5 object-contain transition-transform duration-200"
+                                                    :class="productOpen ? 'rotate-180' : 'rotate-0'">
+                                            </button>
+
+                                            <div x-show="productOpen" x-cloak class="absolute left-0 mt-1 w-full bg-white border border-slate-200 rounded-lg shadow-lg z-50 py-1 max-h-48 overflow-y-auto">
+                                                @foreach($products ?? [] as $prod)
+                                                    @php
+                                                        $isOut = $prod->stock <= 0 || $prod->status === 'Out of stock';
+                                                    @endphp
+                                                    @if(!$isOut)
+                                                        <div @click="
+                                                            productId = '{{ $prod->id }}';
+                                                            productName = '{{ $prod->product_name }}';
+                                                            itemPrice = Number('{{ $prod->price }}');
+                                                            selectedStock = Number('{{ $prod->stock }}');
+                                                            productOpen = false;
+                                                        " class="px-3 py-2 hover:bg-slate-50 cursor-pointer text-xs">
+                                                            {{ $prod->product_name }} (Stock: {{ $prod->stock }})
+                                                        </div>
+                                                    @else
+                                                        <div class="px-3 py-2 text-slate-300 cursor-not-allowed text-xs">
+                                                            {{ $prod->product_name }} (Out of Stock)
+                                                        </div>
+                                                    @endif
+                                                @endforeach
+                                            </div>
+                                        </div>
                                     </div>
 
                                     <div class="grid grid-cols-2 gap-3">
                                         <div>
                                             <label class="block font-semibold text-slate-700 mb-1">Quantity</label>
-                                            <input type="number" min="1" x-model.number="itemQty" class="w-full border border-slate-200 rounded-lg px-3 py-2 text-slate-700 placeholder:text-xs focus:outline-none focus:border-slate-300 focus:ring-0 [appearance: textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none" placeholder="1">
+                                            <input type="number" min="1" x-model.number="itemQty" class="w-full border border-slate-200 rounded-lg px-3 py-2 text-slate-700 focus:outline-none focus:border-slate-300 focus:ring-0 [appearance: textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none" placeholder="1">
                                         </div>
                                         <div>
                                             <label class="block font-semibold text-slate-700 mb-1">Unit Price</label>
-                                            <input type="number" min="0" x-model.number="itemPrice" class="w-full border border-slate-200 rounded-lg px-3 py-2 text-slate-700 placeholder:text-xs focus:outline-none focus:border-slate-300 focus:ring-0 [appearance: textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none" placeholder="Rp 0">
+                                            <input type="number" min="0" x-model.number="itemPrice" class="w-full border border-slate-200 rounded-lg px-3 py-2 text-slate-700 focus:outline-none focus:border-slate-300 focus:ring-0 [appearance: textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none" placeholder="Rp 0">
                                         </div>
                                     </div>
                                 </div>
@@ -746,7 +835,7 @@
                             </div>
                         </div>
 
-                        <!-- Action Buttons: Cancel | Save -->
+                        <!-- Action Buttons -->
                         <div class="flex items-center justify-end gap-2.5">
                             <button type="button" 
                                 @click="createOpen = false" 
