@@ -375,8 +375,8 @@
                                     </button>
 
                                     <div x-show="open" x-cloak class="absolute left-0 mt-1 w-full bg-white border border-slate-200 rounded-lg shadow-lg z-50 py-1">
-                                        <div @click="selectedTx.payment_status = 'paid'; open = false" class="px-3 py-2 hover:bg-slate-50 cursor-pointer">Paid</div>
-                                        <div @click="selectedTx.payment_status = 'not paid'; open = false" class="px-3 py-2 hover:bg-slate-50 cursor-pointer">Not Paid</div>
+                                        <div @click="selectedTx.payment_status = 'paid'; open = false" class="px-3 py-2 hover:bg-slate-50 cursor-pointer">paid</div>
+                                        <div @click="selectedTx.payment_status = 'not paid'; open = false" class="px-3 py-2 hover:bg-slate-50 cursor-pointer">not paid</div>
                                     </div>
                                 </div>
                             </div>
@@ -703,8 +703,8 @@
                                     </button>
 
                                     <div x-show="open" x-cloak class="absolute left-0 mt-1 w-full bg-white border border-slate-200 rounded-lg shadow-lg z-50 py-1">
-                                        <div @click="paymentStatus = 'paid'; open = false" class="px-3 py-2 hover:bg-slate-50 cursor-pointer">Paid</div>
-                                        <div @click="paymentStatus = 'not paid'; open = false" class="px-3 py-2 hover:bg-slate-50 cursor-pointer">Not Paid</div>
+                                        <div @click="paymentStatus = 'paid'; open = false" class="px-3 py-2 hover:bg-slate-50 cursor-pointer">paid</div>
+                                        <div @click="paymentStatus = 'not paid'; open = false" class="px-3 py-2 hover:bg-slate-50 cursor-pointer">not paid</div>
                                     </div>
                                 </div>
                             </div>
