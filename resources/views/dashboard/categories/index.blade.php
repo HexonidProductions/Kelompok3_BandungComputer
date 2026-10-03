@@ -128,7 +128,7 @@
         <div x-show="createOpen || editOpen" x-cloak>
             <!-- Modal Add Category -->
             <div x-show="createOpen" 
-                class="fixed inset-0 z-[99999] flex items-center justify-center bg-black/40 p-4 transition-all"
+                class="fixed inset-0 z-50 flex items-center justify-center bg-white/10 backdrop-blur-[1px] p-4 transition-all"
                 @keydown.escape.window="createOpen = false">
 
                 <div class="bg-white rounded-xl shadow-2xl w-full max-w-md p-6 relative" @click.away="createOpen = false">
@@ -162,7 +162,7 @@
 
             <!-- Modal Edit Category -->
             <div x-show="editOpen" 
-                class="fixed inset-0 z-[99999] flex items-center justify-center bg-black/40 p-4 transition-all"
+                class="fixed inset-0 z-50 flex items-center justify-center bg-white/10 backdrop-blur-[1px] p-4 transition-all"
                 @keydown.escape.window="editOpen = false">
 
                 <div class="bg-white rounded-xl shadow-2xl w-full max-w-md p-6 relative" @click.away="editOpen = false">
