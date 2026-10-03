@@ -16,7 +16,8 @@
 
         <!-- Search Bar, Filter Status & Add Transaction Button -->
         <div class="flex flex-wrap justify-between items-center gap-4">
-            <div class="flex items-center gap-3">
+            <!-- Bungkus Search & Filter dalam satu container agar rapi di sebelah kiri -->
+            <div class="flex flex-wrap items-center gap-3">
                 <!-- Search Form -->
                 <form action="{{ route('transactions.index') }}" method="GET" class="relative w-72">
                     @if(request('status'))
@@ -41,7 +42,7 @@
                             @if(request('status') == 'paid')
                                 Payment Status: Paid
                             @elseif(request('status') == 'not paid')
-                                Payment Status: Not paid
+                                Payment Status: Not Paid
                             @else
                                 Payment Status: All
                             @endif
@@ -69,9 +70,9 @@
                         </a>
                     </div>
                 </div>
-            </div>
+            </div> <!-- <-- Penutup container kiri (Search & Filter) sudah benar di sini -->
 
-            <!-- Add Transaction Button -->
+            <!-- Add Transaction Button (Berdiri sendiri di sebelah kanan berkat justify-between) -->
             <button type="button" 
                 @click="createOpen = true" 
                 class="inline-flex items-center gap-1.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold px-4 py-2 rounded-lg shadow-sm transition-all">
@@ -366,7 +367,7 @@
                                     <button type="button" 
                                         @click="open = !open" 
                                         class="w-full h-[40px] flex items-center justify-between border border-slate-200 rounded-lg px-3 py-2 text-slate-700 bg-white focus:outline-none focus:ring-0 focus:border-slate-300">
-                                        <span x-text="selectedTx.payment_status === 'Not Paid' ? 'Not Paid' : (selectedTx.payment_status || 'Select Payment Status')"></span>
+                                        <span x-text="selectedTx.payment_status === 'not paid' ? 'not paid' : (selectedTx.payment_status || 'Select Payment Status')"></span>
                                         <img src="{{ asset('icons/Vector_option_arrow.png') }}" 
                                             alt="Arrow" 
                                             class="w-2.5 h-2.5 object-contain transition-transform duration-200"
@@ -374,8 +375,8 @@
                                     </button>
 
                                     <div x-show="open" x-cloak class="absolute left-0 mt-1 w-full bg-white border border-slate-200 rounded-lg shadow-lg z-50 py-1">
-                                        <div @click="selectedTx.payment_status = 'Paid'; open = false" class="px-3 py-2 hover:bg-slate-50 cursor-pointer">Paid</div>
-                                        <div @click="selectedTx.payment_status = 'Not Paid'; open = false" class="px-3 py-2 hover:bg-slate-50 cursor-pointer">Not Paid</div>
+                                        <div @click="selectedTx.payment_status = 'paid'; open = false" class="px-3 py-2 hover:bg-slate-50 cursor-pointer">Paid</div>
+                                        <div @click="selectedTx.payment_status = 'not paid'; open = false" class="px-3 py-2 hover:bg-slate-50 cursor-pointer">Not Paid</div>
                                     </div>
                                 </div>
                             </div>
@@ -694,7 +695,7 @@
                                     <button type="button" 
                                         @click="open = !open" 
                                         class="w-full h-[40px] flex items-center justify-between border border-slate-200 rounded-lg px-3 py-2 text-slate-700 bg-white focus:outline-none focus:ring-0 focus:border-slate-300">
-                                        <span x-text="paymentStatus === 'Not Paid' ? 'Not Paid' : (paymentStatus || 'Select Payment Status')"></span>
+                                        <span x-text="paymentStatus === 'not paid' ? 'not paid' : (paymentStatus || 'Select Payment Status')"></span>
                                         <img src="{{ asset('icons/Vector_option_arrow.png') }}" 
                                             alt="Arrow" 
                                             class="w-2.5 h-2.5 object-contain transition-transform duration-200"
@@ -702,8 +703,8 @@
                                     </button>
 
                                     <div x-show="open" x-cloak class="absolute left-0 mt-1 w-full bg-white border border-slate-200 rounded-lg shadow-lg z-50 py-1">
-                                        <div @click="paymentStatus = 'Paid'; open = false" class="px-3 py-2 hover:bg-slate-50 cursor-pointer">Paid</div>
-                                        <div @click="paymentStatus = 'Not Paid'; open = false" class="px-3 py-2 hover:bg-slate-50 cursor-pointer">Not Paid</div>
+                                        <div @click="paymentStatus = 'paid'; open = false" class="px-3 py-2 hover:bg-slate-50 cursor-pointer">Paid</div>
+                                        <div @click="paymentStatus = 'not paid'; open = false" class="px-3 py-2 hover:bg-slate-50 cursor-pointer">Not Paid</div>
                                     </div>
                                 </div>
                             </div>

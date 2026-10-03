@@ -35,21 +35,20 @@ class TransactionController extends Controller
                       });
                 });
             })
-            ->when($status, function ($query) use ($status) {
-                if ($status === 'paid') {
-                    return $query->where('payment_status', 'Paid');
-                } elseif ($status === 'not paid') {
-                    return $query->where('payment_status', 'Not Paid');
-                }
-            })
+            ->when($status, function ($query, $status) {
+    // Bersihkan input status dari Blade (ubah ke huruf kecil & trim)
+    $cleanStatus = strtolower(trim($status));
+
+    // Cocokkan secara case-insensitive dengan database
+    return $query->whereRaw('LOWER(TRIM(payment_status)) = ?', [$cleanStatus]);
+})
+            
             ->latest()
             ->paginate(10)
             ->withQueryString();
 
         $admins = User::whereIn('role', ['admin', 'cashier'])->get();
         $customers = User::where('role', 'customer')->get();
-        
-        // Mengambil semua data produk untuk pilihan dropdown di modal item
         $products = Product::all();
 
         return view('dashboard.transactions.index', compact('transactions', 'admins', 'customers', 'products'));
@@ -73,7 +72,7 @@ class TransactionController extends Controller
             'payment_method'   => 'required|in:Cash,Bank Transfer,QRIS',
             'total_amount'     => 'required|numeric|min:0',
             'shipping_fee'     => 'required|numeric|min:0',
-            'payment_status'   => 'required|in:Paid,Not Paid',
+            'payment_status'   => 'required|in:paid,not paid',
             'items'            => 'nullable|array',
         ]);
 
@@ -88,7 +87,7 @@ class TransactionController extends Controller
                     'payment_method'   => $request->payment_method,
                     'total_amount'     => $request->total_amount,
                     'shipping_fee'     => $request->shipping_fee ?? 0,
-                    'payment_status'   => $request->payment_status ?? 'Not Paid',
+                    'payment_status'   => $request->payment_status ?? 'not paid',
                 ]);
 
                 if (!empty($request->items)) {
@@ -158,7 +157,7 @@ class TransactionController extends Controller
             'payment_method'   => 'required|in:Cash,Bank Transfer,QRIS',
             'total_amount'     => 'required|numeric|min:0',
             'shipping_fee'     => 'required|numeric|min:0',
-            'payment_status'   => 'required|in:Paid,Not Paid',
+            'payment_status'   => 'required|in:paid,not paid',
             'items'            => 'nullable|array',
         ]);
 
