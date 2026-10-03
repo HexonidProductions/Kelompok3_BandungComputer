@@ -42,7 +42,7 @@
 
             <a href="{{ route('daily-closings.index') }}" class="w-full flex items-center gap-3 px-4 py-2.5 rounded-none text-xs font-normal text-white transition-all duration-150 {{ request()->routeIs('daily-closings.*') ? 'bg-[#2563EB]' : null }}">
                 <img src="{{ asset('icons/DailyClosings_icon.png')}}" alt="Daily Closings Icon" class="w-4 h-4 object-contain">
-                <span>Daily Closing</span>
+                <span>Daily Closings</span>
             </a>
         </nav>
     </div>

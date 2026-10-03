@@ -17,7 +17,7 @@
             <x-sidebar />
 
             <!-- Main Content Area: Padding atas dikurangi (py-5) agar konten naik ke atas -->
-            <main class="ml-56 px-8 py-5 min-h-screen">
+            <main class="ml-56 px-8 py-5">
                 @yield('content')
             </main>
         </div>
