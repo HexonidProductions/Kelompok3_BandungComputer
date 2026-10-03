@@ -15,39 +15,41 @@ class TransactionController extends Controller
      * Menampilkan daftar transaksi dengan pencarian dan filter status pembayaran.
      */
     public function index(Request $request)
-    {
-        $search =$request->input('search');
-        $status =$request->input('status'); 
+{
+    $search = trim($request->input('search'));
+    $status = $request->input('status'); 
 
-        $transactions = Sale::with(['admin', 'customer', 'items.product'])
-            ->when($search, function ($query,$search) {
-                return $query->where(function ($q) use ($search) {
-                    $q->where('receipt_number', 'like', "\%{$search}%")
-                        ->orWhereHas('customer', function ($customerQuery) use ($search) {
-                            $customerQuery->where('name', 'like', "\%{$search}%");
-                        })
-                        ->orWhereHas('admin', function ($adminQuery) use ($search) {
-                            $adminQuery->where('name', 'like', "\%{$search}%");
-                        });
-                });
-            })
-            ->when($status, function ($query,$status) {
-                if ($status === 'paid') {
-                    return $query->where('payment_status', 'Paid');
-                } elseif ($status === 'not paid') {
-                    return $query->where('payment_status', 'Not Paid');
-                }
-            })
-            ->latest()
-            ->paginate(10)
-            ->withQueryString();
+    $transactions = Sale::with(['admin', 'customer', 'items.product'])
+        ->when($search, function ($query) use ($search) {
+            return $query->where(function ($q) use ($search) {
+                // Cari berdasarkan nomor resi
+                $q->where('receipt_number', 'LIKE', '%' . $search . '%')
+                  // Cari berdasarkan nama customer
+                  ->orWhereHas('customer', function ($customerQuery) use ($search) {
+                      $customerQuery->where('name', 'LIKE', '%' . $search . '%');
+                  })
+                  // Cari berdasarkan nama cashier/admin
+                  ->orWhereHas('admin', function ($adminQuery) use ($search) {
+                      $adminQuery->where('name', 'LIKE', '%' . $search . '%');
+                  });
+            });
+        })
+        ->when($status, function ($query) use ($status) {
+            if ($status === 'paid') {
+                return $query->where('payment_status', 'Paid');
+            } elseif ($status === 'not paid') {
+                return $query->where('payment_status', 'Not Paid');
+            }
+        })
+        ->latest()
+        ->paginate(10)
+        ->withQueryString();
 
-        // Mengambil data user berdasarkan role masing-masing
-        // Catatan: Ubah string 'admin' / 'customer' sesuai dengan value role di database Anda
-        $admins = User::whereIn('role', ['admin', 'cashier'])->get();$customers = User::where('role', 'customer')->get();
+    $admins = User::whereIn('role', ['admin', 'cashier'])->get();
+    $customers = User::where('role', 'customer')->get();
 
-        return view('dashboard.transactions.index', compact('transactions', 'admins', 'customers'));
-    }
+    return view('dashboard.transactions.index', compact('transactions', 'admins', 'customers'));
+}
 
     /**
      * Menyimpan transaksi baru (+ Add Transaction) beserta item-itemnya.

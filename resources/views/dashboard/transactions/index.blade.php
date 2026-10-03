@@ -41,7 +41,7 @@
                             @if(request('status') == 'paid')
                                 Payment Status: Paid
                             @elseif(request('status') == 'not paid')
-                                Payment Status: not paid
+                                Payment Status: Not paid
                             @else
                                 Payment Status: All
                             @endif
