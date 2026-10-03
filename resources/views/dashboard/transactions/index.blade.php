@@ -28,7 +28,7 @@
                     <input type="text" 
                         name="search" 
                         value="{{ request('search') }}" 
-                        placeholder="Search Invoice code or customer" 
+                        placeholder="Search Invoice code, admin, or customer" 
                         class="w-full pl-9 pr-3 py-2 border border-slate-200 rounded-lg text-xs text-slate-700 bg-white placeholder-slate-600 focus:outline-none focus:ring-0 focus:border-slate-300">
                 </form>
 
