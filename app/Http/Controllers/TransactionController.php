@@ -8,6 +8,7 @@ use App\Models\Product;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 use Exception;
 
 class TransactionController extends Controller
@@ -81,7 +82,7 @@ class TransactionController extends Controller
                 $sale = Sale::create([
                     'receipt_number'   => $request->receipt_number,
                     'sale_type'        => $request->sale_type,
-                    'admin_id'         => $request->admin_id ?? auth()->id(), 
+                    'admin_id'         => $request->admin_id ?? Auth::id(),
                     'customer_id'      => $request->customer_id,
                     'shipping_address' => $request->shipping_address,
                     'payment_method'   => $request->payment_method,
