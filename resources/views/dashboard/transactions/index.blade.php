@@ -512,19 +512,19 @@
                         <div class="flex items-center justify-end gap-2.5">
                             <button type="button" 
                                 @click="editOpen = false" 
-                                class="w-20 h-8 flex items-center justify-center border border-slate-800 rounded-[5px] text-xs font-medium text-slate-800 hover:bg-slate-100 transition-colors">
+                                class="w-20 h-8 flex items-center justify-center border border-slate-800 rounded-[5px] text-xs font-medium text-slate-800 hover:bg-slate-100 transition-colors cursor-pointer">
                                 Cancel
                             </button>
 
                             <button type="button" 
                                 @click="if (confirm('Are you sure you want to delete this transaction?')) { $refs.globalDeleteForm.action = deleteUrl; $refs.globalDeleteForm.submit(); }" 
-                                class="w-20 h-8 flex items-center justify-center border border-[#DC2626] text-[#DC2626] hover:bg-[#DC2626]/5 rounded-[5px] text-xs font-medium transition-colors">
+                                class="w-20 h-8 flex items-center justify-center border border-[#DC2626] text-[#DC2626] hover:bg-[#DC2626]/5 rounded-[5px] text-xs font-medium transition-colors cursor-pointer">
                                 Delete
                             </button>
 
                             <button type="submit" 
                                 @click="if (!confirm('Are you sure you want to save these changes?')) $event.preventDefault()" 
-                                class="w-20 h-8 flex items-center justify-center bg-[#2563EB] hover:bg-blue-700 border border-transparent text-white rounded-[5px] text-xs font-medium transition-colors shadow-sm">
+                                class="w-20 h-8 flex items-center justify-center bg-[#2563EB] hover:bg-blue-700 border border-transparent text-white rounded-[5px] text-xs font-medium transition-colors shadow-sm cursor-pointer">
                                 Save
                             </button>
                         </div>
