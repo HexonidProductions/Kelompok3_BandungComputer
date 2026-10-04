@@ -76,7 +76,7 @@
             <button type="button" 
                 @click="createOpen = true" 
                 class="inline-flex items-center gap-1.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold px-4 py-2 rounded-lg shadow-sm transition-all">
-                <span>+</span> Add Transaction
+                <img src="{{ asset('icons/plus_icon.png') }}" alt="Add Transaction" class="w-4 h-4" object-contain> Add Transaction
             </button>
         </div>
     </div>
