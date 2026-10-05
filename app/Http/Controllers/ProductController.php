@@ -10,12 +10,12 @@ use Illuminate\Support\Facades\Storage;
 class ProductController extends Controller
 {
     /**
-     * Menampilkan daftar produk beserta pencarian dan filter kategori.
+     * Menampilkan daftar produk beserta pencarian dan filter status.
      */
     public function index(Request $request)
     {
         $search = $request->input('search');
-        $categoryId = $request->input('category_id');
+        $status = $request->input('status');
 
         // Query Produk dengan Filter
         $products = Product::with('category')
@@ -25,17 +25,14 @@ class ProductController extends Controller
                       ->orWhere('product_code', 'like', "%{$search}%");
                 });
             })
-            ->when($categoryId, function ($query, $categoryId) {
-                return $query->where('category_id', $categoryId);
+            ->when($status, function ($query, $status) {
+                return $query->where('status', $status);
             })
             ->latest()
-            ->paginate(3)
+            ->paginate(10)
             ->withQueryString();
 
-        // Ambil data kategori hanya untuk dropdown filter & form modal tambah
-        $categories = Category::all();
-
-        return view('dashboard.products.index', compact('products', 'categories'));
+        return view('dashboard.products.index', compact('products'));
     }
 
     /**
@@ -44,9 +41,9 @@ class ProductController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'product_code' => 'required|string|unique:products,product_code',
+            'product_code' => 'required|string|unique:tb_products,product_code',
             'product_name' => 'required|string|max:255',
-            'category_id'  => 'required|exists:categories,id',
+            'category_id'  => 'required|exists:tb_categories,id',
             'description'  => 'nullable|string',
             'buy_price'    => 'required|numeric',
             'sell_price'   => 'required|numeric',
@@ -59,7 +56,13 @@ class ProductController extends Controller
             $imagePath = $request->file('image')->store('products', 'public');
         }
 
-        $status = $request->stock > 0 ? 'Available' : 'Out of stock';
+        // Penentuan status otomatis berdasarkan stok (atau bisa disesuaikan)
+        $status = 'Available';
+        if ($request->stock == 0) {
+            $status = 'Out of stock';
+        } elseif ($request->stock <= 5) { // Contoh ambang batas Low stock
+            $status = 'Low stock';
+        }
 
         Product::create([
             'product_code' => $request->product_code,
@@ -73,7 +76,7 @@ class ProductController extends Controller
             'image'        => $imagePath,
         ]);
 
-        return redirect()->route('products.index')->with('success', 'Produk berhasil ditambahkan!');
+        return redirect()->route('dashboard.products.index')->with('success', 'Produk berhasil ditambahkan!');
     }
 
     /**
@@ -82,9 +85,9 @@ class ProductController extends Controller
     public function update(Request $request, Product $product)
     {
         $request->validate([
-            'product_code' => 'required|string|unique:products,product_code,' . $product->id,
+            'product_code' => 'required|string|unique:tb_products,product_code,' . $product->id,
             'product_name' => 'required|string|max:255',
-            'category_id'  => 'required|exists:categories,id',
+            'category_id'  => 'required|exists:tb_categories,id',
             'description'  => 'nullable|string',
             'buy_price'    => 'required|numeric',
             'sell_price'   => 'required|numeric',
@@ -100,7 +103,12 @@ class ProductController extends Controller
             $imagePath = $request->file('image')->store('products', 'public');
         }
 
-        $status = $request->stock > 0 ? 'Available' : 'Out of stock';
+        $status = 'Available';
+        if ($request->stock == 0) {
+            $status = 'Out of stock';
+        } elseif ($request->stock <= 5) {
+            $status = 'Low stock';
+        }
 
         $product->update([
             'product_code' => $request->product_code,
@@ -114,7 +122,7 @@ class ProductController extends Controller
             'image'        => $imagePath,
         ]);
 
-        return redirect()->route('products.index')->with('success', 'Produk berhasil diperbarui!');
+        return redirect()->route('dashboard.products.index')->with('success', 'Product updated successfully!');
     }
 
     /**
@@ -128,6 +136,6 @@ class ProductController extends Controller
 
         $product->delete();
 
-        return redirect()->route('products.index')->with('success', 'Produk berhasil dihapus!');
+        return redirect()->route('dashboard.products.index')->with('success', 'Product deleted successfully!');
     }
 }

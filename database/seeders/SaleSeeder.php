@@ -23,7 +23,7 @@ class SaleSeeder extends Seeder
             'payment_method' => 'Bank Transfer',
             'total_amount' => '24500000',
             'shipping_fee' => '15000',
-            'payment_status' => 'Paid',
+            'payment_status' => 'paid',
         ]);
 
         Sale::create([
@@ -35,7 +35,7 @@ class SaleSeeder extends Seeder
             'payment_method' => 'Bank Transfer',
             'total_amount' => '24500000',
             'shipping_fee' => '15000',
-            'payment_status' => 'Paid',
+            'payment_status' => 'paid',
         ]);
 
         Sale::create([
@@ -47,7 +47,7 @@ class SaleSeeder extends Seeder
             'payment_method' => 'Bank Transfer',
             'total_amount' => '24500000',
             'shipping_fee' => '15000',
-            'payment_status' => 'Paid',
+            'payment_status' => 'paid',
         ]);
     }
 }

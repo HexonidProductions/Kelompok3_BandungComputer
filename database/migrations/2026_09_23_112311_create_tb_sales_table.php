@@ -21,7 +21,7 @@ return new class extends Migration
             $table->enum('payment_method', ['Cash', 'Bank Transfer', 'QRIS']);
             $table->bigInteger('total_amount')->unsigned();
             $table->bigInteger('shipping_fee')->unsigned()->default(0);
-            $table->enum('payment_status', ['Paid', 'Not Paid'])->default('Not Paid');
+            $table->enum('payment_status', ['paid', 'not paid'])->default('not paid');
             $table->timestamps();
         });
     }
