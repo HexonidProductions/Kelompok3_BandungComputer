@@ -298,8 +298,8 @@
                                         <img src="{{ asset('icons/Vector_option_arrow.png') }}" alt="Arrow" class="w-2.5 h-2.5 object-contain" :class="editRoleOpen ? 'rotate-180' : 'rotate-0'">
                                     </div>
                                     <div class="py-1 border-slate-100">
-                                        <div @click="selectedUser.role = 'Admin'; editRoleOpen = false;" class="px-3.5 py-2.5 transition-colors cursor-pointer" :class="selectedUser.role == 'Admin' ? 'font-semibold' : ''">Admin</div>
-                                        <div @click="selectedUser.role = 'Customer'; editRoleOpen = false;" class="px-3.5 py-2.5 transition-colors cursor-pointer" :class="selectedUser.role == 'Customer' ? 'font-semibold' : ''">Customer</div>
+                                        <div @click="selectedUser.role = 'Admin'; editRoleOpen = false;" class="px-3.5 py-2.5 transition-colors cursor-pointer" :class="selectedUser.role == 'Admin' ? 'font-semibold' : null">Admin</div>
+                                        <div @click="selectedUser.role = 'Customer'; editRoleOpen = false;" class="px-3.5 py-2.5 transition-colors cursor-pointer" :class="selectedUser.role == 'Customer' ? 'font-semibold' : null">Customer</div>
                                     </div>
                                 </div>
                             </div>

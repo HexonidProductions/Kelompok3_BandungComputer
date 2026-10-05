@@ -8,14 +8,15 @@ use Illuminate\Http\Request;
 class SupplierController extends Controller
 {
     /**
-     * Menampilkan daftar supplier dengan pencarian dan filter status (Active/Inactive).
+     * Menampilkan daftar supplier dengan pencarian dan filter status (Active/Not Active).
      */
     public function index(Request $request)
     {
         $search = $request->input('search');
         $status = $request->input('status'); // Menerima filter status dari dropdown UI
 
-        $stockentry = StockEntry::when($search, function ($query, $search) {
+        // Variabel diubah dari $stockentry menjadi $suppliers
+        $suppliers = StockEntry::when($search, function ($query, $search) {
                 return $query->where(function ($q) use ($search) {
                     $q->where('entry_code', 'like', "%{$search}%")
                         ->orWhere('supplier_name', 'like', "%{$search}%")
@@ -32,7 +33,8 @@ class SupplierController extends Controller
             ->paginate(10)
             ->withQueryString();
 
-        return view('dashboard.suppliers.index', compact('stockentry'));
+        // Mengirim variabel ke view (pastikan view menyesuaikan, atau gunakan compact('suppliers'))
+        return view('dashboard.suppliers.index', compact('suppliers'));
     }
 
     /**
@@ -41,7 +43,7 @@ class SupplierController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'entry_code'         => 'required|string|unique:tb_stock_entry,entry_code',
+            'entry_code'         => 'required|string|unique:tb_stock_entries,entry_code',
             'supplier_name'      => 'required|string|max:255',
             'phone_number'       => 'required|string|max:20',
             'address'            => 'required|string',
@@ -56,23 +58,23 @@ class SupplierController extends Controller
             'status'             => $request->status,
         ]);
 
-        return redirect()->route('suppliers.index')->with('success', 'Supplier berhasil ditambahkan!');
+        return redirect()->route('suppliers.index')->with('success', 'Supplier added successfully!');
     }
 
     /**
      * Memperbarui data supplier.
      */
-    public function update(Request $request, StockEntry $stockentry)
+    public function update(Request $request, StockEntry $supplier)
     {
         $request->validate([
-            'entry_code'         => 'required|string|unique:tb_stock_entry,entry_code,' . $stockentry->id,
+            'entry_code'         => 'required|string|unique:tb_stock_entries,entry_code,' . $supplier->id,
             'supplier_name'      => 'required|string|max:255',
             'phone_number'       => 'required|string|max:20',
             'address'            => 'required|string',
             'status'             => 'required|in:Active,Not Active',
         ]);
 
-        $stockentry->update([
+        $supplier->update([
             'entry_code'         => $request->entry_code,
             'supplier_name'      => $request->supplier_name,
             'phone_number'       => $request->phone_number,
@@ -80,16 +82,16 @@ class SupplierController extends Controller
             'status'             => $request->status,
         ]);
 
-        return redirect()->route('suppliers.index')->with('success', 'Supplier berhasil diperbarui!');
+        return redirect()->route('suppliers.index')->with('success', 'Supplier updated successfully!');
     }
 
     /**
      * Menghapus data supplier.
      */
-    public function destroy(StockEntry $stockentry)
+    public function destroy(StockEntry $supplier)
     {
-        $stockentry->delete();
+        $supplier->delete();
 
-        return redirect()->route('suppliers.index')->with('success', 'Supplier berhasil dihapus!');
+        return redirect()->route('suppliers.index')->with('success', 'Supplier deleted successfully!');
     }
 }
