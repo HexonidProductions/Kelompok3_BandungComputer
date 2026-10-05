@@ -162,7 +162,7 @@
                                         selectedTx = {{ json_encode($tx) }};
                                         editOpen = true;
                                     "
-                                    class="inline-flex items-center justify-center p-1 rounded-lg transition-all cursor-pointer hover:bg-slate-100"
+                                    class="inline-flex items-center justify-center p-1 transition-all cursor-pointer"
                                     title="Transaction Options">
                                     <img src="{{ asset('icons/3_dots_icon.png') }}" alt="Options" class="w-4 h-4 object-contain">
                                 </button>
