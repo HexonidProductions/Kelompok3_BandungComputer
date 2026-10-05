@@ -58,7 +58,7 @@ class UserController extends Controller
             'role'         => $request->role,
         ]);
 
-        return redirect()->route('users.index')->with('success', 'User berhasil ditambahkan!');
+        return redirect()->route('users.index')->with('success', 'User added successfully!');
     }
 
     /**
@@ -90,7 +90,7 @@ class UserController extends Controller
 
         $user->update($data);
 
-        return redirect()->route('users.index')->with('success', 'User berhasil diperbarui!');
+        return redirect()->route('users.index')->with('success', 'User updated successfully');
     }
 
     /**
@@ -100,6 +100,6 @@ class UserController extends Controller
     {
         $user->delete();
 
-        return redirect()->route('users.index')->with('success', 'User berhasil dihapus!');
+        return redirect()->route('users.index')->with('success', 'User deleted successfully!');
     }
 }

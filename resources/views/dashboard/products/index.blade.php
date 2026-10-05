@@ -33,11 +33,12 @@
                         class="w-full pl-9 pr-3 py-2 border border-slate-200 rounded-lg text-xs text-slate-700 bg-white placeholder-slate-600 focus:outline-none focus:ring-0 focus:border-slate-300">
                 </form>
 
-                <!-- Product Status Custom Dropdown with Rotating Arrow Icon -->
-                <div x-data="{ open: false }" class="relative inline-block text-left" @click.away="open = false">
+                <!-- Product Status Custom Dropdown (Fixed Box + Animasi Dua Arah) -->
+                <div x-data="{ open: false }" class="relative inline-block text-left min-w-[160px]" @click.away="open = false">
+                    <!-- Tombol Utama (Ukuran Fix) -->
                     <button type="button" 
                         @click="open = !open" 
-                        class="inline-flex items-center justify-between gap-3 border border-slate-200 rounded-lg text-xs text-slate-700 bg-white px-3 py-2 focus:outline-none focus:border-slate-300 shadow-sm cursor-pointer min-w-[160px]">
+                        class="w-full h-9 inline-flex items-center justify-between gap-3 border border-slate-200 rounded-lg text-xs text-slate-700 bg-white px-3 focus:outline-none shadow-sm cursor-pointer">
                         <span>
                             @if(request('status') == 'Available')
                                 Status: Available
@@ -51,29 +52,53 @@
                         </span>
                         <img src="{{ asset('icons/Vector_option_arrow.png') }}" 
                             alt="Arrow" 
-                            class="w-2.5 h-2.5 object-contain transition-transform duration-200"
+                            class="w-2.5 h-2.5 object-contain"
                             :class="open ? 'rotate-180' : 'rotate-0'">
                     </button>
 
+                    <!-- Kotak Opsi Menyatu yang Melayang Fix -->
                     <div x-show="open" 
                         x-cloak
-                        class="absolute left-0 mt-1 w-full bg-white border border-slate-200 rounded-lg shadow-lg z-50 py-1 text-xs text-slate-700">
-                        <a href="{{ request()->fullUrlWithQuery(['status' => '']) }}" 
-                            class="block px-3 py-2 hover:bg-slate-50 transition-colors {{ request('status') == '' ? 'font-semibold text-blue-600' : '' }}">
-                            Status: All
-                        </a>
-                        <a href="{{ request()->fullUrlWithQuery(['status' => 'Available']) }}" 
-                            class="block px-3 py-2 hover:bg-slate-50 transition-colors {{ request('status') == 'Available' ? 'font-semibold text-blue-600' : '' }}">
-                            Status: Available
-                        </a>
-                        <a href="{{ request()->fullUrlWithQuery(['status' => 'Low stock']) }}" 
-                            class="block px-3 py-2 hover:bg-slate-50 transition-colors {{ request('status') == 'Low stock' ? 'font-semibold text-blue-600' : '' }}">
-                            Status: Low stock
-                        </a>
-                        <a href="{{ request()->fullUrlWithQuery(['status' => 'Out of stock']) }}" 
-                            class="block px-3 py-2 hover:bg-slate-50 transition-colors {{ request('status') == 'Out of stock' ? 'font-semibold text-blue-600' : '' }}">
-                            Status: Out of stock
-                        </a>
+                        class="absolute top-0 left-0 right-0 bg-white border border-slate-200 rounded-lg shadow-lg z-50 text-xs text-slate-700">
+                        
+                        <!-- Header tiruan di dalam box dengan animasi putar balik -->
+                        <div @click="open = !open" class="h-9 flex items-center justify-between px-3 cursor-pointer">
+                            <span>
+                                @if(request('status') == 'Available')
+                                    Status: Available
+                                @elseif(request('status') == 'Low stock')
+                                    Status: Low stock
+                                @elseif(request('status') == 'Out of stock')
+                                    Status: Out of stock
+                                @else
+                                    Status: All
+                                @endif
+                            </span>
+                            <img src="{{ asset('icons/Vector_option_arrow.png') }}" 
+                                alt="Arrow" 
+                                class="w-2.5 h-2.5 object-contain" 
+                                :class="open ? 'rotate-180' : 'rotate-0'">
+                        </div>
+
+                        <!-- Daftar Pilihan -->
+                        <div class="py-1 border-slate-100">
+                            <a href="{{ request()->fullUrlWithQuery(['status' => '']) }}" 
+                                class="block px-3 py-2.5 transition-colors {{ request('status') == '' ? 'font-semibold' : null }}">
+                                Status: All
+                            </a>
+                            <a href="{{ request()->fullUrlWithQuery(['status' => 'Available']) }}" 
+                                class="block px-3 py-2.5 transition-colors {{ request('status') == 'Available' ? 'font-semibold' : null }}">
+                                Status: Available
+                            </a>
+                            <a href="{{ request()->fullUrlWithQuery(['status' => 'Low stock']) }}" 
+                                class="block px-3 py-2.5 transition-colors {{ request('status') == 'Low stock' ? 'font-semibold' : null }}">
+                                Status: Low stock
+                            </a>
+                            <a href="{{ request()->fullUrlWithQuery(['status' => 'Out of stock']) }}" 
+                                class="block px-3 py-2.5 transition-colors {{ request('status') == 'Out of stock' ? 'font-semibold' : null }}">
+                                Status: Out of stock
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -120,7 +145,7 @@
                             </td>
                             <td class="py-3.5 px-3 whitespace-nowrap">
                                 @if($product->image)
-                                    <img src="{{ asset('storage/' . $product->image) }}" alt="Product" class="w-10 h-10 object-cover rounded-lg border border-slate-100">
+                                    <img src="{{ asset('storage/' . $product->image) }}" alt="Product" class="w-10 h-10 object-cover">
                                 @else
                                     <span class="text-slate-400">-</span>
                                 @endif
@@ -162,7 +187,7 @@
                                         selectedProduct = {{ json_encode($product) }};
                                         editOpen = true;
                                     "
-                                    class="inline-flex items-center justify-center p-1 rounded-lg transition-all cursor-pointer hover:bg-slate-100"
+                                    class="inline-flex items-center justify-center p-1 rounded-lg transition-all cursor-pointer"
                                     title="Product Options">
                                     <img src="{{ asset('icons/3_dots_icon.png') }}" alt="Options" class="w-4 h-4 object-contain">
                                 </button>
@@ -224,7 +249,7 @@
                                 class="w-full h-10 border border-slate-200 rounded-lg px-3.5 text-xs text-slate-700 focus:outline-none focus:ring-0 focus:border-slate-300">
                         </div>
 
-                        <!-- Category (Custom Dropdown dengan ukuran h-10) -->
+                        <!-- Category (Fixed Box + Animasi Dua Arah) -->
                         <div>
                             <label class="block text-xs font-semibold text-slate-700 mb-1">Category</label>
                             <input type="hidden" name="category_id" x-model="categoryId" required>
@@ -232,23 +257,33 @@
                             <div class="relative" @click.away="categoryOpen = false">
                                 <button type="button" 
                                     @click="categoryOpen = !categoryOpen" 
-                                    class="w-full h-10 inline-flex items-center justify-between border border-slate-200 rounded-lg text-xs bg-white px-3.5 text-slate-700 focus:outline-none focus:ring-0 focus:border-slate-300 shadow-sm cursor-pointer">
+                                    class="w-full h-10 inline-flex items-center justify-between border border-slate-200 rounded-lg text-xs bg-white px-3.5 text-slate-700 focus:outline-none cursor-pointer">
                                     <span :class="categoryId ? 'text-slate-700' : 'text-slate-400'" x-text="selectedCategoryName"></span>
                                     <img src="{{ asset('icons/Vector_option_arrow.png') }}" 
                                         alt="Arrow" 
-                                        class="w-2.5 h-2.5 object-contain transition-transform duration-200"
+                                        class="w-2.5 h-2.5 object-contain"
                                         :class="categoryOpen ? 'rotate-180' : 'rotate-0'">
                                 </button>
 
                                 <div x-show="categoryOpen" 
                                     x-cloak
-                                    class="absolute left-0 mt-1 w-full bg-white border border-slate-200 rounded-lg shadow-lg z-50 py-1 text-xs text-slate-700 max-h-48 overflow-y-auto">
-                                    @foreach($categories ?? [] as $cat)
-                                        <div @click="categoryId = '{{ $cat->id }}'; selectedCategoryName = '{{ $cat->category_name ?? $cat->name }}'; categoryOpen = false;" 
-                                            class="px-3.5 py-2.5 hover:bg-slate-50 transition-colors cursor-pointer">
-                                            {{ $cat->category_name ?? $cat->name }}
-                                        </div>
-                                    @endforeach
+                                    class="absolute top-0 left-0 right-0 bg-white border border-slate-200 rounded-lg shadow-lg z-50 text-xs text-slate-700">
+                                    <div @click="categoryOpen = !categoryOpen" class="h-10 flex items-center justify-between px-3.5 cursor-pointer">
+                                        <span :class="categoryId ? 'text-slate-700' : 'text-slate-400'" x-text="selectedCategoryName"></span>
+                                        <img src="{{ asset('icons/Vector_option_arrow.png') }}" 
+                                            alt="Arrow" 
+                                            class="w-2.5 h-2.5 object-contain" 
+                                            :class="categoryOpen ? 'rotate-180' : 'rotate-0'">
+                                    </div>
+                                    <div class="py-1 border-slate-100 max-h-48 overflow-y-auto">
+                                        @foreach($categories ?? [] as $cat)
+                                            <div @click="categoryId = '{{ $cat->id }}'; selectedCategoryName = '{{ $cat->category_name ?? $cat->name }}'; categoryOpen = false;" 
+                                                class="px-3.5 py-2.5 transition-colors cursor-pointer"
+                                                :class="categoryId == '{{ $cat->id }}' ? 'font-semibold' : ''">
+                                                {{ $cat->category_name ?? $cat->name }}
+                                            </div>
+                                        @endforeach
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -346,7 +381,7 @@
                                 class="w-full h-10 px-3.5 border border-slate-200 rounded-lg text-xs text-slate-700 bg-white focus:outline-none focus:ring-0 focus:border-slate-300">
                         </div>
 
-                        <!-- Category (Custom Dropdown dengan ukuran h-10 dan data dari tb_categories) -->
+                        <!-- Category (Fixed Box + Animasi Dua Arah) -->
                         <div>
                             <label class="block text-xs font-semibold text-slate-700 mb-1">Category</label>
                             <input type="hidden" name="category_id" x-model="selectedProduct.category_id" required>
@@ -354,7 +389,7 @@
                             <div class="relative" @click.away="editCategoryOpen = false">
                                 <button type="button" 
                                     @click="editCategoryOpen = !editCategoryOpen" 
-                                    class="w-full h-10 inline-flex items-center justify-between border border-slate-200 rounded-lg text-xs bg-white px-3.5 text-slate-700 focus:outline-none focus:ring-0 focus:border-slate-300 cursor-pointer">
+                                    class="w-full h-10 inline-flex items-center justify-between border border-slate-200 rounded-lg text-xs bg-white px-3.5 text-slate-700 focus:outline-none cursor-pointer">
                                     <span class="text-slate-700" x-text="
                                         selectedProduct.category_id ? 
                                         ({
@@ -366,20 +401,37 @@
                                     "></span>
                                     <img src="{{ asset('icons/Vector_option_arrow.png') }}" 
                                         alt="Arrow" 
-                                        class="w-2.5 h-2.5 object-contain transition-transform duration-200"
+                                        class="w-2.5 h-2.5 object-contain"
                                         :class="editCategoryOpen ? 'rotate-180' : 'rotate-0'">
                                 </button>
 
                                 <div x-show="editCategoryOpen" 
                                     x-cloak
-                                    class="absolute left-0 mt-1 w-full bg-white border border-slate-200 rounded-lg shadow-lg z-50 py-1 text-xs text-slate-700 max-h-48 overflow-y-auto">
-                                    @foreach($categories ?? [] as $cat)
-                                        <div @click="selectedProduct.category_id = '{{ $cat->id }}'; editCategoryOpen = false;" 
-                                            class="px-3.5 py-2.5 hover:bg-slate-50 transition-colors cursor-pointer"
-                                            :class="selectedProduct.category_id == '{{ $cat->id }}' ? 'font-semibold text-blue-600' : ''">
-                                            {{ $cat->category_name ?? $cat->name }}
-                                        </div>
-                                    @endforeach
+                                    class="absolute top-0 left-0 right-0 bg-white border border-slate-200 rounded-lg shadow-lg z-50 text-xs text-slate-700">
+                                    <div @click="editCategoryOpen = !editCategoryOpen" class="h-10 flex items-center justify-between px-3.5 cursor-pointer">
+                                        <span class="text-slate-700" x-text="
+                                            selectedProduct.category_id ? 
+                                            ({
+                                                @foreach($categories ?? [] as $cat)
+                                                    '{{ $cat->id }}': '{{ $cat->category_name ?? $cat->name }}',
+                                                @endforeach
+                                            }[selectedProduct.category_id] || 'Select Product Category') : 
+                                            'Select Product Category'
+                                        "></span>
+                                        <img src="{{ asset('icons/Vector_option_arrow.png') }}" 
+                                            alt="Arrow" 
+                                            class="w-2.5 h-2.5 object-contain" 
+                                            :class="editCategoryOpen ? 'rotate-180' : 'rotate-0'">
+                                    </div>
+                                    <div class="py-1 border-slate-100 max-h-48 overflow-y-auto">
+                                        @foreach($categories ?? [] as $cat)
+                                            <div @click="selectedProduct.category_id = '{{ $cat->id }}'; editCategoryOpen = false;" 
+                                                class="px-3.5 py-2.5 transition-colors cursor-pointer hover:bg-slate-50"
+                                                :class="selectedProduct.category_id == '{{ $cat->id }}' ? 'font-semibold' : ''">
+                                                {{ $cat->category_name ?? $cat->name }}
+                                            </div>
+                                        @endforeach
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -428,9 +480,9 @@
                     </div>
 
                     <!-- Footer Buttons: Cancel, Delete, Save (Rata Kanan) -->
-                    <div class="flex justify-end items-center gap-3 pt-4 border-t border-slate-100 mt-6">
+                    <div class="flex justify-end items-center gap-3 pt-4 border-slate-100 mt-6">
                         <button type="button" @click="editOpen = false" 
-                            class="w-20 h-8 flex items-center justify-center border border-slate-300 rounded-[5px] text-xs font-medium text-slate-700 hover:bg-slate-50 transition-colors cursor-pointer">
+                            class="w-20 h-8 flex items-center justify-center border border-slate-800 rounded-[5px] text-xs font-medium text-slate-800 hover:bg-slate-100 transition-colors cursor-pointer">
                             Cancel
                         </button>
 

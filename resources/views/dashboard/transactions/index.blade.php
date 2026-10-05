@@ -33,11 +33,11 @@
                         class="w-full pl-9 pr-3 py-2 border border-slate-200 rounded-lg text-xs text-slate-700 bg-white placeholder-slate-600 focus:outline-none focus:ring-0 focus:border-slate-300">
                 </form>
 
-                <!-- Payment Status Custom Dropdown with Rotating Arrow Icon -->
-                <div x-data="{ open: false }" class="relative inline-block text-left" @click.away="open = false">
+                <!-- Payment Status Custom Dropdown (Fixed Box + Animasi Dua Arah) -->
+                <div x-data="{ open: false }" class="relative inline-block text-left min-w-[160px]" @click.away="open = false">
                     <button type="button" 
                         @click="open = !open" 
-                        class="inline-flex items-center justify-between gap-3 border border-slate-200 rounded-lg text-xs text-slate-700 bg-white px-3 py-2 focus:outline-none focus:border-slate-300 shadow-sm cursor-pointer min-w-[160px]">
+                        class="inline-flex items-center justify-between gap-3 border border-slate-200 rounded-lg text-xs text-slate-700 bg-white px-3.5 h-9 focus:outline-none focus:border-slate-300 shadow-sm cursor-pointer w-full">
                         <span>
                             @if(request('status') == 'paid')
                                 Payment Status: Paid
@@ -55,28 +55,45 @@
 
                     <div x-show="open" 
                         x-cloak
-                        class="absolute left-0 mt-1 w-full bg-white border border-slate-200 rounded-lg shadow-lg z-50 py-1 text-xs text-slate-700">
-                        <a href="{{ request()->fullUrlWithQuery(['status' => '']) }}" 
-                            class="block px-3 py-2 hover:bg-slate-50 transition-colors {{ request('status') == '' ? 'font-semibold text-blue-600' : '' }}">
-                            Payment Status: All
-                        </a>
-                        <a href="{{ request()->fullUrlWithQuery(['status' => 'paid']) }}" 
-                            class="block px-3 py-2 hover:bg-slate-50 transition-colors {{ request('status') == 'paid' ? 'font-semibold text-blue-600' : '' }}">
-                            Payment Status: Paid
-                        </a>
-                        <a href="{{ request()->fullUrlWithQuery(['status' => 'not paid']) }}" 
-                            class="block px-3 py-2 hover:bg-slate-50 transition-colors {{ request('status') == 'not paid' ? 'font-semibold text-blue-600' : '' }}">
-                            Payment Status: Not Paid
-                        </a>
+                        class="absolute top-0 left-0 right-0 bg-white border border-slate-200 rounded-lg shadow-lg z-50 text-xs text-slate-700">
+                        <div @click="open = !open" class="h-9 flex items-center justify-between px-3.5 cursor-pointer">
+                            <span>
+                                @if(request('status') == 'paid')
+                                    Payment Status: Paid
+                                @elseif(request('status') == 'not paid')
+                                    Payment Status: Not Paid
+                                @else
+                                    Payment Status: All
+                                @endif
+                            </span>
+                            <img src="{{ asset('icons/Vector_option_arrow.png') }}" 
+                                alt="Arrow" 
+                                class="w-2.5 h-2.5 object-contain transition-transform duration-200"
+                                :class="open ? 'rotate-180' : 'rotate-0'">
+                        </div>
+                        <div class="py-1 border-slate-100">
+                            <a href="{{ request()->fullUrlWithQuery(['status' => '']) }}" 
+                                class="block px-3.5 py-2.5 transition-colors {{ request('status') == '' ? 'font-semibold' : null }}">
+                                Payment Status: All
+                            </a>
+                            <a href="{{ request()->fullUrlWithQuery(['status' => 'paid']) }}" 
+                                class="block px-3.5 py-2.5 transition-colors {{ request('status') == 'paid' ? 'font-semibold' : null }}">
+                                Payment Status: Paid
+                            </a>
+                            <a href="{{ request()->fullUrlWithQuery(['status' => 'not paid']) }}" 
+                                class="block px-3.5 py-2.5 transition-colors {{ request('status') == 'not paid' ? 'font-semibold' : null }}">
+                                Payment Status: Not Paid
+                            </a>
+                        </div>
                     </div>
                 </div>
-            </div> <!-- <-- Penutup container kiri (Search & Filter) sudah benar di sini -->
+            </div>
 
-            <!-- Add Transaction Button (Berdiri sendiri di sebelah kanan berkat justify-between) -->
+            <!-- Add Transaction Button -->
             <button type="button" 
                 @click="createOpen = true" 
-                class="inline-flex items-center gap-1.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold px-4 py-2 rounded-lg shadow-sm transition-all">
-                <img src="{{ asset('icons/plus_icon.png') }}" alt="Add Transaction" class="w-4 h-4" object-contain> Add Transaction
+                class="inline-flex items-center gap-1.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold px-4 py-2 rounded-lg shadow-sm transition-all cursor-pointer">
+                <img src="{{ asset('icons/plus_icon.png') }}" alt="Add Transaction" class="w-4 h-4 object-contain"> Add Transaction
             </button>
         </div>
     </div>
@@ -128,19 +145,16 @@
                             </td>
                             <td class="py-3.5 px-3 text-center whitespace-nowrap">
                             @if(strtolower($tx->payment_status) === 'paid')
-                            <!-- Status Paid (Warna Hijau) -->
                             <span class="inline-block px-3 py-1 rounded-md text-[11px] font-semibold border-2 border-[#16A34A] text-[#000000] bg-white">
                             Paid
                             </span>
                             @elseif(strtolower($tx->payment_status) === 'not paid')
-                            <!-- Status Not Paid (Warna Merah) -->
                             <span class="inline-block px-3 py-1 rounded-md text-[11px] font-semibold border-2 border-[#DC2626] text-[#000000] bg-white">
                             Not Paid
                             </span>
                             @endif
                             </td>
                             <td class="py-3.5 px-3 text-center">
-                                <!-- Action Button: Three Dots (...) -->
                                 <button type="button" 
                                     @click="
                                         editUrl = '{{ route('transactions.update', $tx->id) }}';
@@ -148,7 +162,7 @@
                                         selectedTx = {{ json_encode($tx) }};
                                         editOpen = true;
                                     "
-                                    class="inline-flex items-center justify-center p-1 rounded-lg transition-all"
+                                    class="inline-flex items-center justify-center p-1 rounded-lg transition-all cursor-pointer hover:bg-slate-100"
                                     title="Transaction Options">
                                     <img src="{{ asset('icons/3_dots_icon.png') }}" alt="Options" class="w-4 h-4 object-contain">
                                 </button>
@@ -206,9 +220,19 @@
                             itemQty: 1,
                             itemPrice: 0,
                             selectedStock: 0,
+                            editCashierOpen: false,
+                            editCustomerOpen: false,
                             
                             init() {
                                 $watch('selectedTx', value => {
+                                    if (value) {
+                                        if (!value.admin_id && value.admin?.id) {
+                                            value.admin_id = value.admin.id;
+                                        }
+                                        if (!value.customer_id && value.customer?.id) {
+                                            value.customer_id = value.customer.id;
+                                        }
+                                    }
                                     if (value && (value.items || value.sale_items)) {
                                         let rawItems = value.items || value.sale_items;
                                         
@@ -308,13 +332,14 @@
                                 <input type="text" x-model="selectedTx.receipt_number" readonly class="w-full border border-slate-200 bg-slate-50 rounded-lg px-3 py-2 text-slate-500 focus:outline-none focus:ring-0 focus:border-slate-300 placeholder:text-[13px]" placeholder="Receipt Number">
                             </div>
 
+                            <!-- Edit Type Dropdown -->
                             <div>
                                 <label class="block font-semibold text-slate-700 mb-1">Type</label>
                                 <input type="hidden" name="sale_type" x-model="selectedTx.sale_type">
                                 <div x-data="{ open: false }" class="relative" @click.away="open = false">
                                     <button type="button" 
                                         @click="open = !open" 
-                                        class="w-full h-[40px] flex items-center justify-between border border-slate-200 rounded-lg px-3 py-2 text-slate-700 bg-white focus:outline-none focus:ring-0 focus:border-slate-300">
+                                        class="w-full h-[40px] flex items-center justify-between border border-slate-200 rounded-lg px-3 py-2 text-slate-700 bg-white focus:outline-none focus:ring-0 focus:border-slate-300 cursor-pointer shadow-sm">
                                         <span x-text="selectedTx.sale_type || 'Select Type'"></span>
                                         <img src="{{ asset('icons/Vector_option_arrow.png') }}" 
                                             alt="Arrow" 
@@ -322,29 +347,109 @@
                                             :class="open ? 'rotate-180' : 'rotate-0'">
                                     </button>
 
-                                    <div x-show="open" x-cloak class="absolute left-0 mt-1 w-full bg-white border border-slate-200 rounded-lg shadow-lg z-50 py-1">
-                                        <div @click="selectedTx.sale_type = 'Offline'; open = false" class="px-3 py-2 hover:bg-slate-50 cursor-pointer">Offline</div>
-                                        <div @click="selectedTx.sale_type = 'Online'; open = false" class="px-3 py-2 hover:bg-slate-50 cursor-pointer">Online</div>
+                                    <div x-show="open" x-cloak class="absolute top-0 left-0 right-0 bg-white border border-slate-200 rounded-lg shadow-lg z-50 text-xs text-slate-700">
+                                        <div @click="open = !open" class="h-[40px] flex items-center justify-between px-3 cursor-pointer">
+                                            <span x-text="selectedTx.sale_type || 'Select Type'"></span>
+                                            <img src="{{ asset('icons/Vector_option_arrow.png') }}" alt="Arrow" class="w-2.5 h-2.5 object-contain transition-transform duration-200" :class="open ? 'rotate-180' : 'rotate-0'">
+                                        </div>
+                                        <div class="py-1 border-slate-100">
+                                            <div @click="selectedTx.sale_type = 'Offline'; open = false" class="px-3 py-2.5 cursor-pointer" :class="selectedTx.sale_type == 'Offline' ? 'font-semibold ' : null">Offline</div>
+                                            <div @click="selectedTx.sale_type = 'Online'; open = false" class="px-3 py-2.5 cursor-pointer" :class="selectedTx.sale_type == 'Online' ? 'font-semibold' : null">Online</div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
 
+                            <!-- Edit Cashier Dropdown -->
                             <div>
                                 <label class="block font-semibold text-slate-700 mb-1">Cashier</label>
-                                <input type="text" readonly :value="selectedTx.admin?.name || '-'" class="w-full border border-slate-200 bg-slate-50 rounded-lg px-3 py-2 text-slate-500 focus:outline-none focus:ring-0 focus:border-slate-300 placeholder:text-[13px]" placeholder="Cashier Name">
-                            </div>
-                            <div>
-                                <label class="block font-semibold text-slate-700 mb-1">Customer</label>
-                                <input type="text" readonly :value="selectedTx.customer?.name || '-'" class="w-full border border-slate-200 bg-slate-50 rounded-lg px-3 py-2 text-slate-500 focus:outline-none focus:ring-0 focus:border-slate-300 placeholder:text-[13px]" placeholder="Customer Name">
+                                <input type="hidden" name="admin_id" x-model="selectedTx.admin_id" required>
+                                <div class="relative" @click.away="editCashierOpen = false">
+                                    <button type="button" 
+                                        @click="editCashierOpen = !editCashierOpen" 
+                                        class="w-full h-[40px] flex items-center justify-between border border-slate-200 rounded-lg px-3 py-2 text-slate-700 bg-white focus:outline-none focus:ring-0 focus:border-slate-300 cursor-pointer shadow-sm">
+                                        <span x-text="selectedTx.admin?.name || ({
+                                            @foreach($admins ?? [] as $admin)
+                                                '{{ $admin->id }}': '{{ $admin->name }}',
+                                            @endforeach
+                                        }[selectedTx.admin_id] || 'Select Cashier')"></span>
+                                        <img src="{{ asset('icons/Vector_option_arrow.png') }}" 
+                                            alt="Arrow" 
+                                            class="w-2.5 h-2.5 object-contain transition-transform duration-200"
+                                            :class="editCashierOpen ? 'rotate-180' : 'rotate-0'">
+                                    </button>
+
+                                    <div x-show="editCashierOpen" x-cloak class="absolute top-0 left-0 right-0 bg-white border border-slate-200 rounded-lg shadow-lg z-50 text-xs text-slate-700">
+                                        <div @click="editCashierOpen = !editCashierOpen" class="h-[40px] flex items-center justify-between px-3 cursor-pointer">
+                                            <span x-text="selectedTx.admin?.name || ({
+                                                @foreach($admins ?? [] as $admin)
+                                                    '{{ $admin->id }}': '{{ $admin->name }}',
+                                                @endforeach
+                                            }[selectedTx.admin_id] || 'Select Cashier')"></span>
+                                            <img src="{{ asset('icons/Vector_option_arrow.png') }}" alt="Arrow" class="w-2.5 h-2.5 object-contain transition-transform duration-200" :class="editCashierOpen ? 'rotate-180' : 'rotate-0'">
+                                        </div>
+                                        <div class="py-1 border-slate-100 max-h-48 overflow-y-auto">
+                                            @foreach($admins ?? [] as $admin)
+                                                <div @click="selectedTx.admin_id = '{{ $admin->id }}'; if(selectedTx.admin) { selectedTx.admin.name = '{{ $admin->name }}'; } editCashierOpen = false;" 
+                                                    class="px-3 py-2.5 cursor-pointer" 
+                                                    :class="selectedTx.admin_id == '{{ $admin->id }}' ? 'font-semibold' : ''">
+                                                    {{ $admin->name }}
+                                                </div>
+                                            @endforeach
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
 
+                            <!-- Edit Customer Dropdown -->
+                            <div>
+                                <label class="block font-semibold text-slate-700 mb-1">Customer</label>
+                                <input type="hidden" name="customer_id" x-model="selectedTx.customer_id">
+                                <div class="relative" @click.away="editCustomerOpen = false">
+                                    <button type="button" 
+                                        @click="editCustomerOpen = !editCustomerOpen" 
+                                        class="w-full h-[40px] flex items-center justify-between border border-slate-200 rounded-lg px-3 py-2 text-slate-700 bg-white focus:outline-none focus:ring-0 focus:border-slate-300 cursor-pointer shadow-sm">
+                                        <span x-text="selectedTx.customer?.name || ({
+                                            @foreach($customers ?? [] as $customer)
+                                                '{{ $customer->id }}': '{{ $customer->name }}',
+                                            @endforeach
+                                        }[selectedTx.customer_id] || 'Select Customer')"></span>
+                                        <img src="{{ asset('icons/Vector_option_arrow.png') }}" 
+                                            alt="Arrow" 
+                                            class="w-2.5 h-2.5 object-contain transition-transform duration-200"
+                                            :class="editCustomerOpen ? 'rotate-180' : 'rotate-0'">
+                                    </button>
+
+                                    <div x-show="editCustomerOpen" x-cloak class="absolute top-0 left-0 right-0 bg-white border border-slate-200 rounded-lg shadow-lg z-50 text-xs text-slate-700">
+                                        <div @click="editCustomerOpen = !editCustomerOpen" class="h-[40px] flex items-center justify-between px-3 cursor-pointer">
+                                            <span x-text="selectedTx.customer?.name || ({
+                                                @foreach($customers ?? [] as $customer)
+                                                    '{{ $customer->id }}': '{{ $customer->name }}',
+                                                @endforeach
+                                            }[selectedTx.customer_id] || 'Select Customer')"></span>
+                                            <img src="{{ asset('icons/Vector_option_arrow.png') }}" alt="Arrow" class="w-2.5 h-2.5 object-contain transition-transform duration-200" :class="editCustomerOpen ? 'rotate-180' : 'rotate-0'">
+                                        </div>
+                                        <div class="py-1 border-slate-100 max-h-48 overflow-y-auto">
+                                            @foreach($customers ?? [] as $customer)
+                                                <div @click="selectedTx.customer_id = '{{ $customer->id }}'; if(!selectedTx.customer) { selectedTx.customer = {}; } selectedTx.customer.name = '{{ $customer->name }}'; editCustomerOpen = false;" 
+                                                    class="px-3 py-2.5 cursor-pointer" 
+                                                    :class="selectedTx.customer_id == '{{ $customer->id }}' ? 'font-semibold' : ''">
+                                                    {{ $customer->name }}
+                                                </div>
+                                            @endforeach
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Edit Payment Method Dropdown -->
                             <div>
                                 <label class="block font-semibold text-slate-700 mb-1">Payment Method</label>
                                 <input type="hidden" name="payment_method" x-model="selectedTx.payment_method">
                                 <div x-data="{ open: false }" class="relative" @click.away="open = false">
                                     <button type="button" 
                                         @click="open = !open" 
-                                        class="w-full h-[40px] flex items-center justify-between border border-slate-200 rounded-lg px-3 py-2 text-slate-700 bg-white focus:outline-none focus:ring-0 focus:border-slate-300">
+                                        class="w-full h-[40px] flex items-center justify-between border border-slate-200 rounded-lg px-3 py-2 text-slate-700 bg-white focus:outline-none focus:ring-0 focus:border-slate-300 cursor-pointer shadow-sm">
                                         <span x-text="selectedTx.payment_method || 'Select Payment Method'"></span>
                                         <img src="{{ asset('icons/Vector_option_arrow.png') }}" 
                                             alt="Arrow" 
@@ -352,21 +457,28 @@
                                             :class="open ? 'rotate-180' : 'rotate-0'">
                                     </button>
 
-                                    <div x-show="open" x-cloak class="absolute left-0 mt-1 w-full bg-white border border-slate-200 rounded-lg shadow-lg z-50 py-1">
-                                        <div @click="selectedTx.payment_method = 'Bank Transfer'; open = false" class="px-3 py-2 hover:bg-slate-50 cursor-pointer">Bank Transfer</div>
-                                        <div @click="selectedTx.payment_method = 'Cash'; open = false" class="px-3 py-2 hover:bg-slate-50 cursor-pointer">Cash</div>
-                                        <div @click="selectedTx.payment_method = 'QRIS'; open = false" class="px-3 py-2 hover:bg-slate-50 cursor-pointer">QRIS</div>
+                                    <div x-show="open" x-cloak class="absolute top-0 left-0 right-0 bg-white border border-slate-200 rounded-lg shadow-lg z-50 text-xs text-slate-700">
+                                        <div @click="open = !open" class="h-[40px] flex items-center justify-between px-3 cursor-pointer">
+                                            <span x-text="selectedTx.payment_method || 'Select Payment Method'"></span>
+                                            <img src="{{ asset('icons/Vector_option_arrow.png') }}" alt="Arrow" class="w-2.5 h-2.5 object-contain transition-transform duration-200" :class="open ? 'rotate-180' : 'rotate-0'">
+                                        </div>
+                                        <div class="py-1 border-slate-100">
+                                            <div @click="selectedTx.payment_method = 'Bank Transfer'; open = false" class="px-3 py-2.5 cursor-pointer hover:bg-slate-50" :class="selectedTx.payment_method == 'Bank Transfer' ? 'font-semibold ' : null">Bank Transfer</div>
+                                            <div @click="selectedTx.payment_method = 'Cash'; open = false" class="px-3 py-2.5 cursor-pointer hover:bg-slate-50" :class="selectedTx.payment_method == 'Cash' ? 'font-semibold ' : null">Cash</div>
+                                            <div @click="selectedTx.payment_method = 'QRIS'; open = false" class="px-3 py-2.5 cursor-pointer hover:bg-slate-50" :class="selectedTx.payment_method == 'QRIS' ? 'font-semibold ' : null">QRIS</div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
 
+                            <!-- Edit Payment Status Dropdown -->
                             <div>
                                 <label class="block font-semibold text-slate-700 mb-1">Payment Status</label>
                                 <input type="hidden" name="payment_status" x-model="selectedTx.payment_status">
                                 <div x-data="{ open: false }" class="relative" @click.away="open = false">
                                     <button type="button" 
                                         @click="open = !open" 
-                                        class="w-full h-[40px] flex items-center justify-between border border-slate-200 rounded-lg px-3 py-2 text-slate-700 bg-white focus:outline-none focus:ring-0 focus:border-slate-300">
+                                        class="w-full h-[40px] flex items-center justify-between border border-slate-200 rounded-lg px-3 py-2 text-slate-700 bg-white focus:outline-none focus:ring-0 focus:border-slate-300 cursor-pointer shadow-sm">
                                         <span x-text="selectedTx.payment_status === 'not paid' ? 'not paid' : (selectedTx.payment_status || 'Select Payment Status')"></span>
                                         <img src="{{ asset('icons/Vector_option_arrow.png') }}" 
                                             alt="Arrow" 
@@ -374,9 +486,15 @@
                                             :class="open ? 'rotate-180' : 'rotate-0'">
                                     </button>
 
-                                    <div x-show="open" x-cloak class="absolute left-0 mt-1 w-full bg-white border border-slate-200 rounded-lg shadow-lg z-50 py-1">
-                                        <div @click="selectedTx.payment_status = 'paid'; open = false" class="px-3 py-2 hover:bg-slate-50 cursor-pointer">paid</div>
-                                        <div @click="selectedTx.payment_status = 'not paid'; open = false" class="px-3 py-2 hover:bg-slate-50 cursor-pointer">not paid</div>
+                                    <div x-show="open" x-cloak class="absolute top-0 left-0 right-0 bg-white border border-slate-200 rounded-lg shadow-lg z-50 text-xs text-slate-700">
+                                        <div @click="open = !open" class="h-[40px] flex items-center justify-between px-3 cursor-pointer">
+                                            <span x-text="selectedTx.payment_status === 'not paid' ? 'not paid' : (selectedTx.payment_status || 'Select Payment Status')"></span>
+                                            <img src="{{ asset('icons/Vector_option_arrow.png') }}" alt="Arrow" class="w-2.5 h-2.5 object-contain transition-transform duration-200" :class="open ? 'rotate-180' : 'rotate-0'">
+                                        </div>
+                                        <div class="py-1 border-slate-100">
+                                            <div @click="selectedTx.payment_status = 'paid'; open = false" class="px-3 py-2.5 cursor-pointer" :class="selectedTx.payment_status == 'paid' ? 'font-semibold' : null">paid</div>
+                                            <div @click="selectedTx.payment_status = 'not paid'; open = false" class="px-3 py-2.5 cursor-pointer" :class="selectedTx.payment_status == 'not paid' ? 'font-semibold' : null">not paid</div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -436,7 +554,7 @@
                             </div>
                         </div>
 
-                        <!-- Sub Modal Add/Edit Item (Edit Modal) - Custom Dropdown with Arrow Animation -->
+                        <!-- Sub Modal Add/Edit Item (Edit Modal) - Product Dropdown -->
                         <div x-show="itemModalOpen" x-cloak 
                             class="fixed inset-0 z-50 flex items-center justify-center bg-white/10 backdrop-blur-[1px] p-4 transition-all"
                             @keydown.escape.window="itemModalOpen = false">
@@ -452,7 +570,7 @@
                                         <div x-data="{ productOpen: false }" class="relative" @click.away="productOpen = false">
                                             <button type="button" 
                                                 @click="productOpen = !productOpen" 
-                                                class="w-full h-[40px] flex items-center justify-between border border-slate-200 rounded-lg px-3 py-2 text-slate-700 bg-white focus:outline-none focus:ring-0 focus:border-slate-300 text-xs">
+                                                class="w-full h-[40px] flex items-center justify-between border border-slate-200 rounded-lg px-3 py-2 text-slate-700 bg-white focus:outline-none focus:ring-0 focus:border-slate-300 text-xs cursor-pointer shadow-sm">
                                                 <span x-text="productName || 'Select Product'"></span>
                                                 <img src="{{ asset('icons/Vector_option_arrow.png') }}" 
                                                     alt="Arrow" 
@@ -460,27 +578,33 @@
                                                     :class="productOpen ? 'rotate-180' : 'rotate-0'">
                                             </button>
 
-                                            <div x-show="productOpen" x-cloak class="absolute left-0 mt-1 w-full bg-white border border-slate-200 rounded-lg shadow-lg z-50 py-1 max-h-48 overflow-y-auto">
-                                                @foreach($products ?? [] as $prod)
-                                                    @php
-                                                        $isOut = $prod->stock <= 0 || $prod->status === 'Out of stock';
-                                                    @endphp
-                                                    @if(!$isOut)
-                                                        <div @click="
-                                                            productId = '{{ $prod->id }}';
-                                                            productName = '{{ $prod->product_name }}';
-                                                            itemPrice = Number('{{ $prod->price }}');
-                                                            selectedStock = Number('{{ $prod->stock }}');
-                                                            productOpen = false;
-                                                        " class="px-3 py-2 hover:bg-slate-50 cursor-pointer text-xs">
-                                                            {{ $prod->product_name }} (Stock: {{ $prod->stock }})
-                                                        </div>
-                                                    @else
-                                                        <div class="px-3 py-2 text-slate-300 cursor-not-allowed text-xs">
-                                                            {{ $prod->product_name }} (Out of Stock)
-                                                        </div>
-                                                    @endif
-                                                @endforeach
+                                            <div x-show="productOpen" x-cloak class="absolute top-0 left-0 right-0 bg-white border border-slate-200 rounded-lg shadow-lg z-50 text-xs text-slate-700">
+                                                <div @click="productOpen = !productOpen" class="h-[40px] flex items-center justify-between px-3 cursor-pointer">
+                                                    <span x-text="productName || 'Select Product'"></span>
+                                                    <img src="{{ asset('icons/Vector_option_arrow.png') }}" alt="Arrow" class="w-2.5 h-2.5 object-contain transition-transform duration-200" :class="productOpen ? 'rotate-180' : 'rotate-0'">
+                                                </div>
+                                                <div class="py-1 border-slate-100 max-h-48 overflow-y-auto">
+                                                    @foreach($products ?? [] as $prod)
+                                                        @php
+                                                            $isOut = $prod->stock <= 0 || $prod->status === 'Out of stock';
+                                                        @endphp
+                                                        @if(!$isOut)
+                                                            <div @click="
+                                                                productId = '{{ $prod->id }}';
+                                                                productName = '{{ $prod->product_name }}';
+                                                                itemPrice = Number('{{ $prod->price }}');
+                                                                selectedStock = Number('{{ $prod->stock }}');
+                                                                productOpen = false;
+                                                            " class="px-3 py-2.5 cursor-pointer text-xs" :class="productName == '{{ $prod->product_name }}' ? 'font-semibold' : null">
+                                                                {{ $prod->product_name }} (Stock: {{ $prod->stock }})
+                                                            </div>
+                                                        @else
+                                                            <div class="px-3 py-2.5 text-slate-300 cursor-not-allowed text-xs">
+                                                                {{ $prod->product_name }} (Out of Stock)
+                                                            </div>
+                                                        @endif
+                                                    @endforeach
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -545,6 +669,10 @@
                             saleType: 'Offline', 
                             paymentMethod: '', 
                             paymentStatus: '',
+                            adminId: '{{ auth()->id() }}',
+                            adminName: '{{ optional($admins->firstWhere('id', auth()->id()))->name ?? 'Select Cashier' }}',
+                            customerId: '',
+                            customerName: 'Select Customer',
                             items: [],
                             itemModalOpen: false,
                             editingIndex: null,
@@ -617,6 +745,8 @@
                         @csrf
 
                         <input type="hidden" name="sale_type" :value="saleType">
+                        <input type="hidden" name="admin_id" x-model="adminId" required>
+                        <input type="hidden" name="customer_id" x-model="customerId">
                         <input type="hidden" name="payment_method" :value="paymentMethod">
                         <input type="hidden" name="payment_status" :value="paymentStatus">
                         <input type="hidden" name="items" :value="JSON.stringify(items)">
@@ -627,12 +757,13 @@
                                 <input type="text" name="receipt_number" required class="w-full border border-slate-200 rounded-lg px-3 py-2 text-slate-700 focus:outline-none focus:ring-0 focus:border-slate-300 placeholder:text-[13px]" placeholder="Receipt Number">
                             </div>
 
+                            <!-- Add Type Dropdown -->
                             <div>
                                 <label class="block font-semibold text-slate-700 mb-1">Type</label>
                                 <div x-data="{ open: false }" class="relative" @click.away="open = false">
                                     <button type="button" 
                                         @click="open = !open" 
-                                        class="w-full h-[40px] flex items-center justify-between border border-slate-200 rounded-lg px-3 py-2 text-slate-700 bg-white focus:outline-none focus:ring-0 focus:border-slate-300">
+                                        class="w-full h-[40px] flex items-center justify-between border border-slate-200 rounded-lg px-3 py-2 text-slate-700 bg-white focus:outline-none focus:ring-0 focus:border-slate-300 cursor-pointer shadow-sm">
                                         <span x-text="saleType || 'Select Type'"></span>
                                         <img src="{{ asset('icons/Vector_option_arrow.png') }}" 
                                             alt="Arrow" 
@@ -640,41 +771,90 @@
                                             :class="open ? 'rotate-180' : 'rotate-0'">
                                     </button>
 
-                                    <div x-show="open" x-cloak class="absolute left-0 mt-1 w-full bg-white border border-slate-200 rounded-lg shadow-lg z-50 py-1">
-                                        <div @click="saleType = 'Offline'; open = false" class="px-3 py-2 hover:bg-slate-50 cursor-pointer">Offline</div>
-                                        <div @click="saleType = 'Online'; open = false" class="px-3 py-2 hover:bg-slate-50 cursor-pointer">Online</div>
+                                    <div x-show="open" x-cloak class="absolute top-0 left-0 right-0 bg-white border border-slate-200 rounded-lg shadow-lg z-50 text-xs text-slate-700">
+                                        <div @click="open = !open" class="h-[40px] flex items-center justify-between px-3 cursor-pointer">
+                                            <span x-text="saleType || 'Select Type'"></span>
+                                            <img src="{{ asset('icons/Vector_option_arrow.png') }}" alt="Arrow" class="w-2.5 h-2.5 object-contain transition-transform duration-200" :class="open ? 'rotate-180' : 'rotate-0'">
+                                        </div>
+                                        <div class="py-1 border-slate-100">
+                                            <div @click="saleType = 'Offline'; open = false" class="px-3 py-2.5 cursor-pointer" :class="saleType == 'Offline' ? 'font-semibold' : null">Offline</div>
+                                            <div @click="saleType = 'Online'; open = false" class="px-3 py-2.5 cursor-pointer" :class="saleType == 'Online' ? 'font-semibold' : null">Online</div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
 
+                            <!-- Add Cashier Dropdown -->
                             <div>
                                 <label class="block font-semibold text-slate-700 mb-1">Cashier</label>
-                                <select name="admin_id" required class="w-full h-[40px] border border-slate-200 rounded-lg px-3 py-2 text-slate-700 bg-white focus:outline-none focus:ring-0 focus:border-slate-300 text-xs">
-                                    <option value="">Select Cashier</option>
-                                    @foreach($admins ?? [] as $admin)
-                                        <option value="{{ $admin->id }}" {{ auth()->id() == $admin->id ? 'selected' : '' }}>
-                                            {{ $admin->name }}
-                                        </option>
-                                    @endforeach
-                                </select>
+                                <div x-data="{ open: false }" class="relative" @click.away="open = false">
+                                    <button type="button" 
+                                        @click="open = !open" 
+                                        class="w-full h-[40px] flex items-center justify-between border border-slate-200 rounded-lg px-3 py-2 text-slate-700 bg-white focus:outline-none focus:ring-0 focus:border-slate-300 cursor-pointer shadow-sm">
+                                        <span x-text="adminName"></span>
+                                        <img src="{{ asset('icons/Vector_option_arrow.png') }}" 
+                                            alt="Arrow" 
+                                            class="w-2.5 h-2.5 object-contain transition-transform duration-200"
+                                            :class="open ? 'rotate-180' : 'rotate-0'">
+                                    </button>
+
+                                    <div x-show="open" x-cloak class="absolute top-0 left-0 right-0 bg-white border border-slate-200 rounded-lg shadow-lg z-50 text-xs text-slate-700">
+                                        <div @click="open = !open" class="h-[40px] flex items-center justify-between px-3 cursor-pointer">
+                                            <span x-text="adminName"></span>
+                                            <img src="{{ asset('icons/Vector_option_arrow.png') }}" alt="Arrow" class="w-2.5 h-2.5 object-contain transition-transform duration-200" :class="open ? 'rotate-180' : 'rotate-0'">
+                                        </div>
+                                        <div class="py-1 border-slate-100 max-h-48 overflow-y-auto">
+                                            @foreach($admins ?? [] as $admin)
+                                                <div @click="adminId = '{{ $admin->id }}'; adminName = '{{ $admin->name }}'; open = false;" 
+                                                    class="px-3 py-2.5 cursor-pointer" 
+                                                    :class="adminId == '{{ $admin->id }}' ? 'font-semibold' : null">
+                                                    {{ $admin->name }}
+                                                </div>
+                                            @endforeach
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
 
+                            <!-- Add Customer Dropdown -->
                             <div>
                                 <label class="block font-semibold text-slate-700 mb-1">Customer</label>
-                                <select name="customer_id" class="w-full h-[40px] border border-slate-200 rounded-lg px-3 py-2 text-slate-700 bg-white focus:outline-none focus:ring-0 focus:border-slate-300 text-xs">
-                                    <option value="">Select Customer</option>
-                                    @foreach($customers ?? [] as $customer)
-                                        <option value="{{ $customer->id }}">{{ $customer->name }}</option>
-                                    @endforeach
-                                </select>
+                                <div x-data="{ open: false }" class="relative" @click.away="open = false">
+                                    <button type="button" 
+                                        @click="open = !open" 
+                                        class="w-full h-[40px] flex items-center justify-between border border-slate-200 rounded-lg px-3 py-2 text-slate-700 bg-white focus:outline-none focus:ring-0 focus:border-slate-300 cursor-pointer shadow-sm">
+                                        <span :class="customerId ? 'text-slate-700' : 'text-slate-400'" x-text="customerName"></span>
+                                        <img src="{{ asset('icons/Vector_option_arrow.png') }}" 
+                                            alt="Arrow" 
+                                            class="w-2.5 h-2.5 object-contain transition-transform duration-200"
+                                            :class="open ? 'rotate-180' : 'rotate-0'">
+                                    </button>
+
+                                    <div x-show="open" x-cloak class="absolute top-0 left-0 right-0 bg-white border border-slate-200 rounded-lg shadow-lg z-50 text-xs text-slate-700">
+                                        <div @click="open = !open" class="h-[40px] flex items-center justify-between px-3 cursor-pointer">
+                                            <span :class="customerId ? 'text-slate-700' : 'text-slate-400'" x-text="customerName"></span>
+                                            <img src="{{ asset('icons/Vector_option_arrow.png') }}" alt="Arrow" class="w-2.5 h-2.5 object-contain transition-transform duration-200" :class="open ? 'rotate-180' : 'rotate-0'">
+                                        </div>
+                                        <div class="py-1 border-slate-100 max-h-48 overflow-y-auto">
+                                            @foreach($customers ?? [] as $customer)
+                                                <div @click="customerId = '{{ $customer->id }}'; customerName = '{{ $customer->name }}'; open = false;" 
+                                                    class="px-3 py-2.5 cursor-pointer" 
+                                                    :class="customerId == '{{ $customer->id }}' ? 'font-semibold' : null">
+                                                    {{ $customer->name }}
+                                                </div>
+                                            @endforeach
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
 
+                            <!-- Add Payment Method Dropdown -->
                             <div>
                                 <label class="block font-semibold text-slate-700 mb-1">Payment Method</label>
                                 <div x-data="{ open: false }" class="relative" @click.away="open = false">
                                     <button type="button" 
                                         @click="open = !open" 
-                                        class="w-full h-[40px] flex items-center justify-between border border-slate-200 rounded-lg px-3 py-2 text-slate-700 bg-white focus:outline-none focus:ring-0 focus:border-slate-300">
+                                        class="w-full h-[40px] flex items-center justify-between border border-slate-200 rounded-lg px-3 py-2 text-slate-700 bg-white focus:outline-none focus:ring-0 focus:border-slate-300 cursor-pointer shadow-sm">
                                         <span x-text="paymentMethod || 'Select Payment Method'"></span>
                                         <img src="{{ asset('icons/Vector_option_arrow.png') }}" 
                                             alt="Arrow" 
@@ -682,19 +862,27 @@
                                             :class="open ? 'rotate-180' : 'rotate-0'">
                                     </button>
 
-                                    <div x-show="open" x-cloak class="absolute left-0 mt-1 w-full bg-white border border-slate-200 rounded-lg shadow-lg z-50 py-1">
-                                        <div @click="paymentMethod = 'Bank Transfer'; open = false" class="px-3 py-2 hover:bg-slate-50 cursor-pointer">Bank Transfer</div>
-                                        <div @click="paymentMethod = 'Cash'; open = false" class="px-3 py-2 hover:bg-slate-50 cursor-pointer">Cash</div>
-                                        <div @click="paymentMethod = 'QRIS'; open = false" class="px-3 py-2 hover:bg-slate-50 cursor-pointer">QRIS</div>
+                                    <div x-show="open" x-cloak class="absolute top-0 left-0 right-0 bg-white border border-slate-200 rounded-lg shadow-lg z-50 text-xs text-slate-700">
+                                        <div @click="open = !open" class="h-[40px] flex items-center justify-between px-3 cursor-pointer">
+                                            <span x-text="paymentMethod || 'Select Payment Method'"></span>
+                                            <img src="{{ asset('icons/Vector_option_arrow.png') }}" alt="Arrow" class="w-2.5 h-2.5 object-contain transition-transform duration-200" :class="open ? 'rotate-180' : 'rotate-0'">
+                                        </div>
+                                        <div class="py-1 border-slate-100">
+                                            <div @click="paymentMethod = 'Bank Transfer'; open = false" class="px-3 py-2.5 cursor-pointer" :class="paymentMethod == 'Bank Transfer' ? 'font-semibold' : null">Bank Transfer</div>
+                                            <div @click="paymentMethod = 'Cash'; open = false" class="px-3 py-2.5 cursor-pointer" :class="paymentMethod == 'Cash' ? 'font-semibold' : null">Cash</div>
+                                            <div @click="paymentMethod = 'QRIS'; open = false" class="px-3 py-2.5 cursor-pointer" :class="paymentMethod == 'QRIS' ? 'font-semibold' : null">QRIS</div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
+
+                            <!-- Add Payment Status Dropdown -->
                             <div>
                                 <label class="block font-semibold text-slate-700 mb-1">Payment Status</label>
                                 <div x-data="{ open: false }" class="relative" @click.away="open = false">
                                     <button type="button" 
                                         @click="open = !open" 
-                                        class="w-full h-[40px] flex items-center justify-between border border-slate-200 rounded-lg px-3 py-2 text-slate-700 bg-white focus:outline-none focus:ring-0 focus:border-slate-300">
+                                        class="w-full h-[40px] flex items-center justify-between border border-slate-200 rounded-lg px-3 py-2 text-slate-700 bg-white focus:outline-none focus:ring-0 focus:border-slate-300 cursor-pointer shadow-sm">
                                         <span x-text="paymentStatus === 'not paid' ? 'not paid' : (paymentStatus || 'Select Payment Status')"></span>
                                         <img src="{{ asset('icons/Vector_option_arrow.png') }}" 
                                             alt="Arrow" 
@@ -702,9 +890,15 @@
                                             :class="open ? 'rotate-180' : 'rotate-0'">
                                     </button>
 
-                                    <div x-show="open" x-cloak class="absolute left-0 mt-1 w-full bg-white border border-slate-200 rounded-lg shadow-lg z-50 py-1">
-                                        <div @click="paymentStatus = 'paid'; open = false" class="px-3 py-2 hover:bg-slate-50 cursor-pointer">paid</div>
-                                        <div @click="paymentStatus = 'not paid'; open = false" class="px-3 py-2 hover:bg-slate-50 cursor-pointer">not paid</div>
+                                    <div x-show="open" x-cloak class="absolute top-0 left-0 right-0 bg-white border border-slate-200 rounded-lg shadow-lg z-50 text-xs text-slate-700">
+                                        <div @click="open = !open" class="h-[40px] flex items-center justify-between px-3 cursor-pointer">
+                                            <span x-text="paymentStatus === 'not paid' ? 'not paid' : (paymentStatus || 'Select Payment Status')"></span>
+                                            <img src="{{ asset('icons/Vector_option_arrow.png') }}" alt="Arrow" class="w-2.5 h-2.5 object-contain transition-transform duration-200" :class="open ? 'rotate-180' : 'rotate-0'">
+                                        </div>
+                                        <div class="py-1 border-slate-100">
+                                            <div @click="paymentStatus = 'paid'; open = false" class="px-3 py-2.5 cursor-pointer" :class="paymentStatus == 'paid' ? 'font-semibold' : null">paid</div>
+                                            <div @click="paymentStatus = 'not paid'; open = false" class="px-3 py-2.5 cursor-pointer" :class="paymentStatus == 'not paid' ? 'font-semibold' : null">not paid</div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -764,7 +958,7 @@
                             </div>
                         </div>
 
-                        <!-- Sub Modal Add/Edit Item (Add Modal) - Custom Dropdown with Arrow Animation -->
+                        <!-- Sub Modal Add/Edit Item (Add Modal) - Product Dropdown -->
                         <div x-show="itemModalOpen" x-cloak 
                             class="fixed inset-0 z-50 flex items-center justify-center bg-white/10 backdrop-blur-[1px] p-4 transition-all"
                             @keydown.escape.window="itemModalOpen = false">
@@ -780,7 +974,7 @@
                                         <div x-data="{ productOpen: false }" class="relative" @click.away="productOpen = false">
                                             <button type="button" 
                                                 @click="productOpen = !productOpen" 
-                                                class="w-full h-[40px] flex items-center justify-between border border-slate-200 rounded-lg px-3 py-2 text-slate-700 bg-white focus:outline-none focus:ring-0 focus:border-slate-300 text-xs">
+                                                class="w-full h-[40px] flex items-center justify-between border border-slate-200 rounded-lg px-3 py-2 text-slate-700 bg-white focus:outline-none focus:ring-0 focus:border-slate-300 text-xs cursor-pointer shadow-sm">
                                                 <span x-text="productName || 'Select Product'"></span>
                                                 <img src="{{ asset('icons/Vector_option_arrow.png') }}" 
                                                     alt="Arrow" 
@@ -788,27 +982,33 @@
                                                     :class="productOpen ? 'rotate-180' : 'rotate-0'">
                                             </button>
 
-                                            <div x-show="productOpen" x-cloak class="absolute left-0 mt-1 w-full bg-white border border-slate-200 rounded-lg shadow-lg z-50 py-1 max-h-48 overflow-y-auto">
-                                                @foreach($products ?? [] as $prod)
-                                                    @php
-                                                        $isOut = $prod->stock <= 0 || $prod->status === 'Out of stock';
-                                                    @endphp
-                                                    @if(!$isOut)
-                                                        <div @click="
-                                                            productId = '{{ $prod->id }}';
-                                                            productName = '{{ $prod->product_name }}';
-                                                            itemPrice = Number('{{ $prod->price }}');
-                                                            selectedStock = Number('{{ $prod->stock }}');
-                                                            productOpen = false;
-                                                        " class="px-3 py-2 hover:bg-slate-50 cursor-pointer text-xs">
-                                                            {{ $prod->product_name }} (Stock: {{ $prod->stock }})
-                                                        </div>
-                                                    @else
-                                                        <div class="px-3 py-2 text-slate-300 cursor-not-allowed text-xs">
-                                                            {{ $prod->product_name }} (Out of Stock)
-                                                        </div>
-                                                    @endif
-                                                @endforeach
+                                            <div x-show="productOpen" x-cloak class="absolute top-0 left-0 right-0 bg-white border border-slate-200 rounded-lg shadow-lg z-50 text-xs text-slate-700">
+                                                <div @click="productOpen = !productOpen" class="h-[40px] flex items-center justify-between px-3 cursor-pointer">
+                                                    <span x-text="productName || 'Select Product'"></span>
+                                                    <img src="{{ asset('icons/Vector_option_arrow.png') }}" alt="Arrow" class="w-2.5 h-2.5 object-contain transition-transform duration-200" :class="productOpen ? 'rotate-180' : 'rotate-0'">
+                                                </div>
+                                                <div class="py-1 border-slate-100 max-h-48 overflow-y-auto">
+                                                    @foreach($products ?? [] as $prod)
+                                                        @php
+                                                            $isOut = $prod->stock <= 0 || $prod->status === 'Out of stock';
+                                                        @endphp
+                                                        @if(!$isOut)
+                                                            <div @click="
+                                                                productId = '{{ $prod->id }}';
+                                                                productName = '{{ $prod->product_name }}';
+                                                                itemPrice = Number('{{ $prod->price }}');
+                                                                selectedStock = Number('{{ $prod->stock }}');
+                                                                productOpen = false;
+                                                            " class="px-3 py-2.5 cursor-pointer text-xs" :class="productName == '{{ $prod->product_name }}' ? 'font-semibold' : null">
+                                                                {{ $prod->product_name }} (Stock: {{ $prod->stock }})
+                                                            </div>
+                                                        @else
+                                                            <div class="px-3 py-2.5 text-slate-300 cursor-not-allowed text-xs">
+                                                                {{ $prod->product_name }} (Out of Stock)
+                                                            </div>
+                                                        @endif
+                                                    @endforeach
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
