@@ -37,7 +37,7 @@
                 <div x-data="{ open: false }" class="relative inline-block text-left min-w-[160px]" @click.away="open = false">
                     <button type="button" 
                         @click="open = !open" 
-                        class="inline-flex items-center justify-between gap-3 border border-slate-200 rounded-lg text-xs text-slate-700 bg-white px-3.5 h-9 focus:outline-none focus:border-slate-300 shadow-sm cursor-pointer w-full">
+                        class="inline-flex items-center justify-between gap-3 w-full px-3 py-2 border border-slate-200 rounded-lg text-xs text-slate-700 bg-white focus:outline-none focus:ring-0 focus:border-slate-300 cursor-pointer shadow-sm">
                         <span>
                             @if(request('status') == 'paid')
                                 Payment Status: Paid

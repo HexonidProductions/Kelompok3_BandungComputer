@@ -38,7 +38,7 @@
                     <!-- Tombol Utama (Ukuran Fix) -->
                     <button type="button" 
                         @click="open = !open" 
-                        class="w-full h-9 inline-flex items-center justify-between gap-3 border border-slate-200 rounded-lg text-xs text-slate-700 bg-white px-3 focus:outline-none shadow-sm cursor-pointer">
+                        class="inline-flex items-center justify-between gap-3 w-full px-3 py-2 border border-slate-200 rounded-lg text-xs text-slate-700 bg-white focus:outline-none focus:ring-0 focus:border-slate-300 cursor-pointer shadow-sm">
                         <span>
                             @if(request('status') == 'Available')
                                 Status: Available
