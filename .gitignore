@@ -22,3 +22,5 @@
 Homestead.json
 Homestead.yaml
 Thumbs.db
+/resources/views/auth/forgot-password.blade.php
+/resources/views/auth/reset-password.blade.php

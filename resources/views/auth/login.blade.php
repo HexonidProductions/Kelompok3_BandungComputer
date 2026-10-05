@@ -101,7 +101,7 @@
     <x-input-error :messages="$errors->get('password')" class="mt-1" />
 </div>
 
-        {{-- Remember Me & Forgot Password --}}
+        <!-- {{-- Remember Me & Forgot Password --}}
         <div class="flex items-center justify-between text-xs pt-1">
             {{-- Checkbox Remember Me --}}
             <label for="remember_me" class="inline-flex items-center cursor-pointer select-none">
@@ -119,7 +119,7 @@
                     {{ __('Forgot Password?') }}
                 </a>
             @endif
-        </div>
+        </div> -->
 
         {{-- Login Button --}}
         <div class="pt-2">
