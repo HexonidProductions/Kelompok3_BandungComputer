@@ -49,7 +49,7 @@
                         </span>
                         <img src="{{ asset('icons/Vector_option_arrow.png') }}" 
                             alt="Arrow" 
-                            class="w-2.5 h-2.5 object-contain transition-transform duration-200"
+                            class="w-2.5 h-2.5 object-contain"
                             :class="open ? 'rotate-180' : 'rotate-0'">
                     </button>
 
@@ -68,7 +68,7 @@
                             </span>
                             <img src="{{ asset('icons/Vector_option_arrow.png') }}" 
                                 alt="Arrow" 
-                                class="w-2.5 h-2.5 object-contain transition-transform duration-200"
+                                class="w-2.5 h-2.5 object-contain"
                                 :class="open ? 'rotate-180' : 'rotate-0'">
                         </div>
                         <div class="py-1 border-slate-100">
@@ -343,14 +343,14 @@
                                         <span x-text="selectedTx.sale_type || 'Select Type'"></span>
                                         <img src="{{ asset('icons/Vector_option_arrow.png') }}" 
                                             alt="Arrow" 
-                                            class="w-2.5 h-2.5 object-contain transition-transform duration-200"
+                                            class="w-2.5 h-2.5 object-contain"
                                             :class="open ? 'rotate-180' : 'rotate-0'">
                                     </button>
 
                                     <div x-show="open" x-cloak class="absolute top-0 left-0 right-0 bg-white border border-slate-200 rounded-lg shadow-lg z-50 text-xs text-slate-700">
                                         <div @click="open = !open" class="h-[40px] flex items-center justify-between px-3 cursor-pointer">
                                             <span x-text="selectedTx.sale_type || 'Select Type'"></span>
-                                            <img src="{{ asset('icons/Vector_option_arrow.png') }}" alt="Arrow" class="w-2.5 h-2.5 object-contain transition-transform duration-200" :class="open ? 'rotate-180' : 'rotate-0'">
+                                            <img src="{{ asset('icons/Vector_option_arrow.png') }}" alt="Arrow" class="w-2.5 h-2.5 object-contain" :class="open ? 'rotate-180' : 'rotate-0'">
                                         </div>
                                         <div class="py-1 border-slate-100">
                                             <div @click="selectedTx.sale_type = 'Offline'; open = false" class="px-3 py-2.5 cursor-pointer" :class="selectedTx.sale_type == 'Offline' ? 'font-semibold ' : null">Offline</div>
@@ -375,7 +375,7 @@
                                         }[selectedTx.admin_id] || 'Select Cashier')"></span>
                                         <img src="{{ asset('icons/Vector_option_arrow.png') }}" 
                                             alt="Arrow" 
-                                            class="w-2.5 h-2.5 object-contain transition-transform duration-200"
+                                            class="w-2.5 h-2.5 object-contain"
                                             :class="editCashierOpen ? 'rotate-180' : 'rotate-0'">
                                     </button>
 
@@ -386,7 +386,7 @@
                                                     '{{ $admin->id }}': '{{ $admin->name }}',
                                                 @endforeach
                                             }[selectedTx.admin_id] || 'Select Cashier')"></span>
-                                            <img src="{{ asset('icons/Vector_option_arrow.png') }}" alt="Arrow" class="w-2.5 h-2.5 object-contain transition-transform duration-200" :class="editCashierOpen ? 'rotate-180' : 'rotate-0'">
+                                            <img src="{{ asset('icons/Vector_option_arrow.png') }}" alt="Arrow" class="w-2.5 h-2.5 object-contain" :class="editCashierOpen ? 'rotate-180' : 'rotate-0'">
                                         </div>
                                         <div class="py-1 border-slate-100 max-h-48 overflow-y-auto">
                                             @foreach($admins ?? [] as $admin)
@@ -416,7 +416,7 @@
                                         }[selectedTx.customer_id] || 'Select Customer')"></span>
                                         <img src="{{ asset('icons/Vector_option_arrow.png') }}" 
                                             alt="Arrow" 
-                                            class="w-2.5 h-2.5 object-contain transition-transform duration-200"
+                                            class="w-2.5 h-2.5 object-contain"
                                             :class="editCustomerOpen ? 'rotate-180' : 'rotate-0'">
                                     </button>
 
@@ -427,7 +427,7 @@
                                                     '{{ $customer->id }}': '{{ $customer->name }}',
                                                 @endforeach
                                             }[selectedTx.customer_id] || 'Select Customer')"></span>
-                                            <img src="{{ asset('icons/Vector_option_arrow.png') }}" alt="Arrow" class="w-2.5 h-2.5 object-contain transition-transform duration-200" :class="editCustomerOpen ? 'rotate-180' : 'rotate-0'">
+                                            <img src="{{ asset('icons/Vector_option_arrow.png') }}" alt="Arrow" class="w-2.5 h-2.5 object-contain" :class="editCustomerOpen ? 'rotate-180' : 'rotate-0'">
                                         </div>
                                         <div class="py-1 border-slate-100 max-h-48 overflow-y-auto">
                                             @foreach($customers ?? [] as $customer)
@@ -453,14 +453,14 @@
                                         <span x-text="selectedTx.payment_method || 'Select Payment Method'"></span>
                                         <img src="{{ asset('icons/Vector_option_arrow.png') }}" 
                                             alt="Arrow" 
-                                            class="w-2.5 h-2.5 object-contain transition-transform duration-200"
+                                            class="w-2.5 h-2.5 object-contain"
                                             :class="open ? 'rotate-180' : 'rotate-0'">
                                     </button>
 
                                     <div x-show="open" x-cloak class="absolute top-0 left-0 right-0 bg-white border border-slate-200 rounded-lg shadow-lg z-50 text-xs text-slate-700">
                                         <div @click="open = !open" class="h-[40px] flex items-center justify-between px-3 cursor-pointer">
                                             <span x-text="selectedTx.payment_method || 'Select Payment Method'"></span>
-                                            <img src="{{ asset('icons/Vector_option_arrow.png') }}" alt="Arrow" class="w-2.5 h-2.5 object-contain transition-transform duration-200" :class="open ? 'rotate-180' : 'rotate-0'">
+                                            <img src="{{ asset('icons/Vector_option_arrow.png') }}" alt="Arrow" class="w-2.5 h-2.5 object-contain" :class="open ? 'rotate-180' : 'rotate-0'">
                                         </div>
                                         <div class="py-1 border-slate-100">
                                             <div @click="selectedTx.payment_method = 'Bank Transfer'; open = false" class="px-3 py-2.5 cursor-pointer hover:bg-slate-50" :class="selectedTx.payment_method == 'Bank Transfer' ? 'font-semibold ' : null">Bank Transfer</div>
@@ -482,14 +482,14 @@
                                         <span x-text="selectedTx.payment_status === 'not paid' ? 'not paid' : (selectedTx.payment_status || 'Select Payment Status')"></span>
                                         <img src="{{ asset('icons/Vector_option_arrow.png') }}" 
                                             alt="Arrow" 
-                                            class="w-2.5 h-2.5 object-contain transition-transform duration-200"
+                                            class="w-2.5 h-2.5 object-contain"
                                             :class="open ? 'rotate-180' : 'rotate-0'">
                                     </button>
 
                                     <div x-show="open" x-cloak class="absolute top-0 left-0 right-0 bg-white border border-slate-200 rounded-lg shadow-lg z-50 text-xs text-slate-700">
                                         <div @click="open = !open" class="h-[40px] flex items-center justify-between px-3 cursor-pointer">
                                             <span x-text="selectedTx.payment_status === 'not paid' ? 'not paid' : (selectedTx.payment_status || 'Select Payment Status')"></span>
-                                            <img src="{{ asset('icons/Vector_option_arrow.png') }}" alt="Arrow" class="w-2.5 h-2.5 object-contain transition-transform duration-200" :class="open ? 'rotate-180' : 'rotate-0'">
+                                            <img src="{{ asset('icons/Vector_option_arrow.png') }}" alt="Arrow" class="w-2.5 h-2.5 object-contain" :class="open ? 'rotate-180' : 'rotate-0'">
                                         </div>
                                         <div class="py-1 border-slate-100">
                                             <div @click="selectedTx.payment_status = 'paid'; open = false" class="px-3 py-2.5 cursor-pointer" :class="selectedTx.payment_status == 'paid' ? 'font-semibold' : null">paid</div>
@@ -574,14 +574,14 @@
                                                 <span x-text="productName || 'Select Product'"></span>
                                                 <img src="{{ asset('icons/Vector_option_arrow.png') }}" 
                                                     alt="Arrow" 
-                                                    class="w-2.5 h-2.5 object-contain transition-transform duration-200"
+                                                    class="w-2.5 h-2.5 object-contain"
                                                     :class="productOpen ? 'rotate-180' : 'rotate-0'">
                                             </button>
 
                                             <div x-show="productOpen" x-cloak class="absolute top-0 left-0 right-0 bg-white border border-slate-200 rounded-lg shadow-lg z-50 text-xs text-slate-700">
                                                 <div @click="productOpen = !productOpen" class="h-[40px] flex items-center justify-between px-3 cursor-pointer">
                                                     <span x-text="productName || 'Select Product'"></span>
-                                                    <img src="{{ asset('icons/Vector_option_arrow.png') }}" alt="Arrow" class="w-2.5 h-2.5 object-contain transition-transform duration-200" :class="productOpen ? 'rotate-180' : 'rotate-0'">
+                                                    <img src="{{ asset('icons/Vector_option_arrow.png') }}" alt="Arrow" class="w-2.5 h-2.5 object-contain" :class="productOpen ? 'rotate-180' : 'rotate-0'">
                                                 </div>
                                                 <div class="py-1 border-slate-100 max-h-48 overflow-y-auto">
                                                     @foreach($products ?? [] as $prod)
@@ -767,14 +767,14 @@
                                         <span x-text="saleType || 'Select Type'"></span>
                                         <img src="{{ asset('icons/Vector_option_arrow.png') }}" 
                                             alt="Arrow" 
-                                            class="w-2.5 h-2.5 object-contain transition-transform duration-200"
+                                            class="w-2.5 h-2.5 object-contain"
                                             :class="open ? 'rotate-180' : 'rotate-0'">
                                     </button>
 
                                     <div x-show="open" x-cloak class="absolute top-0 left-0 right-0 bg-white border border-slate-200 rounded-lg shadow-lg z-50 text-xs text-slate-700">
                                         <div @click="open = !open" class="h-[40px] flex items-center justify-between px-3 cursor-pointer">
                                             <span x-text="saleType || 'Select Type'"></span>
-                                            <img src="{{ asset('icons/Vector_option_arrow.png') }}" alt="Arrow" class="w-2.5 h-2.5 object-contain transition-transform duration-200" :class="open ? 'rotate-180' : 'rotate-0'">
+                                            <img src="{{ asset('icons/Vector_option_arrow.png') }}" alt="Arrow" class="w-2.5 h-2.5 object-contain" :class="open ? 'rotate-180' : 'rotate-0'">
                                         </div>
                                         <div class="py-1 border-slate-100">
                                             <div @click="saleType = 'Offline'; open = false" class="px-3 py-2.5 cursor-pointer" :class="saleType == 'Offline' ? 'font-semibold' : null">Offline</div>
@@ -794,14 +794,14 @@
                                         <span x-text="adminName"></span>
                                         <img src="{{ asset('icons/Vector_option_arrow.png') }}" 
                                             alt="Arrow" 
-                                            class="w-2.5 h-2.5 object-contain transition-transform duration-200"
+                                            class="w-2.5 h-2.5 object-contain"
                                             :class="open ? 'rotate-180' : 'rotate-0'">
                                     </button>
 
                                     <div x-show="open" x-cloak class="absolute top-0 left-0 right-0 bg-white border border-slate-200 rounded-lg shadow-lg z-50 text-xs text-slate-700">
                                         <div @click="open = !open" class="h-[40px] flex items-center justify-between px-3 cursor-pointer">
                                             <span x-text="adminName"></span>
-                                            <img src="{{ asset('icons/Vector_option_arrow.png') }}" alt="Arrow" class="w-2.5 h-2.5 object-contain transition-transform duration-200" :class="open ? 'rotate-180' : 'rotate-0'">
+                                            <img src="{{ asset('icons/Vector_option_arrow.png') }}" alt="Arrow" class="w-2.5 h-2.5 object-contain" :class="open ? 'rotate-180' : 'rotate-0'">
                                         </div>
                                         <div class="py-1 border-slate-100 max-h-48 overflow-y-auto">
                                             @foreach($admins ?? [] as $admin)
@@ -826,14 +826,14 @@
                                         <span :class="customerId ? 'text-slate-700' : 'text-slate-400'" x-text="customerName"></span>
                                         <img src="{{ asset('icons/Vector_option_arrow.png') }}" 
                                             alt="Arrow" 
-                                            class="w-2.5 h-2.5 object-contain transition-transform duration-200"
+                                            class="w-2.5 h-2.5 object-contain"
                                             :class="open ? 'rotate-180' : 'rotate-0'">
                                     </button>
 
                                     <div x-show="open" x-cloak class="absolute top-0 left-0 right-0 bg-white border border-slate-200 rounded-lg shadow-lg z-50 text-xs text-slate-700">
                                         <div @click="open = !open" class="h-[40px] flex items-center justify-between px-3 cursor-pointer">
                                             <span :class="customerId ? 'text-slate-700' : 'text-slate-400'" x-text="customerName"></span>
-                                            <img src="{{ asset('icons/Vector_option_arrow.png') }}" alt="Arrow" class="w-2.5 h-2.5 object-contain transition-transform duration-200" :class="open ? 'rotate-180' : 'rotate-0'">
+                                            <img src="{{ asset('icons/Vector_option_arrow.png') }}" alt="Arrow" class="w-2.5 h-2.5 object-contain" :class="open ? 'rotate-180' : 'rotate-0'">
                                         </div>
                                         <div class="py-1 border-slate-100 max-h-48 overflow-y-auto">
                                             @foreach($customers ?? [] as $customer)
@@ -858,14 +858,14 @@
                                         <span x-text="paymentMethod || 'Select Payment Method'"></span>
                                         <img src="{{ asset('icons/Vector_option_arrow.png') }}" 
                                             alt="Arrow" 
-                                            class="w-2.5 h-2.5 object-contain transition-transform duration-200"
+                                            class="w-2.5 h-2.5 object-contain"
                                             :class="open ? 'rotate-180' : 'rotate-0'">
                                     </button>
 
                                     <div x-show="open" x-cloak class="absolute top-0 left-0 right-0 bg-white border border-slate-200 rounded-lg shadow-lg z-50 text-xs text-slate-700">
                                         <div @click="open = !open" class="h-[40px] flex items-center justify-between px-3 cursor-pointer">
                                             <span x-text="paymentMethod || 'Select Payment Method'"></span>
-                                            <img src="{{ asset('icons/Vector_option_arrow.png') }}" alt="Arrow" class="w-2.5 h-2.5 object-contain transition-transform duration-200" :class="open ? 'rotate-180' : 'rotate-0'">
+                                            <img src="{{ asset('icons/Vector_option_arrow.png') }}" alt="Arrow" class="w-2.5 h-2.5 object-contain" :class="open ? 'rotate-180' : 'rotate-0'">
                                         </div>
                                         <div class="py-1 border-slate-100">
                                             <div @click="paymentMethod = 'Bank Transfer'; open = false" class="px-3 py-2.5 cursor-pointer" :class="paymentMethod == 'Bank Transfer' ? 'font-semibold' : null">Bank Transfer</div>
@@ -886,14 +886,14 @@
                                         <span x-text="paymentStatus === 'not paid' ? 'not paid' : (paymentStatus || 'Select Payment Status')"></span>
                                         <img src="{{ asset('icons/Vector_option_arrow.png') }}" 
                                             alt="Arrow" 
-                                            class="w-2.5 h-2.5 object-contain transition-transform duration-200"
+                                            class="w-2.5 h-2.5 object-contain"
                                             :class="open ? 'rotate-180' : 'rotate-0'">
                                     </button>
 
                                     <div x-show="open" x-cloak class="absolute top-0 left-0 right-0 bg-white border border-slate-200 rounded-lg shadow-lg z-50 text-xs text-slate-700">
                                         <div @click="open = !open" class="h-[40px] flex items-center justify-between px-3 cursor-pointer">
                                             <span x-text="paymentStatus === 'not paid' ? 'not paid' : (paymentStatus || 'Select Payment Status')"></span>
-                                            <img src="{{ asset('icons/Vector_option_arrow.png') }}" alt="Arrow" class="w-2.5 h-2.5 object-contain transition-transform duration-200" :class="open ? 'rotate-180' : 'rotate-0'">
+                                            <img src="{{ asset('icons/Vector_option_arrow.png') }}" alt="Arrow" class="w-2.5 h-2.5 object-contain" :class="open ? 'rotate-180' : 'rotate-0'">
                                         </div>
                                         <div class="py-1 border-slate-100">
                                             <div @click="paymentStatus = 'paid'; open = false" class="px-3 py-2.5 cursor-pointer" :class="paymentStatus == 'paid' ? 'font-semibold' : null">paid</div>
@@ -978,14 +978,14 @@
                                                 <span x-text="productName || 'Select Product'"></span>
                                                 <img src="{{ asset('icons/Vector_option_arrow.png') }}" 
                                                     alt="Arrow" 
-                                                    class="w-2.5 h-2.5 object-contain transition-transform duration-200"
+                                                    class="w-2.5 h-2.5 object-contain"
                                                     :class="productOpen ? 'rotate-180' : 'rotate-0'">
                                             </button>
 
                                             <div x-show="productOpen" x-cloak class="absolute top-0 left-0 right-0 bg-white border border-slate-200 rounded-lg shadow-lg z-50 text-xs text-slate-700">
                                                 <div @click="productOpen = !productOpen" class="h-[40px] flex items-center justify-between px-3 cursor-pointer">
                                                     <span x-text="productName || 'Select Product'"></span>
-                                                    <img src="{{ asset('icons/Vector_option_arrow.png') }}" alt="Arrow" class="w-2.5 h-2.5 object-contain transition-transform duration-200" :class="productOpen ? 'rotate-180' : 'rotate-0'">
+                                                    <img src="{{ asset('icons/Vector_option_arrow.png') }}" alt="Arrow" class="w-2.5 h-2.5 object-contain" :class="productOpen ? 'rotate-180' : 'rotate-0'">
                                                 </div>
                                                 <div class="py-1 border-slate-100 max-h-48 overflow-y-auto">
                                                     @foreach($products ?? [] as $prod)
