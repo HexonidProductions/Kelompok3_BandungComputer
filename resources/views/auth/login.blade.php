@@ -7,7 +7,7 @@
         {{-- Left Side: Image Panel (md and up) --}}
         <div class="hidden md:flex md:w-1/2 bg-[#F8FAFC] justify-center items-center overflow-hidden p-2 lg:p-3">
             {{-- Ganti 'images/computer_store.jpg' dengan path gambar Anda yang sebenarnya --}}
-            <img src="{{ asset('images/banner_login_page_revision.png') }}" alt="Computer Store" class="w-full h-full object-cover rounded-2xl">
+            <img src="{{ asset('images/banner_login_page_revision.png') }}" alt="Banner Image" class="w-full h-full object-cover rounded-2xl">
         </div>
 
         {{-- Right Side: Form Panel --}}
@@ -17,7 +17,7 @@
             <div class="flex flex-col space-y-8">
                 {{-- Back Link --}}
                 <div class="flex justify-end text-sm text-[#0F172A]">
-                <a href="/" class="group inline-flex items-center gap-1 hover:text-[#0D47A1]">
+                <a href="{{ route('homepage') }}" class="group inline-flex items-center gap-1 hover:text-[#0D47A1]">
                 <span>Back to homepage</span>
                 <img src="{{ asset('icons/eva_arrow-ios-back-outline.png') }}" 
                 alt="Arrow Icon" 
