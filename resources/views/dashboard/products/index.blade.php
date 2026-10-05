@@ -143,7 +143,7 @@
                                         Available
                                     </span>
                                 @elseif($product->status === 'Low stock')
-                                    <span class="inline-block px-3 py-1 rounded-md text-[11px] font-semibold border-2 border-[#CA8A04] text-[#000000] bg-white">
+                                    <span class="inline-block px-3 py-1 rounded-md text-[11px] font-semibold border-2 border-[#F59E0B] text-[#000000] bg-white">
                                         Low stock
                                     </span>
                                 @else
@@ -197,13 +197,13 @@
     <template x-teleport="body">
         <div x-show="createOpen" 
             x-cloak
-            class="fixed inset-0 z-50 flex items-center justify-center bg-white/10 backdrop-blur-[1px] p-4 transition-all">
+            class="fixed inset-0 z-50 flex items-center justify-center bg-white/10 backdrop-blur-[1px] p-4 transition-all"
+            x-data="{ categoryOpen: false, selectedCategoryName: 'Select Product Category', categoryId: '' }">
             
             <div class="bg-white rounded-2xl shadow-2xl w-full max-w-2xl p-6 relative max-h-[90vh] overflow-y-auto" @click.away="createOpen = false">
                 <!-- Header -->
                 <div class="flex justify-between items-center mb-6">
                     <h3 class="text-lg font-bold text-slate-900">Add New Product</h3>
-                    <button @click="createOpen = false" class="text-slate-400 hover:text-slate-600 text-lg font-bold cursor-pointer">&times;</button>
                 </div>
 
                 <!-- Form Add -->
@@ -214,47 +214,64 @@
                         <div>
                             <label class="block text-xs font-semibold text-slate-700 mb-1">Product Name</label>
                             <input type="text" name="product_name" required placeholder="Enter product name" 
-                                class="w-full px-3 py-2 border border-slate-200 rounded-lg text-xs text-slate-700 bg-white placeholder-slate-400 focus:outline-none focus:border-slate-400">
+                                class="w-full h-10 border border-slate-200 rounded-lg px-3.5 text-xs text-slate-700 focus:outline-none focus:ring-0 focus:border-slate-300">
                         </div>
 
                         <!-- Product Code -->
                         <div>
                             <label class="block text-xs font-semibold text-slate-700 mb-1">Product Code</label>
                             <input type="text" name="product_code" required placeholder="Enter product code" 
-                                class="w-full px-3 py-2 border border-slate-200 rounded-lg text-xs text-slate-700 bg-white placeholder-slate-400 focus:outline-none focus:border-slate-400">
+                                class="w-full h-10 border border-slate-200 rounded-lg px-3.5 text-xs text-slate-700 focus:outline-none focus:ring-0 focus:border-slate-300">
                         </div>
 
-                        <!-- Category -->
+                        <!-- Category (Custom Dropdown dengan ukuran h-10) -->
                         <div>
                             <label class="block text-xs font-semibold text-slate-700 mb-1">Category</label>
-                            <select name="category_id" required 
-                                class="w-full px-3 py-2 border border-slate-200 rounded-lg text-xs text-slate-700 bg-white focus:outline-none focus:border-slate-400">
-                                <option value="">Select Product Category</option>
-                                @foreach($categories ?? [] as $cat)
-                                    <option value="{{ $cat->id }}">{{ $cat->category_name ?? $cat->name }}</option>
-                                @endforeach
-                            </select>
+                            <input type="hidden" name="category_id" x-model="categoryId" required>
+                            
+                            <div class="relative" @click.away="categoryOpen = false">
+                                <button type="button" 
+                                    @click="categoryOpen = !categoryOpen" 
+                                    class="w-full h-10 inline-flex items-center justify-between border border-slate-200 rounded-lg text-xs bg-white px-3.5 text-slate-700 focus:outline-none focus:ring-0 focus:border-slate-300 shadow-sm cursor-pointer">
+                                    <span :class="categoryId ? 'text-slate-700' : 'text-slate-400'" x-text="selectedCategoryName"></span>
+                                    <img src="{{ asset('icons/Vector_option_arrow.png') }}" 
+                                        alt="Arrow" 
+                                        class="w-2.5 h-2.5 object-contain transition-transform duration-200"
+                                        :class="categoryOpen ? 'rotate-180' : 'rotate-0'">
+                                </button>
+
+                                <div x-show="categoryOpen" 
+                                    x-cloak
+                                    class="absolute left-0 mt-1 w-full bg-white border border-slate-200 rounded-lg shadow-lg z-50 py-1 text-xs text-slate-700 max-h-48 overflow-y-auto">
+                                    @foreach($categories ?? [] as $cat)
+                                        <div @click="categoryId = '{{ $cat->id }}'; selectedCategoryName = '{{ $cat->category_name ?? $cat->name }}'; categoryOpen = false;" 
+                                            class="px-3.5 py-2.5 hover:bg-slate-50 transition-colors cursor-pointer">
+                                            {{ $cat->category_name ?? $cat->name }}
+                                        </div>
+                                    @endforeach
+                                </div>
+                            </div>
                         </div>
 
                         <!-- Stock Amount -->
                         <div>
                             <label class="block text-xs font-semibold text-slate-700 mb-1">Stock Amount</label>
                             <input type="number" name="stock" min="0" required value="0" 
-                                class="w-full px-3 py-2 border border-slate-200 rounded-lg text-xs text-slate-700 bg-white placeholder-slate-400 focus:outline-none focus:border-slate-400">
+                                class="w-full h-10 border border-slate-200 rounded-lg px-3.5 text-xs text-slate-700 focus:outline-none focus:ring-0 focus:border-slate-300 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none">
                         </div>
 
                         <!-- Buy Price -->
                         <div>
                             <label class="block text-xs font-semibold text-slate-700 mb-1">Buy Price</label>
                             <input type="number" name="buy_price" min="0" required placeholder="Rp 0" 
-                                class="w-full px-3 py-2 border border-slate-200 rounded-lg text-xs text-slate-700 bg-white placeholder-slate-400 focus:outline-none focus:border-slate-400">
+                                class="w-full h-10 border border-slate-200 rounded-lg px-3.5 text-xs text-slate-700 focus:outline-none focus:ring-0 focus:border-slate-300 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none">
                         </div>
 
                         <!-- Sell Price -->
                         <div>
                             <label class="block text-xs font-semibold text-slate-700 mb-1">Sell Price</label>
                             <input type="number" name="sell_price" min="0" required placeholder="Rp 0" 
-                                class="w-full px-3 py-2 border border-slate-200 rounded-lg text-xs text-slate-700 bg-white placeholder-slate-400 focus:outline-none focus:border-slate-400">
+                                class="w-full h-10 border border-slate-200 rounded-lg px-3.5 text-xs text-slate-700 focus:outline-none focus:ring-0 focus:border-slate-300 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none">
                         </div>
                     </div>
 
@@ -263,17 +280,17 @@
                         <div>
                             <label class="block text-xs font-semibold text-slate-700 mb-1">Product Description</label>
                             <textarea name="description" rows="4" placeholder="Enter product description" 
-                                class="w-full px-3 py-2 border border-slate-200 rounded-lg text-xs text-slate-700 bg-white placeholder-slate-400 focus:outline-none focus:border-slate-400 resize-none"></textarea>
+                                class="w-full h-[200px] border border-slate-200 rounded-lg text-xs text-slate-700 bg-white placeholder-slate-400 focus:outline-none focus:ring-0 focus:border-slate-300 resize-none"></textarea>
                         </div>
 
                         <!-- Product Image Upload Preview -->
                         <div>
                             <label class="block text-xs font-semibold text-slate-700 mb-1">Product Image</label>
-                            <label class="flex flex-col items-center justify-center border-2 border-dashed border-slate-200 rounded-xl h-[105px] cursor-pointer hover:bg-slate-50 transition-all relative overflow-hidden">
+                            <label class="flex flex-col items-center justify-center border border-slate-200 rounded-xl h-[200px] cursor-pointer transition-all relative overflow-hidden">
                                 <input type="file" name="image" class="hidden" accept="image/*" @change="const file = $event.target.files[0]; if(file){ $refs.previewAdd.src = URL.createObjectURL(file); $refs.previewAdd.classList.remove('hidden'); }">
                                 <img x-ref="previewAdd" class="hidden absolute inset-0 w-full h-full object-cover">
                                 <div class="flex flex-col items-center space-y-1">
-                                    <img src="{{ asset('icons/image_placeholder_icon.png') }}" onerror="this.src='https://api.iconify.design/lucide:image.svg?color=%2394a3b8'" class="w-8 h-8 object-contain">
+                                    <img src="{{ asset('icons/Product_image_icon.png') }}" alt="Product Image" class="w-[50px] h-[50px] object-contain">
                                 </div>
                             </label>
                         </div>
@@ -300,13 +317,13 @@
     <template x-teleport="body">
         <div x-show="editOpen" 
             x-cloak
-            class="fixed inset-0 z-50 flex items-center justify-center bg-white/10 backdrop-blur-[1px] p-4 transition-all">
+            class="fixed inset-0 z-50 flex items-center justify-center bg-white/10 backdrop-blur-[1px] p-4 transition-all"
+            x-data="{ editCategoryOpen: false }">
             
             <div class="bg-white rounded-2xl shadow-2xl w-full max-w-2xl p-6 relative max-h-[90vh] overflow-y-auto" @click.away="editOpen = false">
                 <!-- Header -->
                 <div class="flex justify-between items-center mb-6">
                     <h3 class="text-lg font-bold text-slate-900">Edit Product</h3>
-                    <button @click="editOpen = false" class="text-slate-400 hover:text-slate-600 text-lg font-bold cursor-pointer">&times;</button>
                 </div>
 
                 <!-- Form Edit -->
@@ -319,47 +336,73 @@
                         <div>
                             <label class="block text-xs font-semibold text-slate-700 mb-1">Product Name</label>
                             <input type="text" name="product_name" x-model="selectedProduct.product_name" required 
-                                class="w-full px-3 py-2 border border-slate-200 rounded-lg text-xs text-slate-700 bg-white focus:outline-none focus:border-slate-400">
+                                class="w-full h-10 px-3.5 border border-slate-200 rounded-lg text-xs text-slate-700 bg-white focus:outline-none focus:ring-0 focus:border-slate-300">
                         </div>
 
                         <!-- Product Code -->
                         <div>
                             <label class="block text-xs font-semibold text-slate-700 mb-1">Product Code</label>
                             <input type="text" name="product_code" x-model="selectedProduct.product_code" required 
-                                class="w-full px-3 py-2 border border-slate-200 rounded-lg text-xs text-slate-700 bg-white focus:outline-none focus:border-slate-400">
+                                class="w-full h-10 px-3.5 border border-slate-200 rounded-lg text-xs text-slate-700 bg-white focus:outline-none focus:ring-0 focus:border-slate-300">
                         </div>
 
-                        <!-- Category -->
+                        <!-- Category (Custom Dropdown dengan ukuran h-10 dan data dari tb_categories) -->
                         <div>
                             <label class="block text-xs font-semibold text-slate-700 mb-1">Category</label>
-                            <select name="category_id" x-model="selectedProduct.category_id" required 
-                                class="w-full px-3 py-2 border border-slate-200 rounded-lg text-xs text-slate-700 bg-white focus:outline-none focus:border-slate-400">
-                                <option value="">Select Product Category</option>
-                                @foreach($categories ?? [] as $cat)
-                                    <option value="{{ $cat->id }}">{{ $cat->category_name ?? $cat->name }}</option>
-                                @endforeach
-                            </select>
+                            <input type="hidden" name="category_id" x-model="selectedProduct.category_id" required>
+                            
+                            <div class="relative" @click.away="editCategoryOpen = false">
+                                <button type="button" 
+                                    @click="editCategoryOpen = !editCategoryOpen" 
+                                    class="w-full h-10 inline-flex items-center justify-between border border-slate-200 rounded-lg text-xs bg-white px-3.5 text-slate-700 focus:outline-none focus:ring-0 focus:border-slate-300 cursor-pointer">
+                                    <span class="text-slate-700" x-text="
+                                        selectedProduct.category_id ? 
+                                        ({
+                                            @foreach($categories ?? [] as $cat)
+                                                '{{ $cat->id }}': '{{ $cat->category_name ?? $cat->name }}',
+                                            @endforeach
+                                        }[selectedProduct.category_id] || 'Select Product Category') : 
+                                        'Select Product Category'
+                                    "></span>
+                                    <img src="{{ asset('icons/Vector_option_arrow.png') }}" 
+                                        alt="Arrow" 
+                                        class="w-2.5 h-2.5 object-contain transition-transform duration-200"
+                                        :class="editCategoryOpen ? 'rotate-180' : 'rotate-0'">
+                                </button>
+
+                                <div x-show="editCategoryOpen" 
+                                    x-cloak
+                                    class="absolute left-0 mt-1 w-full bg-white border border-slate-200 rounded-lg shadow-lg z-50 py-1 text-xs text-slate-700 max-h-48 overflow-y-auto">
+                                    @foreach($categories ?? [] as $cat)
+                                        <div @click="selectedProduct.category_id = '{{ $cat->id }}'; editCategoryOpen = false;" 
+                                            class="px-3.5 py-2.5 hover:bg-slate-50 transition-colors cursor-pointer"
+                                            :class="selectedProduct.category_id == '{{ $cat->id }}' ? 'font-semibold text-blue-600' : ''">
+                                            {{ $cat->category_name ?? $cat->name }}
+                                        </div>
+                                    @endforeach
+                                </div>
+                            </div>
                         </div>
 
                         <!-- Stock Amount -->
                         <div>
                             <label class="block text-xs font-semibold text-slate-700 mb-1">Stock Amount</label>
                             <input type="number" name="stock" x-model="selectedProduct.stock" min="0" required 
-                                class="w-full px-3 py-2 border border-slate-200 rounded-lg text-xs text-slate-700 bg-white focus:outline-none focus:border-slate-400">
+                                class="w-full h-10 px-3.5 border border-slate-200 rounded-lg text-xs text-slate-700 focus:outline-none focus:ring-0 focus:border-slate-300 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none">
                         </div>
 
                         <!-- Buy Price -->
                         <div>
                             <label class="block text-xs font-semibold text-slate-700 mb-1">Buy Price</label>
                             <input type="number" name="buy_price" x-model="selectedProduct.buy_price" min="0" required 
-                                class="w-full px-3 py-2 border border-slate-200 rounded-lg text-xs text-slate-700 bg-white focus:outline-none focus:border-slate-400">
+                                class="w-full h-10 px-3.5 border border-slate-200 rounded-lg text-xs text-slate-700 focus:outline-none focus:ring-0 focus:border-slate-300 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none">
                         </div>
 
                         <!-- Sell Price -->
                         <div>
                             <label class="block text-xs font-semibold text-slate-700 mb-1">Sell Price</label>
                             <input type="number" name="sell_price" x-model="selectedProduct.sell_price" min="0" required 
-                                class="w-full px-3 py-2 border border-slate-200 rounded-lg text-xs text-slate-700 bg-white focus:outline-none focus:border-slate-400">
+                                class="w-full h-10 px-3.5 border border-slate-200 rounded-lg text-xs text-slate-700 focus:outline-none focus:ring-0 focus:border-slate-300 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none">
                         </div>
                     </div>
 
@@ -368,29 +411,26 @@
                         <div>
                             <label class="block text-xs font-semibold text-slate-700 mb-1">Product Description</label>
                             <textarea name="description" x-model="selectedProduct.description" rows="4" 
-                                class="w-full px-3 py-2 border border-slate-200 rounded-lg text-xs text-slate-700 bg-white focus:outline-none focus:border-slate-400 resize-none"></textarea>
+                                class="w-full h-[200px] border border-slate-200 rounded-lg text-xs text-slate-700 bg-white placeholder-slate-400 focus:outline-none focus:ring-0 focus:border-slate-300 resize-none"></textarea>
                         </div>
 
                         <!-- Product Image Upload Preview -->
                         <div>
                             <label class="block text-xs font-semibold text-slate-700 mb-1">Product Image</label>
-                            <label class="flex flex-col items-center justify-center border-2 border-dashed border-slate-200 rounded-xl h-[105px] cursor-pointer hover:bg-slate-50 transition-all relative overflow-hidden">
+                            <label class="flex flex-col items-center justify-center border border-slate-200 rounded-xl h-[200px] cursor-pointer transition-all relative overflow-hidden">
                                 <input type="file" name="image" class="hidden" accept="image/*" @change="const file = $event.target.files[0]; if(file){ $refs.previewEdit.src = URL.createObjectURL(file); $refs.previewEdit.classList.remove('hidden'); }">
                                 <img x-ref="previewEdit" class="hidden absolute inset-0 w-full h-full object-cover z-10">
                                 <template x-if="selectedProduct.image">
-                                    <img :src="'{{ asset('storage') }}/' + selectedProduct.image" class="absolute inset-0 w-full h-full object-cover">
+                                    <img src="{{ asset('icons/Product_image_icon.png') }}" alt="Product Image" class="w-[50px] h-[50px] object-contain">
                                 </template>
-                                <div class="flex flex-col items-center space-y-1 z-20 bg-white/80 px-2 py-1 rounded shadow-sm">
-                                    <span class="text-[10px] text-slate-700 font-semibold">Change Image</span>
-                                </div>
                             </label>
                         </div>
                     </div>
 
                     <!-- Footer Buttons: Cancel, Delete, Save (Rata Kanan) -->
-                    <div class="flex justify-end items-center gap-3 pt-4 border-slate-100 mt-6">
+                    <div class="flex justify-end items-center gap-3 pt-4 border-t border-slate-100 mt-6">
                         <button type="button" @click="editOpen = false" 
-                            class="w-20 h-8 flex items-center justify-center border border-slate-800 rounded-[5px] text-xs font-medium text-slate-800 hover:bg-slate-100 transition-colors cursor-pointer">
+                            class="w-20 h-8 flex items-center justify-center border border-slate-300 rounded-[5px] text-xs font-medium text-slate-700 hover:bg-slate-50 transition-colors cursor-pointer">
                             Cancel
                         </button>
 

@@ -16,13 +16,15 @@ class ProductController extends Controller
     {
         $search = $request->input('search');
         $status = $request->input('status');
+        $categories = Category::all();
+
 
         // Query Produk dengan Filter
         $products = Product::with('category')
             ->when($search, function ($query, $search) {
                 return $query->where(function ($q) use ($search) {
                     $q->where('product_name', 'like', "%{$search}%")
-                      ->orWhere('product_code', 'like', "%{$search}%");
+                        ->orWhere('product_code', 'like', "%{$search}%");
                 });
             })
             ->when($status, function ($query, $status) {
@@ -32,7 +34,7 @@ class ProductController extends Controller
             ->paginate(10)
             ->withQueryString();
 
-        return view('dashboard.products.index', compact('products'));
+        return view('dashboard.products.index', compact('products', 'categories'));
     }
 
     /**
@@ -76,7 +78,7 @@ class ProductController extends Controller
             'image'        => $imagePath,
         ]);
 
-        return redirect()->route('dashboard.products.index')->with('success', 'Produk berhasil ditambahkan!');
+        return redirect()->back()->with('success', 'Product added successfully!');
     }
 
     /**
@@ -122,7 +124,7 @@ class ProductController extends Controller
             'image'        => $imagePath,
         ]);
 
-        return redirect()->route('dashboard.products.index')->with('success', 'Product updated successfully!');
+        return redirect()->back()->with('success', 'Product updated successfully!');
     }
 
     /**
@@ -136,6 +138,6 @@ class ProductController extends Controller
 
         $product->delete();
 
-        return redirect()->route('dashboard.products.index')->with('success', 'Product deleted successfully!');
+        return redirect()->back()->with('success', 'Product deleted successfully!');
     }
 }
