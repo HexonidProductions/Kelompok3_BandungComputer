@@ -5,6 +5,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SupplierController;
+use App\Http\Controllers\InventoryLogController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -27,6 +28,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('/categories', CategoryController::class)->except(['create', 'edit', 'show']);
     Route::resource('/products', ProductController::class);
     Route::resource('/suppliers', SupplierController::class);
+    Route::resource('/inventory-logs', InventoryLogController::class);
     Route::resource('/transactions', TransactionController::class);
     Route::resource('/users', UserController::class);
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

@@ -107,7 +107,7 @@
     <!-- Table Card -->
     <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-100">
         <div class="mb-4">
-            <h3 class="text-base font-bold text-slate-800">Database Supplier Resmi</h3>
+            <h3 class="text-base font-bold text-slate-800">Supplier List</h3>
         </div>
 
         <div class="overflow-x-auto">
@@ -165,7 +165,7 @@
 
         @if($suppliers->count() > 0)
             <div class="flex items-center justify-between mt-6 text-xs text-slate-500">
-                <div>Menampilkan {{ $suppliers->firstItem() }}-{{ $suppliers->lastItem() }} dari {{ $suppliers->total() }} Supplier</div>
+                <div>Showing {{ $suppliers->firstItem() }}-{{ $suppliers->lastItem() }} out of {{ $suppliers->total() }} Suppliers</div>
                 <div>{{ $suppliers->links('components.pagination') }}</div>
             </div>
         @endif
@@ -178,7 +178,6 @@
             <div class="bg-white rounded-2xl shadow-2xl w-full max-w-xl p-6 relative max-h-[90vh] overflow-y-auto" @click.away="createOpen = false">
                 <div class="flex justify-between items-center mb-6">
                     <h3 class="text-lg font-bold text-slate-900">Add New Supplier</h3>
-                    <button @click="createOpen = false" class="text-slate-400 hover:text-slate-600 text-lg font-bold cursor-pointer">&times;</button>
                 </div>
 
                 <form action="{{ route('suppliers.store') }}" method="POST" class="space-y-4">
@@ -251,7 +250,6 @@
             <div class="bg-white rounded-2xl shadow-2xl w-full max-w-xl p-6 relative max-h-[90vh] overflow-y-auto" @click.away="editOpen = false">
                 <div class="flex justify-between items-center mb-6">
                     <h3 class="text-lg font-bold text-slate-900">Edit Supplier</h3>
-                    <button @click="editOpen = false" class="text-slate-400 hover:text-slate-600 text-lg font-bold cursor-pointer">&times;</button>
                 </div>
 
                 <form :action="editUrl" method="POST" class="space-y-4">

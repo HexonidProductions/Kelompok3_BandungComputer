@@ -40,6 +40,11 @@
                 <span>Suppliers</span>
             </a>
 
+            <a href="{{ route('inventory-logs.index') }}" class="w-full flex items-center gap-3 px-4 py-2.5 rounded-none text-xs font-normal text-white transition-all duration-150 {{ request()->routeIs('inventory-logs.*') ? 'bg-[#2563EB]' : null }}">
+                <img src="{{ asset('icons/ic_outline-inventory.png')}}" alt="Inventory Log Icon" class="w-4 h-4 object-contain">
+                <span>Inventory Logs</span>
+            </a>
+
             <a href="{{ route('daily-closings.index') }}" class="w-full flex items-center gap-3 px-4 py-2.5 rounded-none text-xs font-normal text-white transition-all duration-150 {{ request()->routeIs('daily-closings.*') ? 'bg-[#2563EB]' : null }}">
                 <img src="{{ asset('icons/DailyClosings_icon.png')}}" alt="Daily Closings Icon" class="w-4 h-4 object-contain">
                 <span>Daily Closings</span>
