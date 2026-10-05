@@ -13,12 +13,16 @@ class InventoryLogController extends Controller
     public function index(Request $request)
     {
         $search = $request->input('search');
+        $type   = $request->input('type'); // Menangkap parameter filter type (in / out)
 
         $logs = InventoryLog::with(['product', 'supplier'])
             ->when($search, function ($query, $search) {
                 $query->whereHas('product', function ($q) use ($search) {
                     $q->where('product_name', 'like', "%{$search}%");
                 });
+            })
+            ->when($type, function ($query, $type) {
+                $query->where('type', $type); // Filter berdasarkan tipe log (in / out)
             })
             ->latest()
             ->paginate(10)

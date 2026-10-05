@@ -14,17 +14,57 @@
         <h1 class="text-2xl font-medium text-slate-900">Inventory Log</h1>
 
         <div class="flex flex-wrap justify-between items-center gap-4">
-            <!-- Search Form -->
-            <form action="{{ route('inventory-logs.index') }}" method="GET" class="relative w-72">
-                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <img src="{{ asset('icons/ci_search-magnifying-glass.png') }}" alt="Search" class="w-4 h-4">
+            <!-- Left Side: Search & Filter Type -->
+            <div class="flex flex-wrap items-center gap-3">
+                <!-- Search Form -->
+                <form action="{{ route('inventory-logs.index') }}" method="GET" class="relative w-72">
+                    @if(request('type'))
+                        <input type="hidden" name="type" value="{{ request('type') }}">
+                    @endif
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <img src="{{ asset('icons/ci_search-magnifying-glass.png') }}" alt="Search" class="w-4 h-4">
+                    </div>
+                    <input type="text" 
+                        name="search" 
+                        value="{{ request('search') }}" 
+                        placeholder="Search product name" 
+                        class="w-full h-9 pl-9 pr-3 border border-slate-200 rounded-lg text-xs text-slate-700 bg-white placeholder-slate-600 focus:outline-none focus:ring-0 focus:border-slate-300">
+                </form>
+
+                <!-- Filter Type Custom Dropdown -->
+                <div x-data="{ filterTypeOpen: false, filterTypeValue: '{{ request('type') }}', filterTypeName: '{{ request('type') == 'in' ? 'IN (Stok In)' : (request('type') == 'out' ? 'OUT (Stok Out)' : 'All Types') }}' }" class="relative w-40">
+                    <form action="{{ route('inventory-logs.index') }}" method="GET" x-ref="filterForm">
+                        @if(request('search'))
+                            <input type="hidden" name="search" value="{{ request('search') }}">
+                        @endif
+                        <input type="hidden" name="type" x-model="filterTypeValue">
+
+                        <div class="relative" @click.away="filterTypeOpen = false">
+                            <button type="button" 
+                                @click="filterTypeOpen = !filterTypeOpen" 
+                                class="w-full h-9 inline-flex items-center justify-between border border-slate-200 rounded-lg text-xs bg-white px-3 text-slate-700 focus:outline-none shadow-sm cursor-pointer">
+                                <span class="text-slate-700 truncate" x-text="filterTypeName"></span>
+                                <img src="{{ asset('icons/Vector_option_arrow.png') }}" alt="Arrow" class="w-2.5 h-2.5 object-contain" :class="filterTypeOpen ? 'rotate-180' : 'rotate-0'">
+                            </button>
+
+                            <div x-show="filterTypeOpen" x-cloak class="absolute top-0 left-0 right-0 bg-white border border-slate-200 rounded-lg shadow-lg z-50 text-xs text-slate-700">
+                                <div @click="filterTypeOpen = !filterTypeOpen" class="h-9 flex items-center justify-between px-3 cursor-pointer">
+                                    <span class="text-slate-700 truncate" x-text="filterTypeName"></span>
+                                    <img src="{{ asset('icons/Vector_option_arrow.png') }}" alt="Arrow" class="w-2.5 h-2.5 object-contain" :class="filterTypeOpen ? 'rotate-180' : 'rotate-0'">
+                                </div>
+                                <div class="py-1 border-t border-slate-100">
+                                    <div @click="filterTypeValue = ''; filterTypeName = 'All Types'; filterTypeOpen = false; $nextTick(() => $refs.filterForm.submit());" 
+                                        class="px-3 py-2 transition-colors cursor-pointer" :class="filterTypeValue == '' ? 'font-semibold' : null">All Types</div>
+                                    <div @click="filterTypeValue = 'in'; filterTypeName = 'IN (Stok In)'; filterTypeOpen = false; $nextTick(() => $refs.filterForm.submit());" 
+                                        class="px-3 py-2 transition-colors cursor-pointer" :class="filterTypeValue == 'in' ? 'font-semibold' : null">IN (Stok In)</div>
+                                    <div @click="filterTypeValue = 'out'; filterTypeName = 'OUT (Stok Out)'; filterTypeOpen = false; $nextTick(() => $refs.filterForm.submit());" 
+                                        class="px-3 py-2 transition-colors cursor-pointer" :class="filterTypeValue == 'out' ? 'font-semibold' : null">OUT (Stok Out)</div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
                 </div>
-                <input type="text" 
-                    name="search" 
-                    value="{{ request('search') }}" 
-                    placeholder="Search product name" 
-                    class="w-full h-9 pl-9 pr-3 border border-slate-200 rounded-lg text-xs text-slate-700 bg-white placeholder-slate-600 focus:outline-none focus:ring-0 focus:border-slate-300">
-            </form>
+            </div>
 
             <!-- Add Log Button -->
             <button type="button" 
@@ -156,7 +196,7 @@
                             </div>
                         </div>
 
-                        <!-- Movement Type Custom Dropdown (Fixed Box + Animasi Dua Arah) -->
+                        <!-- Movement Type Custom Dropdown -->
                         <div x-data="{ typeOpen: false, typeValue: '', typeName: 'Select movement type' }" class="relative">
                             <label class="block text-xs font-semibold text-slate-700 mb-1">Movement Type</label>
                             <input type="hidden" name="type" x-model="typeValue" required>
@@ -189,7 +229,7 @@
                                 class="w-full border border-slate-200 rounded-lg px-3 py-2 text-slate-700 focus:outline-none focus:ring-0 focus:border-slate-300 placeholder:text-[13px] [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none">
                         </div>
 
-                        <!-- Supplier Custom Dropdown (Optional / For IN) -->
+                        <!-- Supplier Custom Dropdown -->
                         <div x-data="{ supplierOpen: false, supplierValue: '', supplierName: 'Choose Supplier' }" class="relative md:col-span-2">
                             <label class="block text-xs font-semibold text-slate-700 mb-1">Supplier</label>
                             <input type="hidden" name="supplier_id" x-model="supplierValue">
