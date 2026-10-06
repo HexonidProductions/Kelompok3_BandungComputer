@@ -325,7 +325,7 @@
                                 <input type="file" name="image" class="hidden" accept="image/*" @change="const file = $event.target.files[0]; if(file){ $refs.previewAdd.src = URL.createObjectURL(file); $refs.previewAdd.classList.remove('hidden'); }">
                                 <img x-ref="previewAdd" class="hidden absolute inset-0 w-full h-full object-cover">
                                 <div class="flex flex-col items-center space-y-1">
-                                    <img src="{{ asset('icons/Product_image_icon.png') }}" alt="Product Image" class="w-[50px] h-[50px] object-contain">
+                                    <img src="{{ asset('icons/Upload_pict_icon.png') }}" alt="Product Image" class="w-[91px] h-[76px] object-contain">
                                 </div>
                             </label>
                         </div>
@@ -469,11 +469,23 @@
                         <!-- Product Image Upload Preview -->
                         <div>
                             <label class="block text-xs font-semibold text-slate-700 mb-1">Product Image</label>
-                            <label class="flex flex-col items-center justify-center border border-slate-200 rounded-xl h-[200px] cursor-pointer transition-all relative overflow-hidden">
-                                <input type="file" name="image" class="hidden" accept="image/*" @change="const file = $event.target.files[0]; if(file){ $refs.previewEdit.src = URL.createObjectURL(file); $refs.previewEdit.classList.remove('hidden'); }">
-                                <img x-ref="previewEdit" class="hidden absolute inset-0 w-full h-full object-cover z-10">
+                            <label class="flex flex-col items-center justify-center border border-slate-200 rounded-xl h-[200px] cursor-pointer transition-all relative overflow-hidden bg-slate-50">
+                                <input type="file" name="image" class="hidden" accept="image/*" @change="const file = $event.target.files[0]; if(file){ $refs.previewEdit.src = URL.createObjectURL(file); $refs.previewEdit.classList.remove('hidden'); $refs.defaultImage.style.display = 'none'; }">
+                                
+                                <!-- Preview jika user upload gambar baru -->
+                                <img x-ref="previewEdit" class="hidden absolute inset-0 w-full h-full object-cover z-20">
+
+                                <!-- Gambar produk yang sudah ada di database -->
                                 <template x-if="selectedProduct.image">
-                                    <img src="{{ asset('icons/Product_image_icon.png') }}" alt="Product Image" class="w-[50px] h-[50px] object-contain">
+                                    <img x-ref="defaultImage" :src="'{{ asset('storage') }}/' + selectedProduct.image" alt="Product Image" class="absolute inset-0 w-full h-full object-cover z-10">
+                                </template>
+
+                                <!-- Placeholder jika produk belum punya gambar -->
+                                <template x-if="!selectedProduct.image">
+                                    <div x-ref="defaultImage" class="flex flex-col items-center space-y-1 z-10">
+                                        <img src="{{ asset('icons/Upload_pict_icon.png') }}" alt="Product Image" class="w-[91px] h-[76px] object-contain">
+                                        <span class="text-[11px] text-slate-400">Click to upload image</span>
+                                    </div>
                                 </template>
                             </label>
                         </div>

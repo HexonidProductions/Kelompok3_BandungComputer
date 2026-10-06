@@ -86,8 +86,6 @@ class InventoryLogController extends Controller
         ]);
 
         DB::transaction(function () use ($request, $inventoryLog) {
-            
-            // 1. KEMBALIKAN STOK PRODUK BERDASARKAN DATA LOG LAMA (SEBELUM DIEDIT)
             $oldProduct = Product::lockForUpdate()->findOrFail($inventoryLog->product_id);
             if ($inventoryLog->type === 'in') {
                 $oldProduct->stock - $inventoryLog->quantity;
