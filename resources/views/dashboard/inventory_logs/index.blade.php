@@ -32,7 +32,7 @@
                 </form>
 
                 <!-- Filter Type Custom Dropdown -->
-                <div x-data="{ filterTypeOpen: false, filterTypeValue: '{{ request('type') }}', filterTypeName: '{{ request('type') == 'in' ? 'IN (Stok In)' : (request('type') == 'out' ? 'OUT (Stok Out)' : 'All Types') }}' }" class="relative w-40">
+                <div x-data="{ filterTypeOpen: false, filterTypeValue: '{{ request('type') }}', filterTypeName: '{{ request('type') == 'in' ? 'IN (Stok In)' : (request('type') == 'out' ? 'OUT (Stok Out)' : 'Types: All') }}' }" class="relative w-40">
                     <form action="{{ route('inventory-logs.index') }}" method="GET" x-ref="filterForm">
                         @if(request('search'))
                             <input type="hidden" name="search" value="{{ request('search') }}">
@@ -53,8 +53,8 @@
                                     <img src="{{ asset('icons/Vector_option_arrow.png') }}" alt="Arrow" class="w-2.5 h-2.5 object-contain" :class="filterTypeOpen ? 'rotate-180' : 'rotate-0'">
                                 </div>
                                 <div class="py-1 border-t border-slate-100">
-                                    <div @click="filterTypeValue = ''; filterTypeName = 'All Types'; filterTypeOpen = false; $nextTick(() => $refs.filterForm.submit());" 
-                                        class="px-3 py-2 transition-colors cursor-pointer" :class="filterTypeValue == '' ? 'font-semibold' : null">All Types</div>
+                                    <div @click="filterTypeValue = ''; filterTypeName = 'All'; filterTypeOpen = false; $nextTick(() => $refs.filterForm.submit());" 
+                                        class="px-3 py-2 transition-colors cursor-pointer" :class="filterTypeValue == '' ? 'font-semibold' : null">All</div>
                                     <div @click="filterTypeValue = 'in'; filterTypeName = 'IN (Stok In)'; filterTypeOpen = false; $nextTick(() => $refs.filterForm.submit());" 
                                         class="px-3 py-2 transition-colors cursor-pointer" :class="filterTypeValue == 'in' ? 'font-semibold' : null">IN (Stok In)</div>
                                     <div @click="filterTypeValue = 'out'; filterTypeName = 'OUT (Stok Out)'; filterTypeOpen = false; $nextTick(() => $refs.filterForm.submit());" 
