@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('product_id')->constrained('tb_products')->onDelete('cascade');
             $table->foreignId('supplier_id')->nullable()->constrained('tb_stock_entries')->onDelete('set null');
+            $table->string('customer_name')->nullable();
             $table->enum('type', ['in', 'out']);
             $table->integer('quantity');
             $table->string('notes')->nullable();

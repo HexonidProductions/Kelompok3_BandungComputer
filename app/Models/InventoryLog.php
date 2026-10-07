@@ -12,6 +12,7 @@ class InventoryLog extends Model
         'product_id',
         'supplier_id',
         'type',
+        'customer_name',
         'quantity',
         'notes',
     ];

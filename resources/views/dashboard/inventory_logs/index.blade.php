@@ -27,7 +27,7 @@
                     <input type="text" 
                         name="search" 
                         value="{{ request('search') }}" 
-                        placeholder="Search product name" 
+                        placeholder="Search product name or customer" 
                         class="w-full h-9 pl-9 pr-3 border border-slate-200 rounded-lg text-xs text-slate-700 bg-white placeholder-slate-600 focus:outline-none focus:ring-0 focus:border-slate-300">
                 </form>
 
@@ -88,6 +88,7 @@
                         <th class="py-3 px-3 rounded-l-lg">Date</th>
                         <th class="py-3 px-3">Product Name</th>
                         <th class="py-3 px-3 text-center">Type</th>
+                        <th class="py-3 px-3">Customer Name</th>
                         <th class="py-3 px-3">Supplier</th>
                         <th class="py-3 px-3 text-center">Quantity</th>
                         <th class="py-3 px-3">Notes</th>
@@ -110,6 +111,7 @@
                                     </span>
                                 @endif
                             </td>
+                            <td class="py-3.5 px-3 text-slate-600 whitespace-nowrap">{{ $log->customer_name ?? '-' }}</td>
                             <td class="py-3.5 px-3 text-slate-600 whitespace-nowrap">{{ $log->supplier->supplier_name ?? '-' }}</td>
                             <td class="py-3.5 px-3 text-center font-bold text-slate-900">{{ $log->quantity }}</td>
                             <td class="py-3.5 px-3 text-slate-600 max-w-[200px] truncate" title="{{ $log->notes }}">{{ $log->notes ?? '-' }}</td>
@@ -123,6 +125,7 @@
                                             product_name: '{{ $log->product->product_name ?? 'Select Product' }}',
                                             type: '{{ $log->type }}',
                                             type_name: '{{ $log->type === 'in' ? 'IN (Stok In)' : 'OUT (Stok Out)' }}',
+                                            customer_name: '{{ addslashes($log->customer_name ?? '') }}',
                                             quantity: '{{ $log->quantity }}',
                                             supplier_id: '{{ $log->supplier_id }}',
                                             supplier_name: '{{ $log->supplier->supplier_name ?? 'Choose Supplier' }}',
@@ -138,7 +141,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="7" class="py-8 text-center text-slate-400">No inventory logs found.</td>
+                            <td colspan="8" class="py-8 text-center text-slate-400">No inventory logs found.</td>
                         </tr>
                     @endforelse
                 </tbody>
@@ -227,6 +230,13 @@
                             <label class="block text-xs font-semibold text-slate-700 mb-1">Quantity</label>
                             <input type="number" name="quantity" min="1" required placeholder="Enter quantity"
                                 class="w-full border border-slate-200 rounded-lg px-3 py-2 text-slate-700 focus:outline-none focus:ring-0 focus:border-slate-300 placeholder:text-[13px] [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none">
+                        </div>
+
+                        <!-- Customer Name Input (Add) -->
+                        <div class="relative md:col-span-2">
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Customer Name</label>
+                            <input type="text" name="customer_name" placeholder="Enter customer name"
+                                class="w-full h-10 border border-slate-200 rounded-lg px-3.5 text-xs text-slate-700 focus:outline-none focus:ring-0 focus:border-slate-300 placeholder:text-slate-400">
                         </div>
 
                         <!-- Supplier Custom Dropdown -->
@@ -353,6 +363,13 @@
                             <label class="block text-xs font-semibold text-slate-700 mb-1">Quantity</label>
                             <input type="number" name="quantity" min="1" x-model="selectedLog.quantity" required placeholder="Enter quantity"
                                 class="w-full border border-slate-200 rounded-lg px-3 py-2 text-slate-700 focus:outline-none focus:ring-0 focus:border-slate-300 placeholder:text-[13px] [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none">
+                        </div>
+
+                        <!-- Customer Name Input (Edit - Readonly) -->
+                        <div class="relative md:col-span-2">
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Customer Name</label>
+                            <input type="text" name="customer_name" x-model="selectedLog.customer_name" readonly placeholder="Enter customer name"
+                                class="w-full h-10 border border-slate-200 bg-slate-50 rounded-lg px-3.5 text-xs text-slate-500 cursor-not-allowed focus:outline-none focus:ring-0 focus:border-slate-300 placeholder:text-slate-400">
                         </div>
 
                         <!-- Supplier Custom Dropdown (Edit) -->

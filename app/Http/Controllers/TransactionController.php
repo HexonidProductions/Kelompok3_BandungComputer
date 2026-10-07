@@ -6,6 +6,7 @@ use App\Models\Sale;
 use App\Models\SaleItem;
 use App\Models\Product;
 use App\Models\User;
+use App\Models\InventoryLog;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -24,26 +25,19 @@ class TransactionController extends Controller
         $transactions = Sale::with(['admin', 'customer', 'items.product'])
             ->when($search, function ($query) use ($search) {
                 return $query->where(function ($q) use ($search) {
-                    // Cari berdasarkan nomor resi
                     $q->where('receipt_number', 'LIKE', '%' . $search . '%')
-                      // Cari berdasarkan nama customer
-                      ->orWhereHas('customer', function ($customerQuery) use ($search) {
-                          $customerQuery->where('name', 'LIKE', '%' . $search . '%');
-                      })
-                      // Cari berdasarkan nama cashier/admin
-                      ->orWhereHas('admin', function ($adminQuery) use ($search) {
-                          $adminQuery->where('name', 'LIKE', '%' . $search . '%');
-                      });
+                        ->orWhereHas('customer', function ($customerQuery) use ($search) {
+                        $customerQuery->where('name', 'LIKE', '%' . $search . '%');
+                    })
+                        ->orWhereHas('admin', function ($adminQuery) use ($search) {
+                        $adminQuery->where('name', 'LIKE', '%' . $search . '%');
+                    });
                 });
             })
             ->when($status, function ($query, $status) {
-    // Bersihkan input status dari Blade (ubah ke huruf kecil & trim)
-    $cleanStatus = strtolower(trim($status));
-
-    // Cocokkan secara case-insensitive dengan database
-    return $query->whereRaw('LOWER(TRIM(payment_status)) = ?', [$cleanStatus]);
-})
-            
+                $cleanStatus = strtolower(trim($status));
+                return $query->whereRaw('LOWER(TRIM(payment_status)) = ?', [$cleanStatus]);
+            })
             ->latest()
             ->paginate(10)
             ->withQueryString();
@@ -91,6 +85,15 @@ class TransactionController extends Controller
                     'payment_status'   => $request->payment_status ?? 'not paid',
                 ]);
 
+                // Ambil nama customer untuk dicatat ke inventory log
+                $customerName = 'Guest / Umum';
+                if ($request->customer_id) {
+                    $customerObj = User::find($request->customer_id);
+                    if ($customerObj) {
+                        $customerName = $customerObj->name;
+                    }
+                }
+
                 if (!empty($request->items)) {
                     foreach ($request->items as $item) {
                         $productId = $item['product_id'] ?? null;
@@ -124,6 +127,20 @@ class TransactionController extends Controller
                             'quantity'   => $quantity,
                             'unit_price' => $item['price'] ?? $item['unit_price'] ?? 0,
                         ]);
+
+                        // ==========================================
+                        // 2. CATAT KE INVENTORY LOGS (TIPE OUT)
+                        // ==========================================
+                        if ($productId) {
+                            InventoryLog::create([
+                                'product_id'    => $productId,
+                                'supplier_id'   => null,
+                                'type'          => 'out',
+                                'quantity'      => $quantity,
+                                'customer_name' => $customerName,
+                                'notes'         => 'Penjualan No. Resi: ' . $sale->receipt_number,
+                            ]);
+                        }
                     }
                 }
             });
@@ -164,7 +181,7 @@ class TransactionController extends Controller
 
         try {
             DB::transaction(function () use ($request, $transaction) {
-                // Restore stok item transaksi lama sebelum diperbarui
+                // 1. Restore stok item transaksi lama sebelum diperbarui
                 foreach ($transaction->items as $oldItem) {
                     if ($oldItem->product_id) {
                         $product = Product::find($oldItem->product_id);
@@ -177,8 +194,12 @@ class TransactionController extends Controller
                     }
                 }
 
-                // Hapus item lama
+                // Hapus item lama dari database sale_items
                 $transaction->items()->delete();
+
+                // 2. Hapus Inventory Log lama yang mencatat nomor resi ini 
+                // (Agar tidak terjadi penumpukan/duplikasi data log saat di-edit)
+                InventoryLog::where('notes', 'LIKE', '%' . $transaction->receipt_number . '%')->delete();
 
                 // Update data utama transaksi
                 $transaction->update([
@@ -190,7 +211,16 @@ class TransactionController extends Controller
                     'payment_status'   => $request->payment_status,
                 ]);
 
-                // Simpan item baru dan potong stok kembali
+                // Tentukan nama customer
+                $customerName = 'Guest / Umum';
+                if ($transaction->customer_id) {
+                    $customerObj = User::find($transaction->customer_id);
+                    if ($customerObj) {
+                        $customerName = $customerObj->name;
+                    }
+                }
+
+                // 3. Simpan item baru, potong stok kembali, dan buat inventory log baru yang bersih
                 if (!empty($request->items)) {
                     foreach ($request->items as $item) {
                         $productId = $item['product_id'] ?? null;
@@ -222,6 +252,18 @@ class TransactionController extends Controller
                             'quantity'   => $quantity,
                             'unit_price' => $item['price'] ?? $item['unit_price'] ?? 0,
                         ]);
+
+                        // Catat log inventory baru yang sudah disesuaikan dengan item hasil edit
+                        if ($productId) {
+                            InventoryLog::create([
+                                'product_id'    => $productId,
+                                'supplier_id'   => null,
+                                'type'          => 'out',
+                                'quantity'      => $quantity,
+                                'customer_name' => $customerName,
+                                'notes'         => 'Penjualan No. Resi: ' . $transaction->receipt_number,
+                            ]);
+                        }
                     }
                 }
             });
@@ -247,6 +289,17 @@ class TransactionController extends Controller
                         if ($product->stock > 0 && $product->status === 'Out of stock') {
                             $product->update(['status' => 'In stock']);
                         }
+
+                        // Opsional: Catat log tipe 'in' karena transaksi dibatalkan/dihapus, atau biarkan log sebelumnya tercatat.
+                        // Biasanya jika transaksi dihapus, Anda bisa menambahkan log pengembalian stok (tipe 'in'):
+                        InventoryLog::create([
+                            'product_id'    => $item->product_id,
+                            'supplier_id'   => null,
+                            'type'          => 'in',
+                            'quantity'      => $item->quantity,
+                            'customer_name' => null,
+                            'notes'         => 'Pengembalian stok dari penghapusan Transaksi No. Resi: ' . $transaction->receipt_number,
+                        ]);
                     }
                 }
             }

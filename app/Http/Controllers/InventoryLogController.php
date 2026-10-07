@@ -37,11 +37,12 @@ class InventoryLogController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'product_id'  => 'required|exists:tb_products,id',
-            'supplier_id' => 'nullable|exists:tb_stock_entries,id',
-            'type'        => 'required|in:in,out',
-            'quantity'    => 'required|integer|min:1',
-            'notes'       => 'nullable|string|max:255',
+            'product_id'    => 'required|exists:tb_products,id',
+            'supplier_id'   => 'nullable|exists:tb_stock_entries,id',
+            'type'          => 'required|in:in,out',
+            'customer_name' => 'nullable|string|max:255',
+            'quantity'      => 'required|integer|min:1',
+            'notes'         => 'nullable|string|max:255',
         ]);
 
         // 1. Simpan data inventory log
@@ -78,11 +79,12 @@ class InventoryLogController extends Controller
     public function update(Request $request, InventoryLog $inventoryLog)
     {
         $request->validate([
-            'product_id'  => 'required|exists:tb_products,id',
-            'supplier_id' => 'nullable|exists:tb_stock_entries,id',
-            'type'        => 'required|in:in,out',
-            'quantity'    => 'required|integer|min:1',
-            'notes'       => 'nullable|string|max:255',
+            'product_id'    => 'required|exists:tb_products,id',
+            'supplier_id'   => 'nullable|exists:tb_stock_entries,id',
+            'type'          => 'required|in:in,out',
+            'customer_name' => 'nullable|string|max:255',
+            'quantity'      => 'required|integer|min:1',
+            'notes'         => 'nullable|string|max:255',
         ]);
 
         DB::transaction(function () use ($request, $inventoryLog) {
@@ -121,11 +123,12 @@ class InventoryLogController extends Controller
             // 4. UPDATE DATA LOG ITU SENDIRI
             // Gunakan update biasa, pastikan tidak ada double assignment
             $inventoryLog->update([
-                'product_id'  => $request->product_id,
-                'supplier_id' => $request->supplier_id,
-                'type'        => $request->type,
-                'quantity'    => $request->quantity,
-                'notes'       => $request->notes,
+                'product_id'    => $request->product_id,
+                'supplier_id'   => $request->supplier_id,
+                'type'          => $request->type,
+                'customer_name' => $request->customer_name,
+                'quantity'      => $request->quantity,
+                'notes'         => $request->notes,
             ]);
         });
 
