@@ -73,7 +73,7 @@ class InventoryLogController extends Controller
         // 5. Simpan perubahan ke database
         $product->save();
 
-        return redirect()->back()->with('success', 'Inventory log berhasil ditambahkan dan status produk diperbarui!');
+        return redirect()->back()->with('success', 'Inventory log added successfully and product status updated!');
     }
 
     public function update(Request $request, InventoryLog $inventoryLog)
@@ -132,7 +132,7 @@ class InventoryLogController extends Controller
             ]);
         });
 
-        return redirect()->route('inventory-logs.index')->with('success', 'Inventory log dan stok berhasil diperbarui!');
+        return redirect()->route('inventory-logs.index')->with('success', 'Inventory log and stock updated successfully!');
     }
 
     public function destroy(InventoryLog $inventoryLog)

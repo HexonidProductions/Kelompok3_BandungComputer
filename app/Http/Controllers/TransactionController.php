@@ -148,7 +148,7 @@ class TransactionController extends Controller
             return redirect()->back()->withInput()->with('error', $e->getMessage());
         }
 
-        return redirect()->route('transactions.index')->with('success', 'Transaksi berhasil ditambahkan!');
+        return redirect()->route('transactions.index')->with('success', 'Transaction added successfully!');
     }
 
     /**
@@ -271,7 +271,7 @@ class TransactionController extends Controller
             return redirect()->back()->withInput()->with('error', $e->getMessage());
         }
 
-        return redirect()->route('transactions.index')->with('success', 'Transaksi berhasil diperbarui!');
+        return redirect()->route('transactions.index')->with('success', 'Transaksi updated successfully!');
     }
 
     /**
@@ -306,6 +306,6 @@ class TransactionController extends Controller
             $transaction->delete();
         });
 
-        return redirect()->route('transactions.index')->with('success', 'Transaksi berhasil dihapus!');
+        return redirect()->route('transactions.index')->with('success', 'Transaksi deleted successfully!');
     }
 }

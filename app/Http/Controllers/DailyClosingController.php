@@ -43,7 +43,7 @@ class DailyClosingController extends Controller
         ]);
 
         // DIPERBAIKI: Menggunakan nama route yang benar (daily-closings.index)
-        return redirect()->route('daily-closings.index')->with('success', 'Daily closing berhasil ditambahkan!');
+        return redirect()->route('daily-closings.index')->with('success', 'Daily closing added successfully!');
     }
 
     /**
@@ -70,7 +70,7 @@ class DailyClosingController extends Controller
         ]);
     }
 
-    return redirect()->back()->with('success', 'Data daily closing berhasil diperbarui!');
+    return redirect()->back()->with('success', 'Data daily closing updated successfully!');
 }
 
     /**
@@ -80,6 +80,6 @@ class DailyClosingController extends Controller
     {
         $dailyClosing->delete();
 
-        return redirect()->back()->with('success', 'Data berhasil dihapus!');
+        return redirect()->back()->with('success', 'Data deleted successfully!');
     }
 }
