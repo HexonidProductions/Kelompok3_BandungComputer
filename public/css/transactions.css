@@ -200,7 +200,7 @@ body {
   background-color: #1d4ed8;
 }
 
-/* STATS GRID 3 COLUMNS */
+/* STATS GRID (3 COLUMNS) */
 .stats-grid-3 {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -269,18 +269,18 @@ body {
   overflow-x: auto;
 }
 
-.product-table {
+.transaction-table {
   width: 100%;
   border-collapse: collapse;
   text-align: left;
   font-size: 12px;
 }
 
-.product-table thead tr {
+.transaction-table thead tr {
   background-color: #f8fafc;
 }
 
-.product-table th {
+.transaction-table th {
   padding: 12px 14px;
   color: #475569;
   font-weight: 600;
@@ -289,27 +289,18 @@ body {
   white-space: nowrap;
 }
 
-.product-table td {
+.transaction-table td {
   padding: 16px 14px;
   color: #1e293b;
   border-bottom: 1px solid #f1f5f9;
   vertical-align: middle;
 }
 
-.product-thumb {
-  width: 42px;
-  height: 42px;
-  object-fit: contain;
-  border-radius: 6px;
-  border: 1px solid #f1f5f9;
-  padding: 2px;
-}
-
-.desc-cell {
-  max-width: 200px;
+.address-cell {
+  max-width: 220px;
   font-size: 11px;
   line-height: 1.4;
-  color: #64748b;
+  color: #334155;
 }
 
 /* STATUS BADGES */
@@ -322,15 +313,15 @@ body {
   text-align: center;
 }
 
-.badge-available {
-  border: 1px solid #16a34a;
-  color: #16a34a;
+.badge-not-paid {
+  border: 1px solid #ef4444;
+  color: #ef4444;
   background-color: #ffffff;
 }
 
-.badge-out-stock {
-  border: 1px solid #ef4444;
-  color: #ef4444;
+.badge-paid {
+  border: 1px solid #16a34a;
+  color: #16a34a;
   background-color: #ffffff;
 }
 

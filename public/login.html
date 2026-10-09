@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login - Bandung Computer</title>
+  
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- CSS Login -->
+  <link rel="stylesheet" href="css/login.css">
+</head>
+<body>
+
+  <div class="login-container">
+    
+    <!-- LEFT SIDE BANNER IMAGE -->
+    <div class="login-banner">
+      <img src="images/banner_login_page_revision.png" alt="Login Banner Laptop">
+    </div>
+
+    <!-- RIGHT SIDE FORM -->
+    <div class="login-form-wrapper">
+      
+      <a href="index.html" class="back-link">
+        <span>Back to homepage</span>
+        <i class="fa-solid fa-chevron-right"></i>
+      </a>
+
+      <div class="login-header">
+        <img src="images/logo_bc.png" alt="Bandung Computer Logo" class="brand-logo-login">
+        <h1>Welcome Back</h1>
+        <p>Elevate your digital lifestyle with<br>the latest tech and gadgets.</p>
+      </div>
+
+      <form action="overview.html" method="GET">
+        <div class="form-group">
+          <label for="email">Email</label>
+          <div class="input-icon-wrapper">
+            <input type="email" id="email" class="form-input" value="bandungcomputercustomer@gmail.com" required>
+            <i class="fa-solid fa-user input-icon"></i>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="password">Password</label>
+          <div class="input-icon-wrapper">
+            <input type="password" id="password" class="form-input" value="1234" required>
+            <i class="fa-solid fa-eye input-icon" id="togglePassword"></i>
+          </div>
+        </div>
+
+        <button type="submit" class="btn-login-submit">Login</button>
+      </form>
+
+      <div class="divider">
+        <span>OR</span>
+      </div>
+
+      <a href="#" class="btn-google">
+        <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google Logo" class="google-icon">
+        <span>Continue with google</span>
+      </a>
+
+      <p class="signup-footer">
+        Don't have an account? <a href="#">Sign up</a>
+      </p>
+
+    </div>
+
+  </div>
+
+  <script>
+    // Toggle Show / Hide Password
+    const togglePassword = document.querySelector('#togglePassword');
+    const password = document.querySelector('#password');
+
+    togglePassword.addEventListener('click', function () {
+      const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+      password.setAttribute('type', type);
+      
+      this.classList.toggle('fa-eye');
+      this.classList.toggle('fa-eye-slash');
+    });
+  </script>
+
+</body>
+</html>

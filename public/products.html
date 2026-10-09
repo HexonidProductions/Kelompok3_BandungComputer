@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Products - Bandung Computer Admin</title>
+  
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- CSS Products -->
+  <link rel="stylesheet" href="css/products.css">
+</head>
+<body>
+
+  <div class="dashboard-container">
+    
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <img src="images/logo_bc.png" alt="Bandung Computer Logo" class="brand-logo">
+      </div>
+
+      <nav class="sidebar-menu">
+        <a href="overview.html" class="menu-item">
+          <i class="fa-solid fa-border-all"></i>
+          <span>Overview</span>
+        </a>
+        <a href="categories.html" class="menu-item">
+          <i class="fa-solid fa-tag"></i>
+          <span>Categories</span>
+        </a>
+        <a href="transactions.html" class="menu-item">
+          <i class="fa-solid fa-cart-shopping"></i>
+          <span>Transactions</span>
+        </a>
+        <a href="products.html" class="menu-item active">
+          <i class="fa-solid fa-box"></i>
+          <span>Products</span>
+        </a>
+        <a href="users.html" class="menu-item">
+          <i class="fa-solid fa-users"></i>
+          <span>Users</span>
+        </a>
+        <a href="suppliers.html" class="menu-item">
+          <i class="fa-solid fa-truck"></i>
+          <span>Suppliers</span>
+        </a>
+        <a href="inventory-logs.html" class="menu-item">
+          <i class="fa-solid fa-clipboard-list"></i>
+          <span>Inventory Logs</span>
+        </a>
+        <a href="daily-closing.html" class="menu-item">
+          <i class="fa-solid fa-key"></i>
+          <span>Daily Closing</span>
+        </a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <p class="role-title">Admin</p>
+        <p class="admin-name">Alif Hassan Abdillah</p>
+        <a href="index.html" class="btn-logout">Logout</a>
+      </div>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+      
+      <h1 class="page-title">Products</h1>
+
+      <!-- ACTION BAR -->
+      <div class="action-bar">
+        <div class="filter-group">
+          <div class="search-box">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" placeholder="Search product name or code" class="search-input">
+          </div>
+          <select class="select-filter">
+            <option value="all">Status: All</option>
+            <option value="available">Available</option>
+            <option value="out_stock">Out of stock</option>
+          </select>
+        </div>
+
+        <button class="btn-add">
+          <i class="fa-solid fa-plus"></i>
+          <span>Add Product</span>
+        </button>
+      </div>
+
+      <!-- STATS GRID 3 COLUMNS -->
+      <section class="stats-grid-3">
+        <div class="stat-card">
+          <div>
+            <p class="stat-label">Total Registered Products</p>
+            <h2 class="stat-value">48 Unit</h2>
+          </div>
+          <div class="stat-icon">
+            <i class="fa-solid fa-box"></i>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div>
+            <p class="stat-label">Products Low On Stock</p>
+            <h2 class="stat-value">3 Item</h2>
+          </div>
+          <div class="stat-icon">
+            <i class="fa-solid fa-triangle-exclamation"></i>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div>
+            <p class="stat-label">Active Category</p>
+            <h2 class="stat-value">3 Category</h2>
+          </div>
+          <div class="stat-icon">
+            <i class="fa-solid fa-layer-group"></i>
+          </div>
+        </div>
+      </section>
+
+      <!-- PRODUCT LIST TABLE -->
+      <section class="table-card">
+        <div class="table-header">
+          <h2 class="table-title">Product List</h2>
+        </div>
+
+        <div class="table-responsive">
+          <table class="product-table">
+            <thead>
+              <tr>
+                <th>Product Code</th>
+                <th>Image</th>
+                <th>Product Name</th>
+                <th>Category</th>
+                <th>Description</th>
+                <th>Buy Price</th>
+                <th>Sell Price</th>
+                <th>Stock</th>
+                <th>Status</th>
+                <th>Updated at</th>
+                <th style="text-align: center;">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>LPT-ROG14</strong></td>
+                <td><img src="images/Rectangle 34 (3).png" alt="ROG G14" class="product-thumb"></td>
+                <td><strong>ASUS ROG Zephyrus G14 Black Edition</strong></td>
+                <td>Laptop</td>
+                <td class="desc-cell">AMD Ryzen 9 | RTX 4060 8GB | RAM 16GB DDR5 | SSD 1TB NVMe | 14" QHD+ 165Hz | Win 11 + OHS</td>
+                <td>Rp 21.000.000</td>
+                <td>Rp 24.500.000</td>
+                <td>12</td>
+                <td><span class="badge-status badge-available">Available</span></td>
+                <td>2026-09-18 01:15:47</td>
+                <td style="text-align: center;"><button class="btn-more"><i class="fa-solid fa-ellipsis"></i></button></td>
+              </tr>
+              <tr>
+                <td><strong>LPT-ROG13</strong></td>
+                <td><img src="images/Rectangle 34 (4).png" alt="Iphone 17 Pro" class="product-thumb"></td>
+                <td><strong>Iphone 17 Pro Silver</strong></td>
+                <td>Laptop</td>
+                <td class="desc-cell">Apple A19 Pro (3nm) | RAM 8GB | Storage 256GB | 6.3" OLED 120Hz ProMotion | Triple 48MP Pro Cam | Titanium Silver | USB-C 3.2</td>
+                <td>Rp 21.000.000</td>
+                <td>Rp 24.500.000</td>
+                <td>12</td>
+                <td><span class="badge-status badge-available">Available</span></td>
+                <td>2026-09-18 01:15:47</td>
+                <td style="text-align: center;"><button class="btn-more"><i class="fa-solid fa-ellipsis"></i></button></td>
+              </tr>
+              <tr>
+                <td><strong>LPT-TUFA15</strong></td>
+                <td><img src="images/Rectangle 34 (5).png" alt="ASUS TUF A15" class="product-thumb"></td>
+                <td><strong>ASUS ROG GAMING A15</strong></td>
+                <td>Laptop</td>
+                <td class="desc-cell">AMD Ryzen 9 | RTX 4060 8GB | RAM 16GB DDR5 | SSD 1TB NVMe | 14" QHD+ 165Hz | Win 11 + OHS</td>
+                <td>Rp 21.000.000</td>
+                <td>Rp 24.500.000</td>
+                <td>12</td>
+                <td><span class="badge-status badge-available">Available</span></td>
+                <td>2026-09-18 01:15:47</td>
+                <td style="text-align: center;"><button class="btn-more"><i class="fa-solid fa-ellipsis"></i></button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="table-footer">
+          <span class="showing-text">Showing 1-4 out of 10 Products</span>
+          <div class="pagination">
+            <a href="#" class="page-btn">Previous</a>
+            <a href="#" class="page-btn active">1</a>
+            <a href="#" class="page-btn">2</a>
+            <a href="#" class="page-btn">Next</a>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+  </div>
+
+</body>
+</html>

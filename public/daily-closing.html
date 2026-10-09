@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Daily Closing - Bandung Computer Admin</title>
+  
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- CSS Daily Closing -->
+  <link rel="stylesheet" href="css/daily-closing.css">
+</head>
+<body>
+
+  <div class="dashboard-container">
+    
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <img src="images/logo_bc.png" alt="Bandung Computer Logo" class="brand-logo">
+      </div>
+
+      <nav class="sidebar-menu">
+        <a href="overview.html" class="menu-item">
+          <i class="fa-solid fa-border-all"></i>
+          <span>Overview</span>
+        </a>
+        <a href="categories.html" class="menu-item">
+          <i class="fa-solid fa-tag"></i>
+          <span>Categories</span>
+        </a>
+        <a href="transactions.html" class="menu-item">
+          <i class="fa-solid fa-cart-shopping"></i>
+          <span>Transactions</span>
+        </a>
+        <a href="products.html" class="menu-item">
+          <i class="fa-solid fa-box"></i>
+          <span>Products</span>
+        </a>
+        <a href="users.html" class="menu-item">
+          <i class="fa-solid fa-users"></i>
+          <span>Users</span>
+        </a>
+        <a href="suppliers.html" class="menu-item">
+          <i class="fa-solid fa-truck"></i>
+          <span>Suppliers</span>
+        </a>
+        <a href="inventory-logs.html" class="menu-item">
+          <i class="fa-solid fa-clipboard-list"></i>
+          <span>Inventory Logs</span>
+        </a>
+        <a href="daily-closing.html" class="menu-item active">
+          <i class="fa-solid fa-key"></i>
+          <span>Daily Closing</span>
+        </a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <p class="role-title">Admin</p>
+        <p class="admin-name">Alif Hassan Abdillah</p>
+        <a href="index.html" class="btn-logout">Logout</a>
+      </div>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+      
+      <h1 class="page-title">Daily Closing</h1>
+
+      <!-- ACTION BAR -->
+      <div class="action-bar">
+        <span class="shift-info">Today’s Shift: Alif Hassan Abdillah</span>
+        <button class="btn-add">
+          <i class="fa-solid fa-plus"></i>
+          <span>Add History</span>
+        </button>
+      </div>
+
+      <!-- DAILY STATS GRID -->
+      <section class="daily-stats-grid">
+        <div class="stat-card income-card">
+          <div class="income-top">
+            <span class="stat-label">Total Income</span>
+            <div class="stat-icon">
+              <i class="fa-regular fa-credit-card"></i>
+            </div>
+          </div>
+          <div>
+            <h2 class="stat-value">Rp 64.150.000</h2>
+            <p class="stat-subtext">Akumulasi penjualan cash & digital</p>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <h3 class="payment-details-title">Details per Payment Method</h3>
+          <div class="payment-list">
+            <div class="payment-item">
+              <div class="payment-left">
+                <span class="badge-method badge-cash">Cash</span>
+                <span class="trx-count">34 Transaction</span>
+              </div>
+              <span class="payment-amount">Rp 12.850.000</span>
+            </div>
+
+            <div class="payment-item">
+              <div class="payment-left">
+                <span class="badge-method badge-debit">Debit</span>
+                <span class="trx-count">21 Transaction</span>
+              </div>
+              <span class="payment-amount">Rp 18.400.000</span>
+            </div>
+
+            <div class="payment-item">
+              <div class="payment-left">
+                <span class="badge-method badge-qris">QRIS</span>
+                <span class="trx-count">45 Transaction</span>
+              </div>
+              <span class="payment-amount">Rp 32.900.000</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- LAST CLOSING SHIFT HISTORY TABLE -->
+      <section class="table-card">
+        <div class="table-header">
+          <h2 class="table-title">Last Closing Shift History</h2>
+        </div>
+
+        <div class="table-responsive">
+          <table class="closing-table">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Shift</th>
+                <th>Admin</th>
+                <th>Note</th>
+                <th>Income</th>
+                <th style="text-align: center;">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>24 Sep 2026</td>
+                <td>Morning Shift</td>
+                <td><strong>Muhammad Zidan</strong></td>
+                <td class="note-cell">Penutupan kasir shift 1 berjalan lancar.</td>
+                <td><strong>Rp 34.200.000</strong></td>
+                <td style="text-align: center;"><button class="btn-more"><i class="fa-solid fa-ellipsis"></i></button></td>
+              </tr>
+              <tr>
+                <td>25 Sep 2026</td>
+                <td>Night Shift</td>
+                <td><strong>Danish</strong></td>
+                <td class="note-cell">Penutupan kasir shift 2 berjalan lancar.</td>
+                <td><strong>Rp 28.450.000</strong></td>
+                <td style="text-align: center;"><button class="btn-more"><i class="fa-solid fa-ellipsis"></i></button></td>
+              </tr>
+              <tr>
+                <td>26 Sep 2026</td>
+                <td>Morning Shift</td>
+                <td><strong>Fatih</strong></td>
+                <td class="note-cell">Penutupan kasir shift 3 berjalan lancar.</td>
+                <td><strong>Rp 31.100.000</strong></td>
+                <td style="text-align: center;"><button class="btn-more"><i class="fa-solid fa-ellipsis"></i></button></td>
+              </tr>
+              <tr>
+                <td>27 Sep 2026</td>
+                <td>Night Shift</td>
+                <td><strong>Cnada</strong></td>
+                <td class="note-cell">Penutupan kasir shift 4 berjalan lancar.</td>
+                <td><strong>Rp 40.250.000</strong></td>
+                <td style="text-align: center;"><button class="btn-more"><i class="fa-solid fa-ellipsis"></i></button></td>
+              </tr>
+              <tr>
+                <td>27 Sep 2026</td>
+                <td>Night Shift</td>
+                <td><strong>Cnada</strong></td>
+                <td class="note-cell">Penutupan kasir shift 4 berjalan lancar.</td>
+                <td><strong>Rp 40.250.000</strong></td>
+                <td style="text-align: center;"><button class="btn-more"><i class="fa-solid fa-ellipsis"></i></button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="table-footer">
+          <span class="showing-text">Menampilkan 1-1 dari 4 Last Closing Shift History</span>
+          <div class="pagination">
+            <a href="#" class="page-btn">Sebelumnya</a>
+            <a href="#" class="page-btn active">1</a>
+            <a href="#" class="page-btn">2</a>
+            <a href="#" class="page-btn">Selanjutnya</a>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+  </div>
+
+</body>
+</html>

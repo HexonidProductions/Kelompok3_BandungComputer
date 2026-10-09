@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Category - Bandung Computer Admin</title>
+  
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- File CSS dengan nama yang sama -->
+  <link rel="stylesheet" href="css/categories.css">
+</head>
+<body>
+
+  <div class="dashboard-container">
+    
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <img src="images/logo_bc.png" alt="Bandung Computer Logo" class="brand-logo">
+      </div>
+
+      <nav class="sidebar-menu">
+        <a href="overview.html" class="menu-item">
+          <i class="fa-solid fa-border-all"></i>
+          <span>Overview</span>
+        </a>
+        <a href="categories.html" class="menu-item active">
+          <i class="fa-solid fa-tag"></i>
+          <span>Categories</span>
+        </a>
+        <a href="transactions.html" class="menu-item">
+          <i class="fa-solid fa-cart-shopping"></i>
+          <span>Transactions</span>
+        </a>
+        <a href="products.html" class="menu-item">
+          <i class="fa-solid fa-box"></i>
+          <span>Products</span>
+        </a>
+        <a href="users.html" class="menu-item">
+          <i class="fa-solid fa-users"></i>
+          <span>Users</span>
+        </a>
+        <a href="suppliers.html" class="menu-item">
+          <i class="fa-solid fa-truck"></i>
+          <span>Suppliers</span>
+        </a>
+        <a href="inventory-logs.html" class="menu-item">
+          <i class="fa-solid fa-clipboard-list"></i>
+          <span>Inventory Logs</span>
+        </a>
+        <a href="daily-closing.html" class="menu-item">
+          <i class="fa-solid fa-key"></i>
+          <span>Daily Closing</span>
+        </a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <p class="role-title">Admin</p>
+        <p class="admin-name">Alif Hassan Abdillah</p>
+        <a href="index.html" class="btn-logout">Logout</a>
+      </div>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+      
+      <h1 class="page-title">Category</h1>
+
+      <!-- ACTION BAR -->
+      <div class="category-action-bar">
+        <div class="search-category-box">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <input type="text" placeholder="Search category" class="search-category-input">
+        </div>
+        <button class="btn-add-category">
+          <i class="fa-solid fa-plus"></i>
+          <span>Add Category</span>
+        </button>
+      </div>
+
+      <!-- CATEGORY TABLE CARD -->
+      <section class="table-card">
+        <div class="table-header">
+          <h2 class="table-title">Category List</h2>
+        </div>
+
+        <div class="table-responsive">
+          <table class="category-table">
+            <thead>
+              <tr>
+                <th style="width: 80px;">No.</th>
+                <th>Category</th>
+                <th class="text-right" style="padding-right: 24px;">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>1</td>
+                <td><strong>Laptop</strong></td>
+                <td class="text-right">
+                  <div class="action-icons">
+                    <i class="fa-regular fa-pen-to-square btn-edit-icon"></i>
+                    <i class="fa-regular fa-trash-can btn-delete-icon"></i>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>2</td>
+                <td><strong>Smartphone</strong></td>
+                <td class="text-right">
+                  <div class="action-icons">
+                    <i class="fa-regular fa-pen-to-square btn-edit-icon"></i>
+                    <i class="fa-regular fa-trash-can btn-delete-icon"></i>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>3</td>
+                <td><strong>TWS</strong></td>
+                <td class="text-right">
+                  <div class="action-icons">
+                    <i class="fa-regular fa-pen-to-square btn-edit-icon"></i>
+                    <i class="fa-regular fa-trash-can btn-delete-icon"></i>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>4</td>
+                <td><strong>Headset</strong></td>
+                <td class="text-right">
+                  <div class="action-icons">
+                    <i class="fa-regular fa-pen-to-square btn-edit-icon"></i>
+                    <i class="fa-regular fa-trash-can btn-delete-icon"></i>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>5</td>
+                <td><strong>Printer</strong></td>
+                <td class="text-right">
+                  <div class="action-icons">
+                    <i class="fa-regular fa-pen-to-square btn-edit-icon"></i>
+                    <i class="fa-regular fa-trash-can btn-delete-icon"></i>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>6</td>
+                <td><strong>Mouse</strong></td>
+                <td class="text-right">
+                  <div class="action-icons">
+                    <i class="fa-regular fa-pen-to-square btn-edit-icon"></i>
+                    <i class="fa-regular fa-trash-can btn-delete-icon"></i>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>7</td>
+                <td><strong>Keyboard</strong></td>
+                <td class="text-right">
+                  <div class="action-icons">
+                    <i class="fa-regular fa-pen-to-square btn-edit-icon"></i>
+                    <i class="fa-regular fa-trash-can btn-delete-icon"></i>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>8</td>
+                <td><strong>Cable</strong></td>
+                <td class="text-right">
+                  <div class="action-icons">
+                    <i class="fa-regular fa-pen-to-square btn-edit-icon"></i>
+                    <i class="fa-regular fa-trash-can btn-delete-icon"></i>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>9</td>
+                <td><strong>Cable</strong></td>
+                <td class="text-right">
+                  <div class="action-icons">
+                    <i class="fa-regular fa-pen-to-square btn-edit-icon"></i>
+                    <i class="fa-regular fa-trash-can btn-delete-icon"></i>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>10</td>
+                <td><strong>Cable</strong></td>
+                <td class="text-right">
+                  <div class="action-icons">
+                    <i class="fa-regular fa-pen-to-square btn-edit-icon"></i>
+                    <i class="fa-regular fa-trash-can btn-delete-icon"></i>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>11</td>
+                <td><strong>Cable</strong></td>
+                <td class="text-right">
+                  <div class="action-icons">
+                    <i class="fa-regular fa-pen-to-square btn-edit-icon"></i>
+                    <i class="fa-regular fa-trash-can btn-delete-icon"></i>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>12</td>
+                <td><strong>Cable</strong></td>
+                <td class="text-right">
+                  <div class="action-icons">
+                    <i class="fa-regular fa-pen-to-square btn-edit-icon"></i>
+                    <i class="fa-regular fa-trash-can btn-delete-icon"></i>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>13</td>
+                <td><strong>Cable</strong></td>
+                <td class="text-right">
+                  <div class="action-icons">
+                    <i class="fa-regular fa-pen-to-square btn-edit-icon"></i>
+                    <i class="fa-regular fa-trash-can btn-delete-icon"></i>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>14</td>
+                <td><strong>Cable</strong></td>
+                <td class="text-right">
+                  <div class="action-icons">
+                    <i class="fa-regular fa-pen-to-square btn-edit-icon"></i>
+                    <i class="fa-regular fa-trash-can btn-delete-icon"></i>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>15</td>
+                <td><strong>Cable</strong></td>
+                <td class="text-right">
+                  <div class="action-icons">
+                    <i class="fa-regular fa-pen-to-square btn-edit-icon"></i>
+                    <i class="fa-regular fa-trash-can btn-delete-icon"></i>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="table-footer">
+          <span class="showing-text">Showing 1-15 out of 20 Category</span>
+          <div class="pagination">
+            <a href="#" class="page-btn">Previous</a>
+            <a href="#" class="page-btn active">1</a>
+            <a href="#" class="page-btn">2</a>
+            <a href="#" class="page-btn">Next</a>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+  </div>
+
+</body>
+</html>

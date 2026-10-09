@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Transactions - Bandung Computer Admin</title>
+  
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- CSS Transactions -->
+  <link rel="stylesheet" href="css/transactions.css">
+</head>
+<body>
+
+  <div class="dashboard-container">
+    
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <img src="images/logo_bc.png" alt="Bandung Computer Logo" class="brand-logo">
+      </div>
+
+      <nav class="sidebar-menu">
+        <a href="overview.html" class="menu-item">
+          <i class="fa-solid fa-border-all"></i>
+          <span>Overview</span>
+        </a>
+        <a href="categories.html" class="menu-item">
+          <i class="fa-solid fa-tag"></i>
+          <span>Categories</span>
+        </a>
+        <a href="transactions.html" class="menu-item active">
+          <i class="fa-solid fa-cart-shopping"></i>
+          <span>Transactions</span>
+        </a>
+        <a href="products.html" class="menu-item">
+          <i class="fa-solid fa-box"></i>
+          <span>Products</span>
+        </a>
+        <a href="users.html" class="menu-item">
+          <i class="fa-solid fa-users"></i>
+          <span>Users</span>
+        </a>
+        <a href="suppliers.html" class="menu-item">
+          <i class="fa-solid fa-truck"></i>
+          <span>Suppliers</span>
+        </a>
+        <a href="inventory-logs.html" class="menu-item">
+          <i class="fa-solid fa-clipboard-list"></i>
+          <span>Inventory Logs</span>
+        </a>
+        <a href="daily-closing.html" class="menu-item">
+          <i class="fa-solid fa-key"></i>
+          <span>Daily Closing</span>
+        </a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <p class="role-title">Admin</p>
+        <p class="admin-name">Alif Hassan Abdillah</p>
+        <a href="index.html" class="btn-logout">Logout</a>
+      </div>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+      
+      <h1 class="page-title">Transactions</h1>
+
+      <!-- ACTION BAR -->
+      <div class="action-bar">
+        <div class="filter-group">
+          <div class="search-box">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" placeholder="Search Invoice code" class="search-input">
+          </div>
+          <select class="select-filter">
+            <option value="all">Payment status: All</option>
+            <option value="paid">Paid</option>
+            <option value="not_paid">Not Paid</option>
+          </select>
+        </div>
+
+        <button class="btn-add">
+          <i class="fa-solid fa-plus"></i>
+          <span>Add Transaction</span>
+        </button>
+      </div>
+
+      <!-- STATS GRID 3 COLUMNS -->
+      <section class="stats-grid-3">
+        <div class="stat-card">
+          <div>
+            <p class="stat-label">Total Sales This Month</p>
+            <h2 class="stat-value">Rp 196.000.000</h2>
+          </div>
+          <div class="stat-icon">
+            <i class="fa-regular fa-credit-card"></i>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div>
+            <p class="stat-label">Transaction Amount</p>
+            <h2 class="stat-value">482 Transaction</h2>
+          </div>
+          <div class="stat-icon">
+            <i class="fa-solid fa-arrow-right-arrow-left"></i>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div>
+            <p class="stat-label">Average Transaction</p>
+            <h2 class="stat-value">Rp 24.500.000</h2>
+          </div>
+          <div class="stat-icon">
+            <i class="fa-solid fa-chart-column"></i>
+          </div>
+        </div>
+      </section>
+
+      <!-- TRANSACTION LIST TABLE -->
+      <section class="table-card">
+        <div class="table-header">
+          <h2 class="table-title">Transaction List</h2>
+        </div>
+
+        <div class="table-responsive">
+          <table class="transaction-table">
+            <thead>
+              <tr>
+                <th>Receipt Number</th>
+                <th>Sale Type</th>
+                <th>Cashier</th>
+                <th>Customer</th>
+                <th>Shipping Address</th>
+                <th>Date</th>
+                <th>Total Amount</th>
+                <th>Payment Method</th>
+                <th>Shipping Fee</th>
+                <th>Payment Status</th>
+                <th style="text-align: center;">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>INV-2602-004</strong></td>
+                <td>Offline</td>
+                <td>Alif Hassan Abdillah</td>
+                <td>Muhammad Aditya Nugroho</td>
+                <td class="address-cell">Kompleks Antero Pondok Raya 2, Jalan Pondok Bambu No.35, RT.19/RW.8, Loktabat Utara BANJARBARU UTARA, KOTA BANJARBARU, Kalimantan Selatan, ID 70714</td>
+                <td>24 Sep 2026</td>
+                <td>Rp 24.500.000</td>
+                <td>Bank Transfer</td>
+                <td>Rp 15.000</td>
+                <td><span class="badge-status badge-not-paid">Not Paid</span></td>
+                <td style="text-align: center;"><button class="btn-more"><i class="fa-solid fa-ellipsis"></i></button></td>
+              </tr>
+              <tr>
+                <td><strong>INV-2602-004</strong></td>
+                <td>Offline</td>
+                <td>Muhammad Cnada Indra Sulu</td>
+                <td>Muhammad Arfa Hafizy</td>
+                <td class="address-cell">Kompleks Antero Pondok Raya 2, Jalan Pondok Bambu No.35, RT.19/RW.8, Loktabat Utara BANJARBARU UTARA, KOTA BANJARBARU, Kalimantan Selatan, ID 70714</td>
+                <td>25 Sep 2026</td>
+                <td>Rp 24.500.000</td>
+                <td>Bank Transfer</td>
+                <td>Rp 15.000</td>
+                <td><span class="badge-status badge-paid">Paid</span></td>
+                <td style="text-align: center;"><button class="btn-more"><i class="fa-solid fa-ellipsis"></i></button></td>
+              </tr>
+              <tr>
+                <td><strong>INV-2602-004</strong></td>
+                <td>Offline</td>
+                <td>Ahmad Raditya Putra</td>
+                <td>Muhammad Nabil Abhitah Abyasya</td>
+                <td class="address-cell">Kompleks Antero Pondok Raya 2, Jalan Pondok Bambu No.35, RT.19/RW.8, Loktabat Utara BANJARBARU UTARA, KOTA BANJARBARU, Kalimantan Selatan, ID 70714</td>
+                <td>10 Oct 2026</td>
+                <td>Rp 24.500.000</td>
+                <td>Bank Transfer</td>
+                <td>Rp 15.000</td>
+                <td><span class="badge-status badge-paid">Paid</span></td>
+                <td style="text-align: center;"><button class="btn-more"><i class="fa-solid fa-ellipsis"></i></button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="table-footer">
+          <span class="showing-text">Showing 1-3 out of 10 Transactions</span>
+          <div class="pagination">
+            <a href="#" class="page-btn">Previous</a>
+            <a href="#" class="page-btn active">1</a>
+            <a href="#" class="page-btn">2</a>
+            <a href="#" class="page-btn">Next</a>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+  </div>
+
+</body>
+</html>

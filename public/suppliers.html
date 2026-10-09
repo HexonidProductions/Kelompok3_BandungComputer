@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Supplier - Bandung Computer Admin</title>
+  
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- CSS Suppliers -->
+  <link rel="stylesheet" href="css/suppliers.css">
+</head>
+<body>
+
+  <div class="dashboard-container">
+    
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <img src="images/logo_bc.png" alt="Bandung Computer Logo" class="brand-logo">
+      </div>
+
+      <nav class="sidebar-menu">
+        <a href="overview.html" class="menu-item">
+          <i class="fa-solid fa-border-all"></i>
+          <span>Overview</span>
+        </a>
+        <a href="categories.html" class="menu-item">
+          <i class="fa-solid fa-tag"></i>
+          <span>Categories</span>
+        </a>
+        <a href="transactions.html" class="menu-item">
+          <i class="fa-solid fa-cart-shopping"></i>
+          <span>Transactions</span>
+        </a>
+        <a href="products.html" class="menu-item">
+          <i class="fa-solid fa-box"></i>
+          <span>Products</span>
+        </a>
+        <a href="users.html" class="menu-item">
+          <i class="fa-solid fa-users"></i>
+          <span>Users</span>
+        </a>
+        <a href="suppliers.html" class="menu-item active">
+          <i class="fa-solid fa-truck"></i>
+          <span>Suppliers</span>
+        </a>
+        <a href="inventory-logs.html" class="menu-item">
+          <i class="fa-solid fa-clipboard-list"></i>
+          <span>Inventory Logs</span>
+        </a>
+        <a href="daily-closing.html" class="menu-item">
+          <i class="fa-solid fa-key"></i>
+          <span>Daily Closing</span>
+        </a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <p class="role-title">Admin</p>
+        <p class="admin-name">Alif Hassan Abdillah</p>
+        <a href="index.html" class="btn-logout">Logout</a>
+      </div>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+      
+      <h1 class="page-title">Supplier</h1>
+
+      <!-- ACTION BAR -->
+      <div class="action-bar">
+        <div class="filter-group">
+          <div class="search-box">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" placeholder="Search supplier" class="search-input">
+          </div>
+          <select class="select-filter">
+            <option value="all">Status: All</option>
+            <option value="active">Active</option>
+            <option value="inactive">Inactive</option>
+          </select>
+        </div>
+
+        <button class="btn-add">
+          <i class="fa-solid fa-plus"></i>
+          <span>Add Supplier</span>
+        </button>
+      </div>
+
+      <!-- STATS GRID 3 COLUMNS -->
+      <section class="stats-grid-3">
+        <div class="stat-card">
+          <div>
+            <p class="stat-label">Total Supplier Registered</p>
+            <h2 class="stat-value">21 Suppliers</h2>
+          </div>
+          <div class="stat-icon">
+            <i class="fa-solid fa-truck"></i>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div>
+            <p class="stat-label">Supplier Active</p>
+            <h2 class="stat-value">15 Supplier</h2>
+          </div>
+          <div class="stat-icon">
+            <i class="fa-regular fa-circle-check"></i>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div>
+            <p class="stat-label">Supplier Inactive</p>
+            <h2 class="stat-value">0 Supplier</h2>
+          </div>
+          <div class="stat-icon">
+            <i class="fa-regular fa-circle-xmark"></i>
+          </div>
+        </div>
+      </section>
+
+      <!-- SUPPLIER LIST TABLE -->
+      <section class="table-card">
+        <div class="table-header">
+          <h2 class="table-title">Database Supplier Resmi</h2>
+        </div>
+
+        <div class="table-responsive">
+          <table class="supplier-table">
+            <thead>
+              <tr>
+                <th>Entry Code</th>
+                <th>Supplier Name</th>
+                <th>Contact</th>
+                <th>Address</th>
+                <th>Status</th>
+                <th style="text-align: center;">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>SPL-ASUS</strong></td>
+                <td><strong>PT. Asus Indonesia</strong></td>
+                <td>082122431234</td>
+                <td>Kuningan, Jakarta Selatan</td>
+                <td><span class="badge-status badge-active">Active</span></td>
+                <td style="text-align: center;"><button class="btn-more"><i class="fa-solid fa-ellipsis"></i></button></td>
+              </tr>
+              <tr>
+                <td><strong>SPL-LENOVO</strong></td>
+                <td><strong>PT. Lenovo Indonesia</strong></td>
+                <td>082122431235</td>
+                <td>Kelapa Gading, Jakarta Utara</td>
+                <td><span class="badge-status badge-active">Active</span></td>
+                <td style="text-align: center;"><button class="btn-more"><i class="fa-solid fa-ellipsis"></i></button></td>
+              </tr>
+              <tr>
+                <td><strong>SPL-LENOVO</strong></td>
+                <td><strong>PT. Lenovo Indonesia</strong></td>
+                <td>082122431235</td>
+                <td>Kelapa Gading, Jakarta Utara</td>
+                <td><span class="badge-status badge-active">Active</span></td>
+                <td style="text-align: center;"><button class="btn-more"><i class="fa-solid fa-ellipsis"></i></button></td>
+              </tr>
+              <tr>
+                <td><strong>SPL-LENOVO</strong></td>
+                <td><strong>PT. Lenovo Indonesia</strong></td>
+                <td>082122431235</td>
+                <td>Kelapa Gading, Jakarta Utara</td>
+                <td><span class="badge-status badge-active">Active</span></td>
+                <td style="text-align: center;"><button class="btn-more"><i class="fa-solid fa-ellipsis"></i></button></td>
+              </tr>
+              <tr>
+                <td><strong>SPL-LENOVO</strong></td>
+                <td><strong>PT. Lenovo Indonesia</strong></td>
+                <td>082122431235</td>
+                <td>Kelapa Gading, Jakarta Utara</td>
+                <td><span class="badge-status badge-active">Active</span></td>
+                <td style="text-align: center;"><button class="btn-more"><i class="fa-solid fa-ellipsis"></i></button></td>
+              </tr>
+              <tr>
+                <td><strong>SPL-LENOVO</strong></td>
+                <td><strong>PT. Lenovo Indonesia</strong></td>
+                <td>082122431235</td>
+                <td>Kelapa Gading, Jakarta Utara</td>
+                <td><span class="badge-status badge-active">Active</span></td>
+                <td style="text-align: center;"><button class="btn-more"><i class="fa-solid fa-ellipsis"></i></button></td>
+              </tr>
+              <tr>
+                <td><strong>SPL-LENOVO</strong></td>
+                <td><strong>PT. Lenovo Indonesia</strong></td>
+                <td>082122431235</td>
+                <td>Kelapa Gading, Jakarta Utara</td>
+                <td><span class="badge-status badge-active">Active</span></td>
+                <td style="text-align: center;"><button class="btn-more"><i class="fa-solid fa-ellipsis"></i></button></td>
+              </tr>
+              <tr>
+                <td><strong>SPL-LENOVO</strong></td>
+                <td><strong>PT. Lenovo Indonesia</strong></td>
+                <td>082122431235</td>
+                <td>Kelapa Gading, Jakarta Utara</td>
+                <td><span class="badge-status badge-active">Active</span></td>
+                <td style="text-align: center;"><button class="btn-more"><i class="fa-solid fa-ellipsis"></i></button></td>
+              </tr>
+              <tr>
+                <td><strong>SPL-LENOVO</strong></td>
+                <td><strong>PT. Lenovo Indonesia</strong></td>
+                <td>082122431235</td>
+                <td>Kelapa Gading, Jakarta Utara</td>
+                <td><span class="badge-status badge-active">Active</span></td>
+                <td style="text-align: center;"><button class="btn-more"><i class="fa-solid fa-ellipsis"></i></button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="table-footer">
+          <span class="showing-text">Showing 1-9 out of 11 Suppliers</span>
+          <div class="pagination">
+            <a href="#" class="page-btn">Previous</a>
+            <a href="#" class="page-btn active">1</a>
+            <a href="#" class="page-btn">2</a>
+            <a href="#" class="page-btn">Next</a>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+  </div>
+
+</body>
+</html>

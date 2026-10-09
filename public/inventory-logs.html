@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Inventory Log - Bandung Computer Admin</title>
+  
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- CSS Inventory Logs -->
+  <link rel="stylesheet" href="css/inventory-logs.css">
+</head>
+<body>
+
+  <div class="dashboard-container">
+    
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <img src="images/logo_bc.png" alt="Bandung Computer Logo" class="brand-logo">
+      </div>
+
+      <nav class="sidebar-menu">
+        <a href="overview.html" class="menu-item">
+          <i class="fa-solid fa-border-all"></i>
+          <span>Overview</span>
+        </a>
+        <a href="categories.html" class="menu-item">
+          <i class="fa-solid fa-tag"></i>
+          <span>Categories</span>
+        </a>
+        <a href="transactions.html" class="menu-item">
+          <i class="fa-solid fa-cart-shopping"></i>
+          <span>Transactions</span>
+        </a>
+        <a href="products.html" class="menu-item">
+          <i class="fa-solid fa-box"></i>
+          <span>Products</span>
+        </a>
+        <a href="users.html" class="menu-item">
+          <i class="fa-solid fa-users"></i>
+          <span>Users</span>
+        </a>
+        <a href="suppliers.html" class="menu-item">
+          <i class="fa-solid fa-truck"></i>
+          <span>Suppliers</span>
+        </a>
+        <a href="inventory-logs.html" class="menu-item active">
+          <i class="fa-solid fa-clipboard-list"></i>
+          <span>Inventory Logs</span>
+        </a>
+        <a href="daily-closing.html" class="menu-item">
+          <i class="fa-solid fa-key"></i>
+          <span>Daily Closing</span>
+        </a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <p class="role-title">Admin</p>
+        <p class="admin-name">Alif Hassan Abdillah</p>
+        <a href="index.html" class="btn-logout">Logout</a>
+      </div>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+      
+      <h1 class="page-title">Inventory Log</h1>
+
+      <!-- ACTION BAR -->
+      <div class="action-bar">
+        <div class="filter-group">
+          <div class="search-box">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" placeholder="Search inventory log" class="search-input">
+          </div>
+          <select class="select-filter">
+            <option value="all">All Types</option>
+            <option value="in">In</option>
+            <option value="out">Out</option>
+          </select>
+        </div>
+
+        <button class="btn-add">
+          <i class="fa-solid fa-plus"></i>
+          <span>Add Inventory Log</span>
+        </button>
+      </div>
+
+      <!-- STATS GRID 3 COLUMNS -->
+      <section class="stats-grid-3">
+        <div class="stat-card">
+          <div>
+            <p class="stat-label">Total Stock In</p>
+            <h2 class="stat-value">120 Units</h2>
+          </div>
+          <div class="stat-icon">
+            <i class="fa-solid fa-arrow-rotate-right"></i>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div>
+            <p class="stat-label">Supplier Active</p>
+            <h2 class="stat-value">85 Units</h2>
+          </div>
+          <div class="stat-icon">
+            <i class="fa-solid fa-arrow-rotate-right"></i>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div>
+            <p class="stat-label">Total Log Activity</p>
+            <h2 class="stat-value">16 Total Logs</h2>
+          </div>
+          <div class="stat-icon">
+            <i class="fa-solid fa-rotate-left"></i>
+          </div>
+        </div>
+      </section>
+
+      <!-- INVENTORY MOVEMENT HISTORY LIST TABLE -->
+      <section class="table-card">
+        <div class="table-header">
+          <h2 class="table-title">Inventory Movement History List</h2>
+        </div>
+
+        <div class="table-responsive">
+          <table class="inventory-table">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Product Name</th>
+                <th>Type</th>
+                <th>Supplier</th>
+                <th>Quantity</th>
+                <th>Note</th>
+                <th style="text-align: center;">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>11 Sep 2026</td>
+                <td><strong>ASUS ROG Zephyrus G14 Black Edition</strong></td>
+                <td><span class="badge-type badge-in">In</span></td>
+                <td><strong>PT. Asus Indonesia</strong></td>
+                <td>10</td>
+                <td class="note-cell">fksfisfjiasfjijsdifjsiaodfjasoifjasiodfjasoifdjasodifjasidf</td>
+                <td style="text-align: center;"><button class="btn-more"><i class="fa-solid fa-ellipsis"></i></button></td>
+              </tr>
+              <tr>
+                <td>12 Oct 2026</td>
+                <td><strong>ASUS ROG Zephyrus G14 Black Edition</strong></td>
+                <td><span class="badge-type badge-in">In</span></td>
+                <td><strong>PT. Asus Indonesia</strong></td>
+                <td>10</td>
+                <td class="note-cell">fksfisfjiasfjijsdifjsiaodfjasoifjasiodfjasoifdjasodifjasidf</td>
+                <td style="text-align: center;"><button class="btn-more"><i class="fa-solid fa-ellipsis"></i></button></td>
+              </tr>
+              <tr>
+                <td>12 Oct 2026</td>
+                <td><strong>ASUS ROG Zephyrus G14 Black Edition</strong></td>
+                <td><span class="badge-type badge-in">In</span></td>
+                <td><strong>PT. Asus Indonesia</strong></td>
+                <td>10</td>
+                <td class="note-cell">fksfisfjiasfjijsdifjsiaodfjasoifjasiodfjasoifdjasodifjasidf</td>
+                <td style="text-align: center;"><button class="btn-more"><i class="fa-solid fa-ellipsis"></i></button></td>
+              </tr>
+              <tr>
+                <td>12 Oct 2026</td>
+                <td><strong>ASUS ROG Zephyrus G14 Black Edition</strong></td>
+                <td><span class="badge-type badge-in">In</span></td>
+                <td><strong>PT. Asus Indonesia</strong></td>
+                <td>10</td>
+                <td class="note-cell">fksfisfjiasfjijsdifjsiaodfjasoifjasiodfjasoifdjasodifjasidf</td>
+                <td style="text-align: center;"><button class="btn-more"><i class="fa-solid fa-ellipsis"></i></button></td>
+              </tr>
+              <tr>
+                <td>12 Oct 2026</td>
+                <td><strong>ASUS ROG Zephyrus G14 Black Edition</strong></td>
+                <td><span class="badge-type badge-in">In</span></td>
+                <td><strong>PT. Asus Indonesia</strong></td>
+                <td>10</td>
+                <td class="note-cell">fksfisfjiasfjijsdifjsiaodfjasoifjasiodfjasoifdjasodifjasidf</td>
+                <td style="text-align: center;"><button class="btn-more"><i class="fa-solid fa-ellipsis"></i></button></td>
+              </tr>
+              <tr>
+                <td>12 Oct 2026</td>
+                <td><strong>ASUS ROG Zephyrus G14 Black Edition</strong></td>
+                <td><span class="badge-type badge-in">In</span></td>
+                <td><strong>PT. Asus Indonesia</strong></td>
+                <td>10</td>
+                <td class="note-cell">fksfisfjiasfjijsdifjsiaodfjasoifjasiodfjasoifdjasodifjasidf</td>
+                <td style="text-align: center;"><button class="btn-more"><i class="fa-solid fa-ellipsis"></i></button></td>
+              </tr>
+              <tr>
+                <td>12 Oct 2026</td>
+                <td><strong>ASUS ROG Zephyrus G14 Black Edition</strong></td>
+                <td><span class="badge-type badge-in">In</span></td>
+                <td><strong>PT. Asus Indonesia</strong></td>
+                <td>10</td>
+                <td class="note-cell">fksfisfjiasfjijsdifjsiaodfjasoifjasiodfjasoifdjasodifjasidf</td>
+                <td style="text-align: center;"><button class="btn-more"><i class="fa-solid fa-ellipsis"></i></button></td>
+              </tr>
+              <tr>
+                <td>12 Oct 2026</td>
+                <td><strong>ASUS ROG Zephyrus G14 Black Edition</strong></td>
+                <td><span class="badge-type badge-in">In</span></td>
+                <td><strong>PT. Asus Indonesia</strong></td>
+                <td>10</td>
+                <td class="note-cell">fksfisfjiasfjijsdifjsiaodfjasoifjasiodfjasoifdjasodifjasidf</td>
+                <td style="text-align: center;"><button class="btn-more"><i class="fa-solid fa-ellipsis"></i></button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="table-footer">
+          <span class="showing-text">Showing 1-8 out of 16 Inventory Log</span>
+          <div class="pagination">
+            <a href="#" class="page-btn">Previous</a>
+            <a href="#" class="page-btn active">1</a>
+            <a href="#" class="page-btn">2</a>
+            <a href="#" class="page-btn">Next</a>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+  </div>
+
+</body>
+</html>

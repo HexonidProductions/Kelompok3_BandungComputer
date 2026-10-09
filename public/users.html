@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Users - Bandung Computer Admin</title>
+  
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- CSS Users -->
+  <link rel="stylesheet" href="css/users.css">
+</head>
+<body>
+
+  <div class="dashboard-container">
+    
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <img src="images/logo_bc.png" alt="Bandung Computer Logo" class="brand-logo">
+      </div>
+
+      <nav class="sidebar-menu">
+        <a href="overview.html" class="menu-item">
+          <i class="fa-solid fa-border-all"></i>
+          <span>Overview</span>
+        </a>
+        <a href="categories.html" class="menu-item">
+          <i class="fa-solid fa-tag"></i>
+          <span>Categories</span>
+        </a>
+        <a href="transactions.html" class="menu-item">
+          <i class="fa-solid fa-cart-shopping"></i>
+          <span>Transactions</span>
+        </a>
+        <a href="products.html" class="menu-item">
+          <i class="fa-solid fa-box"></i>
+          <span>Products</span>
+        </a>
+        <a href="users.html" class="menu-item active">
+          <i class="fa-solid fa-users"></i>
+          <span>Users</span>
+        </a>
+        <a href="suppliers.html" class="menu-item">
+          <i class="fa-solid fa-truck"></i>
+          <span>Suppliers</span>
+        </a>
+        <a href="inventory-logs.html" class="menu-item">
+          <i class="fa-solid fa-clipboard-list"></i>
+          <span>Inventory Logs</span>
+        </a>
+        <a href="daily-closing.html" class="menu-item">
+          <i class="fa-solid fa-key"></i>
+          <span>Daily Closing</span>
+        </a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <p class="role-title">Admin</p>
+        <p class="admin-name">Alif Hassan Abdillah</p>
+        <a href="index.html" class="btn-logout">Logout</a>
+      </div>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+      
+      <h1 class="page-title">Users</h1>
+
+      <!-- ACTION BAR -->
+      <div class="action-bar">
+        <div class="filter-group">
+          <div class="search-box">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" placeholder="Search username" class="search-input">
+          </div>
+          <select class="select-filter">
+            <option value="all">Role: All</option>
+            <option value="admin">Admin</option>
+            <option value="cashier">Cashier</option>
+            <option value="customer">Customer</option>
+          </select>
+        </div>
+
+        <button class="btn-add">
+          <i class="fa-solid fa-plus"></i>
+          <span>Add User</span>
+        </button>
+      </div>
+
+      <!-- USER LIST TABLE -->
+      <section class="table-card">
+        <div class="table-header">
+          <h2 class="table-title">User List</h2>
+        </div>
+
+        <div class="table-responsive">
+          <table class="user-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Password</th>
+                <th>Phone Number</th>
+                <th>Address</th>
+                <th>Role</th>
+                <th style="text-align: center;">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Muhammad Aditya Nugroho</strong></td>
+                <td>muhammadadityanugroho@gmail.com</td>
+                <td class="password-cell">$2y$12$89aJSmMrlbaXAKlvkndyyurYIJ1T4NOsBg8TULcE0Nl.</td>
+                <td>082344231039</td>
+                <td>JL. Merdeka 1</td>
+                <td>Customer</td>
+                <td style="text-align: center;"><button class="btn-more"><i class="fa-solid fa-ellipsis"></i></button></td>
+              </tr>
+              <tr>
+                <td><strong>Muhammad Zidan</strong></td>
+                <td>muhammadzidan@gmail.com</td>
+                <td class="password-cell">$2y$12$89aJSmMrlbaXAKlvkndyyurYIJ1T4NOsBg8TULcE0Nl.</td>
+                <td>082654231039</td>
+                <td>JL. Merdeka 1</td>
+                <td>Cashier</td>
+                <td style="text-align: center;"><button class="btn-more"><i class="fa-solid fa-ellipsis"></i></button></td>
+              </tr>
+              <tr>
+                <td><strong>Alif Hassan Abdillah</strong></td>
+                <td>alifhassanabdillah@gmail.com</td>
+                <td class="password-cell">$2y$12$89aJSmMrlbaXAKlvkndyyurYIJ1T4NOsBg8TULcE0Nl.</td>
+                <td>082122722134</td>
+                <td>JL. Karang Anyar 2</td>
+                <td>Admin</td>
+                <td style="text-align: center;"><button class="btn-more"><i class="fa-solid fa-ellipsis"></i></button></td>
+              </tr>
+              <tr>
+                <td><strong>Muhammad Zaidan Rafif Khalid</strong></td>
+                <td>alifhassanabdillah@gmail.com</td>
+                <td class="password-cell">$2y$12$89aJSmMrlbaXAKlvkndyyurYIJ1T4NOsBg8TULcE0Nl.</td>
+                <td>082122722134</td>
+                <td>JL. Karang Anyar 2</td>
+                <td>Admin</td>
+                <td style="text-align: center;"><button class="btn-more"><i class="fa-solid fa-ellipsis"></i></button></td>
+              </tr>
+              <tr>
+                <td><strong>Muhammad Zaidan Rafif Khalid</strong></td>
+                <td>alifhassanabdillah@gmail.com</td>
+                <td class="password-cell">$2y$12$89aJSmMrlbaXAKlvkndyyurYIJ1T4NOsBg8TULcE0Nl.</td>
+                <td>082122722134</td>
+                <td>JL. Karang Anyar 2</td>
+                <td>Admin</td>
+                <td style="text-align: center;"><button class="btn-more"><i class="fa-solid fa-ellipsis"></i></button></td>
+              </tr>
+              <tr>
+                <td><strong>Muhammad Zaidan Rafif Khalid</strong></td>
+                <td>alifhassanabdillah@gmail.com</td>
+                <td class="password-cell">$2y$12$89aJSmMrlbaXAKlvkndyyurYIJ1T4NOsBg8TULcE0Nl.</td>
+                <td>082122722134</td>
+                <td>JL. Karang Anyar 2</td>
+                <td>Admin</td>
+                <td style="text-align: center;"><button class="btn-more"><i class="fa-solid fa-ellipsis"></i></button></td>
+              </tr>
+              <tr>
+                <td><strong>Muhammad Zaidan Rafif Khalid</strong></td>
+                <td>alifhassanabdillah@gmail.com</td>
+                <td class="password-cell">$2y$12$89aJSmMrlbaXAKlvkndyyurYIJ1T4NOsBg8TULcE0Nl.</td>
+                <td>082122722134</td>
+                <td>JL. Karang Anyar 2</td>
+                <td>Admin</td>
+                <td style="text-align: center;"><button class="btn-more"><i class="fa-solid fa-ellipsis"></i></button></td>
+              </tr>
+              <tr>
+                <td><strong>Muhammad Zaidan Rafif Khalid</strong></td>
+                <td>alifhassanabdillah@gmail.com</td>
+                <td class="password-cell">$2y$12$89aJSmMrlbaXAKlvkndyyurYIJ1T4NOsBg8TULcE0Nl.</td>
+                <td>082122722134</td>
+                <td>JL. Karang Anyar 2</td>
+                <td>Admin</td>
+                <td style="text-align: center;"><button class="btn-more"><i class="fa-solid fa-ellipsis"></i></button></td>
+              </tr>
+              <tr>
+                <td><strong>Muhammad Zaidan Rafif Khalid</strong></td>
+                <td>alifhassanabdillah@gmail.com</td>
+                <td class="password-cell">$2y$12$89aJSmMrlbaXAKlvkndyyurYIJ1T4NOsBg8TULcE0Nl.</td>
+                <td>082122722134</td>
+                <td>JL. Karang Anyar 2</td>
+                <td>Admin</td>
+                <td style="text-align: center;"><button class="btn-more"><i class="fa-solid fa-ellipsis"></i></button></td>
+              </tr>
+              <tr>
+                <td><strong>Muhammad Zaidan Rafif Khalid</strong></td>
+                <td>alifhassanabdillah@gmail.com</td>
+                <td class="password-cell">$2y$12$89aJSmMrlbaXAKlvkndyyurYIJ1T4NOsBg8TULcE0Nl.</td>
+                <td>082122722134</td>
+                <td>JL. Karang Anyar 2</td>
+                <td>Admin</td>
+                <td style="text-align: center;"><button class="btn-more"><i class="fa-solid fa-ellipsis"></i></button></td>
+              </tr>
+              <tr>
+                <td><strong>Muhammad Zaidan Rafif Khalid</strong></td>
+                <td>alifhassanabdillah@gmail.com</td>
+                <td class="password-cell">$2y$12$89aJSmMrlbaXAKlvkndyyurYIJ1T4NOsBg8TULcE0Nl.</td>
+                <td>082122722134</td>
+                <td>JL. Karang Anyar 2</td>
+                <td>Admin</td>
+                <td style="text-align: center;"><button class="btn-more"><i class="fa-solid fa-ellipsis"></i></button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="table-footer">
+          <span class="showing-text">Showing 1-1 out of 4 Users</span>
+          <div class="pagination">
+            <a href="#" class="page-btn">Previous</a>
+            <a href="#" class="page-btn active">1</a>
+            <a href="#" class="page-btn">2</a>
+            <a href="#" class="page-btn">Next</a>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+  </div>
+
+</body>
+</html>
