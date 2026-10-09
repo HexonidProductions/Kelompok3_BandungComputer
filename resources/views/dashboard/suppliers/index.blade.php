@@ -201,14 +201,8 @@
                                 class="w-full h-10 border border-slate-200 rounded-lg px-3.5 text-xs text-slate-700 focus:outline-none focus:ring-0 focus:border-slate-300">
                         </div>
 
-                        <div>
-                            <label class="block text-xs font-semibold text-slate-700 mb-1">Address</label>
-                            <input type="text" name="address" required placeholder="Enter address" value="{{ old('address') }}"
-                                class="w-full h-10 border border-slate-200 rounded-lg px-3.5 text-xs text-slate-700 focus:outline-none focus:ring-0 focus:border-slate-300">
-                        </div>
-
-                        <!-- Status Dropdown Add Modal (Fix Box + Animasi Dua Arah) -->
-                        <div x-data="{ createStatusOpen: false, createStatusValue: '', createStatusName: 'Select status' }" class="relative md:col-span-2">
+                        <!-- Status Dropdown Add Modal (Posisi Ditukar ke Atas Address) -->
+                        <div x-data="{ createStatusOpen: false, createStatusValue: '', createStatusName: 'Select status' }" class="relative">
                             <label class="block text-xs font-semibold text-slate-700 mb-1">Status</label>
                             <input type="hidden" name="status" x-model="createStatusValue" required>
                             
@@ -231,6 +225,14 @@
                                     </div>
                                 </div>
                             </div>
+                        </div>
+
+                        <!-- Address (Posisi Ditukar Menjadi di Bawah Status, Dibuat Span Full md:col-span-2 atau Sejajar Sesuai Kebutuhan) -->
+                        <!-- Address (Dibuat lebih panjang ke bawah menggunakan textarea dan rows) -->
+                        <div class="relative md:col-span-2">
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Address</label>
+                                <textarea name="address" rows="3" required placeholder="Enter address"
+                                class="w-full border border-slate-200 rounded-lg p-3 text-xs text-slate-700 focus:outline-none focus:ring-0 focus:border-slate-300 resize-none">{{ old('address') }}</textarea>
                         </div>
                     </div>
 
@@ -275,14 +277,8 @@
                                 class="w-full h-10 px-3.5 border border-slate-200 rounded-lg text-xs text-slate-700 bg-white focus:outline-none focus:ring-0 focus:border-slate-300">
                         </div>
 
-                        <div>
-                            <label class="block text-xs font-semibold text-slate-700 mb-1">Address</label>
-                            <input type="text" name="address" x-model="selectedSupplier.address" required 
-                                class="w-full h-10 px-3.5 border border-slate-200 rounded-lg text-xs text-slate-700 bg-white focus:outline-none focus:ring-0 focus:border-slate-300">
-                        </div>
-
-                        <!-- Status Dropdown Edit Modal (Fix Box + Animasi Dua Arah) -->
-                        <div x-data="{ editStatusOpen: false }" class="relative md:col-span-2">
+                        <!-- Status Dropdown Edit Modal (Posisi Ditukar ke Atas Address) -->
+                        <div x-data="{ editStatusOpen: false }" class="relative">
                             <label class="block text-xs font-semibold text-slate-700 mb-1">Status</label>
                             <input type="hidden" name="status" x-model="selectedSupplier.status" required>
                             
@@ -305,6 +301,13 @@
                                     </div>
                                 </div>
                             </div>
+                        </div>
+
+                        <!-- Address (Posisi Ditukar Menjadi di Bawah Status) -->
+                        <div class="relative md:col-span-2">
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Address</label>
+                            <textarea type="text" name="address" rows="3" x-model="selectedSupplier.address" required 
+                            class="w-full border border-slate-200 rounded-lg p-3 text-xs text-slate-700 focus:outline-none focus:ring-0 focus:border-slate-300 resize-none"></textarea>
                         </div>
                     </div>
 
