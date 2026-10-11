@@ -22,7 +22,7 @@ Route::get('/login', function () {
 //     return view('dashboard.overview.index');
 // })->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::middleware('auth')->group(function () {
+Route::middleware(['auth', 'prevent-back-history'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::resource('/daily-closings', DailyClosingController::class);
     Route::resource('/categories', CategoryController::class)->except(['create', 'edit', 'show']);
