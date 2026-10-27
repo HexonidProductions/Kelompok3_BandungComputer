@@ -30,30 +30,30 @@
         <span>Categories</span>
     </a>
     
-    <a href="#" class="menu-item">
+    <a href="{{ route('transactions') }}" class="menu-item">
         <i class="fa-solid fa-cart-shopping"></i>
         <span>Transactions</span>
     </a>
-    <a href="#" class="menu-item">
-        <i class="fa-solid fa-box"></i>
-        <span>Products</span>
-    </a>
-    <a href="#" class="menu-item">
-        <i class="fa-solid fa-users"></i>
-        <span>Users</span>
-    </a>
-    <a href="#" class="menu-item">
-        <i class="fa-solid fa-truck-field"></i>
-        <span>Suppliers</span>
-    </a>
-    <a href="#" class="menu-item">
-        <i class="fa-solid fa-receipt"></i>
-        <span>Inventory Logs</span>
-    </a>
-    <a href="#" class="menu-item">
-        <i class="fa-solid fa-key"></i>
-        <span>Daily Closing</span>
-    </a>
+    <a href="{{ route('products') }}" class="menu-item">
+    <i class="fa-solid fa-box"></i>
+    <span>Products</span>
+</a>
+    <a href="{{ route('users') }}" class="menu-item">
+    <i class="fa-solid fa-users"></i>
+    <span>Users</span>
+</a>
+   <a href="{{ route('suppliers') }}" class="menu-item">
+    <i class="fa-solid fa-truck-field"></i>
+    <span>Suppliers</span>
+</a>
+    <a href="{{ route('inventory.logs') }}" class="menu-item">
+    <i class="fa-solid fa-receipt"></i>
+    <span>Inventory Logs</span>
+</a>
+   <a href="{{ route('daily.closing') }}" class="menu-item">
+    <i class="fa-solid fa-key"></i>
+    <span>Daily Closing</span>
+</a>
 </nav>
 
             <div class="sidebar-footer">

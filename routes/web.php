@@ -24,3 +24,33 @@ Route::get('/', function () {
 Route::get('/categories', function () {
     return view('categories');
 })->name('categories');
+
+// Route Halaman Transactions
+Route::get('/transactions', function () {
+    return view('transactions');
+})->name('transactions');
+
+// Route Halaman Products
+Route::get('/products', function () {
+    return view('products');
+})->name('products');
+
+// Route Halaman Users
+Route::get('/users', function () {
+    return view('users');
+})->name('users');
+
+// Route Halaman Suppliers
+Route::get('/suppliers', function () {
+    return view('suppliers');
+})->name('suppliers');
+
+// Route Halaman Inventory Logs
+Route::get('/inventory-logs', function () {
+    return view('inventory-logs');
+})->name('inventory.logs');
+
+// Route Halaman Daily Closing
+Route::get('/daily-closing', function () {
+    return view('daily-closing');
+})->name('daily.closing');
