@@ -18,7 +18,6 @@ class ProductController extends Controller
         $status = $request->input('status');
         $categories = Category::all();
 
-
         // Query Produk dengan Filter
         $products = Product::with('category')
             ->when($search, function ($query, $search) {
@@ -50,6 +49,7 @@ class ProductController extends Controller
             'buy_price'    => 'required|numeric',
             'sell_price'   => 'required|numeric',
             'stock'        => 'required|integer',
+            'status'       => 'nullable|in:Available,Low stock,Out of stock,Inden',
             'image'        => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
         ]);
 
@@ -58,11 +58,11 @@ class ProductController extends Controller
             $imagePath = $request->file('image')->store('products', 'public');
         }
 
-        // Penentuan status otomatis berdasarkan stok (atau bisa disesuaikan)
-        $status = 'Available';
+        // Penentuan status otomatis berdasarkan stok, atau menggunakan input manual jika ada
+        $status = $request->status ?? 'Available';
         if ($request->stock == 0) {
             $status = 'Out of stock';
-        } elseif ($request->stock <= 5) { // Contoh ambang batas Low stock
+        } elseif ($request->stock <= 5 && $status !== 'Inden') {
             $status = 'Low stock';
         }
 
@@ -94,6 +94,7 @@ class ProductController extends Controller
             'buy_price'    => 'required|numeric',
             'sell_price'   => 'required|numeric',
             'stock'        => 'required|integer',
+            'status'       => 'nullable|in:Available,Low stock,Out of stock,Inden',
             'image'        => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
         ]);
 
@@ -105,10 +106,11 @@ class ProductController extends Controller
             $imagePath = $request->file('image')->store('products', 'public');
         }
 
-        $status = 'Available';
+        // Penentuan status otomatis berdasarkan stok, namun tetap menghormati status 'Inden' atau input manual
+        $status = $request->status ?? $product->status;
         if ($request->stock == 0) {
             $status = 'Out of stock';
-        } elseif ($request->stock <= 5) {
+        } elseif ($request->stock <= 5 && $status !== 'Inden') {
             $status = 'Low stock';
         }
 

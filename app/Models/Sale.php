@@ -12,7 +12,7 @@ class Sale extends Model
         'receipt_number',
         'sale_type',
         'admin_id',
-        'customer_id',
+        'customer_name',
         'shipping_address',
         'payment_method',
         'total_amount',
@@ -28,11 +28,6 @@ class Sale extends Model
     public function admin()
     {
         return $this->belongsTo(User::class, 'admin_id');
-    }
-
-    public function customer()
-    {
-        return $this->belongsTo(User::class, 'customer_id');
     }
 
     public function items()

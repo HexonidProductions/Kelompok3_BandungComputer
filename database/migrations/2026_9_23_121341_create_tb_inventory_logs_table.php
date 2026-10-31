@@ -14,9 +14,9 @@ return new class extends Migration
         Schema::create('tb_inventory_logs', function (Blueprint $table) {
             $table->id();
             $table->foreignId('product_id')->constrained('tb_products')->onDelete('cascade');
-            $table->foreignId('supplier_id')->nullable()->constrained('tb_stock_entries')->onDelete('set null');
+            $table->foreignId('supplier_id')->nullable()->constrained('tb_stock_entries')->onDelete('set null'); // Pastikan nama tabel supplier sudah sesuai
             $table->string('customer_name')->nullable();
-            $table->enum('type', ['in', 'out']);
+            $table->enum('type', ['in', 'out', 'return']);
             $table->integer('quantity');
             $table->string('notes')->nullable();
             $table->timestamps();

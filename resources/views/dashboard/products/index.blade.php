@@ -44,6 +44,8 @@
                                 Status: Available
                             @elseif(request('status') == 'Low stock')
                                 Status: Low stock
+                            @elseif(request('status') == 'Inden')
+                                Status: Inden
                             @elseif(request('status') == 'Out of stock')
                                 Status: Out of stock
                             @else
@@ -68,6 +70,8 @@
                                     Status: Available
                                 @elseif(request('status') == 'Low stock')
                                     Status: Low stock
+                                @elseif(request('status') == 'Inden')
+                                    Status: Inden
                                 @elseif(request('status') == 'Out of stock')
                                     Status: Out of stock
                                 @else
@@ -93,6 +97,10 @@
                             <a href="{{ request()->fullUrlWithQuery(['status' => 'Low stock']) }}" 
                                 class="block px-3 py-2.5 transition-colors {{ request('status') == 'Low stock' ? 'font-semibold' : null }}">
                                 Status: Low stock
+                            </a>
+                            <a href="{{ request()->fullUrlWithQuery(['status' => 'Inden']) }}" 
+                                class="block px-3 py-2.5 transition-colors {{ request('status') == 'Inden' ? 'font-semibold' : null }}">
+                                Status: Inden
                             </a>
                             <a href="{{ request()->fullUrlWithQuery(['status' => 'Out of stock']) }}" 
                                 class="block px-3 py-2.5 transition-colors {{ request('status') == 'Out of stock' ? 'font-semibold' : null }}">
@@ -171,6 +179,10 @@
                                     <span class="inline-block px-3 py-1 rounded-md text-[11px] font-semibold border-2 border-[#F59E0B] text-[#000000] bg-white">
                                         Low stock
                                     </span>
+                                @elseif($product->status === 'Inden')
+                                    <span class="inline-block px-3 py-1 rounded-md text-[11px] font-semibold border-2 border-[#2563EB] text-[#000000] bg-white">
+                                        Inden
+                                    </span>
                                 @else
                                     <span class="inline-block px-3 py-1 rounded-md text-[11px] font-semibold border-2 border-[#DC2626] text-[#000000] bg-white">
                                         Out of stock
@@ -223,7 +235,7 @@
         <div x-show="createOpen" 
             x-cloak
             class="fixed inset-0 z-50 flex items-center justify-center bg-white/10 backdrop-blur-[1px] p-4 transition-all"
-            x-data="{ categoryOpen: false, selectedCategoryName: 'Select Product Category', categoryId: '' }">
+            x-data="{ categoryOpen: false, selectedCategoryName: 'Select Product Category', categoryId: '', statusOpen: false, selectedStatus: 'Available' }">
             
             <div class="bg-white rounded-2xl shadow-2xl w-full max-w-2xl p-6 relative max-h-[90vh] overflow-y-auto" @click.away="createOpen = false">
                 <!-- Header -->
@@ -310,6 +322,42 @@
                         </div>
                     </div>
 
+                    <!-- Status Dropdown (Memanjang Horizontal Penuh di bawah Buy & Sell Price) -->
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 mb-1">Status</label>
+                        <input type="hidden" name="status" x-model="selectedStatus" required>
+                        
+                        <div class="relative w-full" @click.away="statusOpen = false">
+                            <button type="button" 
+                                @click="statusOpen = !statusOpen" 
+                                class="w-full h-10 inline-flex items-center justify-between border border-slate-200 rounded-lg text-xs bg-white px-3.5 text-slate-700 focus:outline-none cursor-pointer">
+                                <span x-text="selectedStatus"></span>
+                                <img src="{{ asset('icons/Vector_option_arrow.png') }}" 
+                                    alt="Arrow" 
+                                    class="w-2.5 h-2.5 object-contain"
+                                    :class="statusOpen ? 'rotate-180' : 'rotate-0'">
+                            </button>
+
+                            <div x-show="statusOpen" 
+                                x-cloak
+                                class="absolute top-0 left-0 right-0 bg-white border border-slate-200 rounded-lg shadow-lg z-50 text-xs text-slate-700">
+                                <div @click="statusOpen = !statusOpen" class="h-10 flex items-center justify-between px-3.5 cursor-pointer">
+                                    <span x-text="selectedStatus"></span>
+                                    <img src="{{ asset('icons/Vector_option_arrow.png') }}" 
+                                        alt="Arrow" 
+                                        class="w-2.5 h-2.5 object-contain" 
+                                        :class="statusOpen ? 'rotate-180' : 'rotate-0'">
+                                </div>
+                                <div class="py-1 border-slate-100">
+                                    <div @click="selectedStatus = 'Available'; statusOpen = false;" class="px-3.5 py-2.5 transition-colors cursor-pointer" :class="selectedStatus == 'Available' ? 'font-semibold' : ''">Available</div>
+                                    <div @click="selectedStatus = 'Low stock'; statusOpen = false;" class="px-3.5 py-2.5 transition-colors cursor-pointer" :class="selectedStatus == 'Low stock' ? 'font-semibold' : ''">Low stock</div>
+                                    <div @click="selectedStatus = 'Inden'; statusOpen = false;" class="px-3.5 py-2.5 transition-colors cursor-pointer" :class="selectedStatus == 'Inden' ? 'font-semibold' : ''">Inden</div>
+                                    <div @click="selectedStatus = 'Out of stock'; statusOpen = false;" class="px-3.5 py-2.5 transition-colors cursor-pointer" :class="selectedStatus == 'Out of stock' ? 'font-semibold' : ''">Out of stock</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
                         <!-- Product Description -->
                         <div>
@@ -353,7 +401,7 @@
         <div x-show="editOpen" 
             x-cloak
             class="fixed inset-0 z-50 flex items-center justify-center bg-white/10 backdrop-blur-[1px] p-4 transition-all"
-            x-data="{ editCategoryOpen: false }">
+            x-data="{ editCategoryOpen: false, editStatusOpen: false }">
             
             <div class="bg-white rounded-2xl shadow-2xl w-full max-w-2xl p-6 relative max-h-[90vh] overflow-y-auto" @click.away="editOpen = false">
                 <!-- Header -->
@@ -426,7 +474,7 @@
                                     <div class="py-1 border-slate-100 max-h-48 overflow-y-auto">
                                         @foreach($categories ?? [] as $cat)
                                             <div @click="selectedProduct.category_id = '{{ $cat->id }}'; editCategoryOpen = false;" 
-                                                class="px-3.5 py-2.5 transition-colors cursor-pointer hover:bg-slate-50"
+                                                class="px-3.5 py-2.5 transition-colors cursor-pointer"
                                                 :class="selectedProduct.category_id == '{{ $cat->id }}' ? 'font-semibold' : ''">
                                                 {{ $cat->category_name ?? $cat->name }}
                                             </div>
@@ -455,6 +503,42 @@
                             <label class="block text-xs font-semibold text-slate-700 mb-1">Sell Price</label>
                             <input type="number" name="sell_price" x-model="selectedProduct.sell_price" min="0" required 
                                 class="w-full h-10 px-3.5 border border-slate-200 rounded-lg text-xs text-slate-700 focus:outline-none focus:ring-0 focus:border-slate-300 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none">
+                        </div>
+                    </div>
+
+                    <!-- Status Dropdown (Memanjang Horizontal Penuh di bawah Buy & Sell Price) -->
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 mb-1">Status</label>
+                        <input type="hidden" name="status" x-model="selectedProduct.status" required>
+                        
+                        <div class="relative w-full" @click.away="editStatusOpen = false">
+                            <button type="button" 
+                                @click="editStatusOpen = !editStatusOpen" 
+                                class="w-full h-10 inline-flex items-center justify-between border border-slate-200 rounded-lg text-xs bg-white px-3.5 text-slate-700 focus:outline-none cursor-pointer">
+                                <span x-text="selectedProduct.status || 'Select Status'"></span>
+                                <img src="{{ asset('icons/Vector_option_arrow.png') }}" 
+                                    alt="Arrow" 
+                                    class="w-2.5 h-2.5 object-contain"
+                                    :class="editStatusOpen ? 'rotate-180' : 'rotate-0'">
+                            </button>
+
+                            <div x-show="editStatusOpen" 
+                                x-cloak
+                                class="absolute top-0 left-0 right-0 bg-white border border-slate-200 rounded-lg shadow-lg z-50 text-xs text-slate-700">
+                                <div @click="editStatusOpen = !editStatusOpen" class="h-10 flex items-center justify-between px-3.5 cursor-pointer">
+                                    <span x-text="selectedProduct.status || 'Select Status'"></span>
+                                    <img src="{{ asset('icons/Vector_option_arrow.png') }}" 
+                                        alt="Arrow" 
+                                        class="w-2.5 h-2.5 object-contain" 
+                                        :class="editStatusOpen ? 'rotate-180' : 'rotate-0'">
+                                </div>
+                                <div class="py-1 border-slate-100">
+                                    <div @click="selectedProduct.status = 'Available'; editStatusOpen = false;" class="px-3.5 py-2.5 transition-colors cursor-pointer" :class="selectedProduct.status == 'Available' ? 'font-semibold' : ''">Available</div>
+                                    <div @click="selectedProduct.status = 'Low stock'; editStatusOpen = false;" class="px-3.5 py-2.5 transition-colors cursor-pointer" :class="selectedProduct.status == 'Low stock' ? 'font-semibold' : ''">Low stock</div>
+                                    <div @click="selectedProduct.status = 'Inden'; editStatusOpen = false;" class="px-3.5 py-2.5 transition-colors cursor-pointer" :class="selectedProduct.status == 'Inden' ? 'font-semibold' : ''">Inden</div>
+                                    <div @click="selectedProduct.status = 'Out of stock'; editStatusOpen = false;" class="px-3.5 py-2.5 transition-colors cursor-pointer" :class="selectedProduct.status == 'Out of stock' ? 'font-semibold' : ''">Out of stock</div>
+                                </div>
+                            </div>
                         </div>
                     </div>
 

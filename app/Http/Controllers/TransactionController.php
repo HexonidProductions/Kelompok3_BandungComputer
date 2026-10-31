@@ -22,16 +22,14 @@ class TransactionController extends Controller
         $search = trim($request->input('search'));
         $status = $request->input('status'); 
 
-        $transactions = Sale::with(['admin', 'customer', 'items.product'])
+        $transactions = Sale::with(['admin', 'items.product'])
             ->when($search, function ($query) use ($search) {
                 return $query->where(function ($q) use ($search) {
                     $q->where('receipt_number', 'LIKE', '%' . $search . '%')
-                        ->orWhereHas('customer', function ($customerQuery) use ($search) {
-                        $customerQuery->where('name', 'LIKE', '%' . $search . '%');
-                    })
+                        ->orWhere('customer_name', 'LIKE', '%' . $search . '%')
                         ->orWhereHas('admin', function ($adminQuery) use ($search) {
-                        $adminQuery->where('name', 'LIKE', '%' . $search . '%');
-                    });
+                            $adminQuery->where('name', 'LIKE', '%' . $search . '%');
+                        });
                 });
             })
             ->when($status, function ($query, $status) {
@@ -43,10 +41,9 @@ class TransactionController extends Controller
             ->withQueryString();
 
         $admins = User::whereIn('role', ['admin', 'cashier'])->get();
-        $customers = User::where('role', 'customer')->get();
         $products = Product::all();
 
-        return view('dashboard.transactions.index', compact('transactions', 'admins', 'customers', 'products'));
+        return view('dashboard.transactions.index', compact('transactions', 'admins', 'products'));
     }
 
     /**
@@ -62,7 +59,7 @@ class TransactionController extends Controller
             'receipt_number'   => 'required|string|unique:tb_sales,receipt_number',
             'sale_type'        => 'required|in:Offline,Online',
             'admin_id'         => 'nullable|exists:tb_users,id',
-            'customer_id'      => 'nullable|exists:tb_users,id',
+            'customer_name'    => 'nullable|string|max:255',
             'shipping_address' => 'nullable|string',
             'payment_method'   => 'required|in:Cash,Bank Transfer,QRIS',
             'total_amount'     => 'required|numeric|min:0',
@@ -73,26 +70,19 @@ class TransactionController extends Controller
 
         try {
             DB::transaction(function () use ($request) {
+                $customerNameInput = $request->customer_name ?: 'Guest / Umum';
+
                 $sale = Sale::create([
                     'receipt_number'   => $request->receipt_number,
                     'sale_type'        => $request->sale_type,
                     'admin_id'         => $request->admin_id ?? Auth::id(),
-                    'customer_id'      => $request->customer_id,
+                    'customer_name'    => $customerNameInput,
                     'shipping_address' => $request->shipping_address,
                     'payment_method'   => $request->payment_method,
                     'total_amount'     => $request->total_amount,
                     'shipping_fee'     => $request->shipping_fee ?? 0,
                     'payment_status'   => $request->payment_status ?? 'not paid',
                 ]);
-
-                // Ambil nama customer untuk dicatat ke inventory log
-                $customerName = 'Guest / Umum';
-                if ($request->customer_id) {
-                    $customerObj = User::find($request->customer_id);
-                    if ($customerObj) {
-                        $customerName = $customerObj->name;
-                    }
-                }
 
                 if (!empty($request->items)) {
                     foreach ($request->items as $item) {
@@ -129,7 +119,7 @@ class TransactionController extends Controller
                         ]);
 
                         // ==========================================
-                        // 2. CATAT KE INVENTORY LOGS (TIPE OUT)
+                        // CATAT KE INVENTORY LOGS (TIPE OUT)
                         // ==========================================
                         if ($productId) {
                             InventoryLog::create([
@@ -137,7 +127,7 @@ class TransactionController extends Controller
                                 'supplier_id'   => null,
                                 'type'          => 'out',
                                 'quantity'      => $quantity,
-                                'customer_name' => $customerName,
+                                'customer_name' => $customerNameInput,
                                 'notes'         => 'Penjualan No. Resi: ' . $sale->receipt_number,
                             ]);
                         }
@@ -156,7 +146,7 @@ class TransactionController extends Controller
      */
     public function show(Sale $transaction)
     {
-        $transaction->load(['admin', 'customer', 'items.product']);
+        $transaction->load(['admin', 'items.product']);
         return view('dashboard.transactions.show', compact('transaction'));
     }
 
@@ -171,6 +161,8 @@ class TransactionController extends Controller
 
         $request->validate([
             'sale_type'        => 'required|in:Offline,Online',
+            'admin_id'         => 'nullable|exists:tb_users,id',
+            'customer_name'    => 'nullable|string|max:255',
             'shipping_address' => 'nullable|string',
             'payment_method'   => 'required|in:Cash,Bank Transfer,QRIS',
             'total_amount'     => 'required|numeric|min:0',
@@ -188,7 +180,7 @@ class TransactionController extends Controller
                         if ($product) {
                             $product->increment('stock', $oldItem->quantity);
                             if ($product->stock > 0 && $product->status === 'Out of stock') {
-                                $product->update(['status' => 'In stock']);
+                                $product->update(['status' => 'Available']);
                             }
                         }
                     }
@@ -198,27 +190,21 @@ class TransactionController extends Controller
                 $transaction->items()->delete();
 
                 // 2. Hapus Inventory Log lama yang mencatat nomor resi ini 
-                // (Agar tidak terjadi penumpukan/duplikasi data log saat di-edit)
                 InventoryLog::where('notes', 'LIKE', '%' . $transaction->receipt_number . '%')->delete();
+
+                $customerNameInput = $request->customer_name ?: 'Guest / Umum';
 
                 // Update data utama transaksi
                 $transaction->update([
                     'sale_type'        => $request->sale_type,
+                    'admin_id'         => $request->admin_id ?? $transaction->admin_id,
+                    'customer_name'    => $customerNameInput,
                     'shipping_address' => $request->shipping_address,
                     'payment_method'   => $request->payment_method,
                     'total_amount'     => $request->total_amount,
                     'shipping_fee'     => $request->shipping_fee,
                     'payment_status'   => $request->payment_status,
                 ]);
-
-                // Tentukan nama customer
-                $customerName = 'Guest / Umum';
-                if ($transaction->customer_id) {
-                    $customerObj = User::find($transaction->customer_id);
-                    if ($customerObj) {
-                        $customerName = $customerObj->name;
-                    }
-                }
 
                 // 3. Simpan item baru, potong stok kembali, dan buat inventory log baru yang bersih
                 if (!empty($request->items)) {
@@ -260,7 +246,7 @@ class TransactionController extends Controller
                                 'supplier_id'   => null,
                                 'type'          => 'out',
                                 'quantity'      => $quantity,
-                                'customer_name' => $customerName,
+                                'customer_name' => $customerNameInput,
                                 'notes'         => 'Penjualan No. Resi: ' . $transaction->receipt_number,
                             ]);
                         }
@@ -287,17 +273,17 @@ class TransactionController extends Controller
                     if ($product) {
                         $product->increment('stock', $item->quantity);
                         if ($product->stock > 0 && $product->status === 'Out of stock') {
-                            $product->update(['status' => 'In stock']);
+                            $product->update(['status' => 'Available']);
                         }
 
-                        // Opsional: Catat log tipe 'in' karena transaksi dibatalkan/dihapus, atau biarkan log sebelumnya tercatat.
-                        // Biasanya jika transaksi dihapus, Anda bisa menambahkan log pengembalian stok (tipe 'in'):
+                        // Catat log tipe 'in' karena transaksi dibatalkan/dihapus
                         InventoryLog::create([
-                            'product_id'    => $item->product_id,
+                            'product_id'    => $product->id,
                             'supplier_id'   => null,
                             'type'          => 'in',
+                            'quantity'      ->is_array ?? $item->quantity, // atau langsung $item->quantity
                             'quantity'      => $item->quantity,
-                            'customer_name' => null,
+                            'customer_name' => $transaction->customer_name,
                             'notes'         => 'Pengembalian stok dari penghapusan Transaksi No. Resi: ' . $transaction->receipt_number,
                         ]);
                     }

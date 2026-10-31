@@ -21,7 +21,7 @@ return new class extends Migration
             $table->bigInteger('buy_price')->unsigned();
             $table->bigInteger('sell_price')->unsigned();
             $table->integer('stock')->unsigned();
-            $table->enum('status', ['Available', 'Low stock', 'Out of stock'])->default('Available');
+            $table->enum('status', ['Available', 'Low stock', 'Out of stock', 'Inden'])->default('Available');
             $table->timestamps();
         });
     }

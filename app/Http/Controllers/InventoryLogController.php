@@ -13,7 +13,7 @@ class InventoryLogController extends Controller
     public function index(Request $request)
     {
         $search = $request->input('search');
-        $type   = $request->input('type'); // Menangkap parameter filter type (in / out)
+        $type   = $request->input('type'); // Menangkap parameter filter type (in / out / return)
 
         $logs = InventoryLog::with(['product', 'supplier'])
             ->when($search, function ($query, $search) {
@@ -22,7 +22,7 @@ class InventoryLogController extends Controller
                 });
             })
             ->when($type, function ($query, $type) {
-                $query->where('type', $type); // Filter berdasarkan tipe log (in / out)
+                $query->where('type', $type);
             })
             ->latest()
             ->paginate(10)
@@ -39,41 +39,45 @@ class InventoryLogController extends Controller
         $request->validate([
             'product_id'    => 'required|exists:tb_products,id',
             'supplier_id'   => 'nullable|exists:tb_stock_entries,id',
-            'type'          => 'required|in:in,out',
+            'type'          => 'required|in:in,out,return',
             'customer_name' => 'nullable|string|max:255',
             'quantity'      => 'required|integer|min:1',
             'notes'         => 'nullable|string|max:255',
         ]);
 
-        // 1. Simpan data inventory log
-        InventoryLog::create($request->all());
+        DB::transaction(function () use ($request) {
+            // 1. Simpan data inventory log
+            InventoryLog::create($request->all());
 
-        // 2. Ambil produk yang dipilih
-        $product = Product::findOrFail($request->product_id);
+            // 2. Jika tipenya 'return', STOK TIDAK DIUBAH SAMA SEKALI
+            if ($request->type !== 'return') {
+                $product = Product::lockForUpdate()->findOrFail($request->product_id);
 
-        // 3. Update stok berdasarkan tipe (in / out)
-        if ($request->type === 'in') {
-            $product->stock += $request->quantity;
-        } else {
-            $product->stock -= $request->quantity;
-            if ($product->stock < 0) {
-                $product->stock = 0;
+                if ($request->type === 'in') {
+                    $product->stock += $request->quantity;
+                } else {
+                    $product->stock -= $request->quantity;
+                    if ($product->stock < 0) {
+                        $product->stock = 0;
+                    }
+                }
+
+                // UPDATE STATUS OTOMATIS BERDASARKAN JUMLAH STOK
+                if ($product->stock == 0) {
+                    $product->status = 'Out of stock';
+                } elseif ($product->stock <= 5) {
+                    $product->status = 'Low stock';
+                } else {
+                    if ($product->status !== 'Inden') {
+                        $product->status = 'Available';
+                    }
+                }
+
+                $product->save();
             }
-        }
+        });
 
-        // 4. UPDATE STATUS OTOMATIS BERDASARKAN JUMLAH STOK
-        if ($product->stock == 0) {
-            $product->status = 'Out of stock';
-        } elseif ($product->stock <= 5) { // Anda bisa sesuaikan batas "Low stock" (misal <= 5)
-            $product->status = 'Low stock';
-        } else {
-            $product->status = 'Available';
-        }
-
-        // 5. Simpan perubahan ke database
-        $product->save();
-
-        return redirect()->back()->with('success', 'Inventory log added successfully and product status updated!');
+        return redirect()->back()->with('success', 'Inventory log added successfully!');
     }
 
     public function update(Request $request, InventoryLog $inventoryLog)
@@ -81,47 +85,61 @@ class InventoryLogController extends Controller
         $request->validate([
             'product_id'    => 'required|exists:tb_products,id',
             'supplier_id'   => 'nullable|exists:tb_stock_entries,id',
-            'type'          => 'required|in:in,out',
+            'type'          => 'required|in:in,out,return',
             'customer_name' => 'nullable|string|max:255',
             'quantity'      => 'required|integer|min:1',
             'notes'         => 'nullable|string|max:255',
         ]);
 
         DB::transaction(function () use ($request, $inventoryLog) {
-            $oldProduct = Product::lockForUpdate()->findOrFail($inventoryLog->product_id);
+            // 1. REVERSI/KEMBALIKAN STOK LAMA 
+            // Hanya lakukan reversi jika log lama adalah 'in'. 
+            // Jika log lama 'out', diabaikan agar stok tidak 'balik kanan' saat diubah ke return/out lainnya.
             if ($inventoryLog->type === 'in') {
-                $oldProduct->stock - $inventoryLog->quantity;
-            } else {
-                $oldProduct->stock + $inventoryLog->quantity;
+                $oldProduct = Product::lockForUpdate()->findOrFail($inventoryLog->product_id);
+                $oldProduct->stock -= $inventoryLog->quantity;
+                if ($oldProduct->stock < 0) {
+                    $oldProduct->stock = 0;
+                }
+                $oldProduct->save();
             }
-            if ($oldProduct->stock < 0) {
-                $oldProduct->stock = 0;
-            }
-            $oldProduct->save();
 
-            // 2. TERAPKAN STOK BARU BERDASARKAN DATA REQUEST YANG DIINPUT
-            $newProduct = Product::lockForUpdate()->findOrFail($request->product_id);
+            // 2. TERAPKAN STOK BARU 
             if ($request->type === 'in') {
+                $newProduct = Product::lockForUpdate()->findOrFail($request->product_id);
                 $newProduct->stock += $request->quantity;
-            } else {
+
+                if ($newProduct->stock == 0) {
+                    $newProduct->status = 'Out of stock';
+                } elseif ($newProduct->stock <= 5) {
+                    $newProduct->status = 'Low stock';
+                } else {
+                    if ($newProduct->status !== 'Inden') {
+                        $newProduct->status = 'Available';
+                    }
+                }
+                $newProduct->save();
+            } elseif ($request->type === 'out' && $inventoryLog->type !== 'out') {
+                $newProduct = Product::lockForUpdate()->findOrFail($request->product_id);
                 $newProduct->stock -= $request->quantity;
-            }
-            if ($newProduct->stock < 0) {
-                $newProduct->stock = 0;
-            }
+                if ($newProduct->stock < 0) {
+                    $newProduct->stock = 0;
+                }
 
-            // 3. UPDATE STATUS OTOMATIS
-            if ($newProduct->stock == 0) {
-                $newProduct->status = 'Out of stock';
-            } elseif ($newProduct->stock <= 5) {
-                $newProduct->status = 'Low stock';
-            } else {
-                $newProduct->status = 'Available';
+                if ($newProduct->stock == 0) {
+                    $newProduct->status = 'Out of stock';
+                } elseif ($newProduct->stock <= 5) {
+                    $newProduct->status = 'Low stock';
+                } else {
+                    if ($newProduct->status !== 'Inden') {
+                        $newProduct->status = 'Available';
+                    }
+                }
+                $newProduct->save();
             }
-            $newProduct->save();
+            // Jika tipe baru adalah 'return', tidak ada perubahan stok sama sekali.
 
-            // 4. UPDATE DATA LOG ITU SENDIRI
-            // Gunakan update biasa, pastikan tidak ada double assignment
+            // 3. UPDATE DATA LOG ITU SENDIRI
             $inventoryLog->update([
                 'product_id'    => $request->product_id,
                 'supplier_id'   => $request->supplier_id,
@@ -132,26 +150,34 @@ class InventoryLogController extends Controller
             ]);
         });
 
-        return redirect()->route('inventory-logs.index')->with('success', 'Inventory log and stock updated successfully!');
+        return redirect()->route('inventory-logs.index')->with('success', 'Inventory log updated successfully!');
     }
 
     public function destroy(InventoryLog $inventoryLog)
     {
         DB::transaction(function () use ($inventoryLog) {
-            // Kembalikan stok produk saat log dihapus
-            $product = Product::lockForUpdate()->findOrFail($inventoryLog->product_id);
-            
+            // Jika log yang dihapus bertipe 'in', kembalikan efek stoknya ke produk
             if ($inventoryLog->type === 'in') {
+                $product = Product::lockForUpdate()->findOrFail($inventoryLog->product_id);
                 $product->stock -= $inventoryLog->quantity;
                 if ($product->stock < 0) {
                     $product->stock = 0;
                 }
-            } else {
-                $product->stock += $inventoryLog->quantity;
-            }
-            $product->save();
 
-            // Hapus log
+                if ($product->stock == 0) {
+                    $product->status = 'Out of stock';
+                } elseif ($product->stock <= 5) {
+                    $product->status = 'Low stock';
+                } else {
+                    if ($product->status !== 'Inden') {
+                        $product->status = 'Available';
+                    }
+                }
+
+                $product->save();
+            }
+            // Jika log yang dihapus bertipe 'out' atau 'return', stok tidak diubah/dikembalikan
+
             $inventoryLog->delete();
         });
 

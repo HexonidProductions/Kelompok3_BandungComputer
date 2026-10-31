@@ -32,7 +32,11 @@
                 </form>
 
                 <!-- Filter Type Custom Dropdown -->
-                <div x-data="{ filterTypeOpen: false, filterTypeValue: '{{ request('type') }}', filterTypeName: '{{ request('type') == 'in' ? 'IN (Stok In)' : (request('type') == 'out' ? 'OUT (Stok Out)' : 'Types: All') }}' }" class="relative w-40">
+                <div x-data="{ 
+                    filterTypeOpen: false, 
+                    filterTypeValue: '{{ request('type') }}', 
+                    filterTypeName: '{{ request('type') == 'in' ? 'IN (Stok In)' : (request('type') == 'out' ? 'OUT (Stok Out)' : (request('type') == 'return' ? 'RETURN' : 'Types: All')) }}' 
+                }" class="relative w-40">
                     <form action="{{ route('inventory-logs.index') }}" method="GET" x-ref="filterForm">
                         @if(request('search'))
                             <input type="hidden" name="search" value="{{ request('search') }}">
@@ -52,13 +56,15 @@
                                     <span class="text-slate-700 truncate" x-text="filterTypeName"></span>
                                     <img src="{{ asset('icons/Vector_option_arrow.png') }}" alt="Arrow" class="w-2.5 h-2.5 object-contain" :class="filterTypeOpen ? 'rotate-180' : 'rotate-0'">
                                 </div>
-                                <div class="py-1 border-t border-slate-100">
+                                <div class="py-1 border-slate-100">
                                     <div @click="filterTypeValue = ''; filterTypeName = 'All'; filterTypeOpen = false; $nextTick(() => $refs.filterForm.submit());" 
-                                        class="px-3 py-2 transition-colors cursor-pointer" :class="filterTypeValue == '' ? 'font-semibold' : null">All</div>
+                                        class="px-3 py-2 cursor-pointer" :class="filterTypeValue == '' ? 'font-semibold' : null">All</div>
                                     <div @click="filterTypeValue = 'in'; filterTypeName = 'IN (Stok In)'; filterTypeOpen = false; $nextTick(() => $refs.filterForm.submit());" 
-                                        class="px-3 py-2 transition-colors cursor-pointer" :class="filterTypeValue == 'in' ? 'font-semibold' : null">IN (Stok In)</div>
+                                        class="px-3 py-2 cursor-pointer" :class="filterTypeValue == 'in' ? 'font-semibold' : null">IN (Stok In)</div>
                                     <div @click="filterTypeValue = 'out'; filterTypeName = 'OUT (Stok Out)'; filterTypeOpen = false; $nextTick(() => $refs.filterForm.submit());" 
-                                        class="px-3 py-2 transition-colors cursor-pointer" :class="filterTypeValue == 'out' ? 'font-semibold' : null">OUT (Stok Out)</div>
+                                        class="px-3 py-2 cursor-pointer" :class="filterTypeValue == 'out' ? 'font-semibold' : null">OUT (Stok Out)</div>
+                                    <div @click="filterTypeValue = 'return'; filterTypeName = 'RETURN'; filterTypeOpen = false; $nextTick(() => $refs.filterForm.submit());" 
+                                        class="px-3 py-2 cursor-pointer" :class="filterTypeValue == 'return' ? 'font-semibold' : null">RETURN</div>
                                 </div>
                             </div>
                         </div>
@@ -105,6 +111,10 @@
                                     <span class="inline-block px-3 py-1 rounded-md text-[11px] font-semibold border-2 border-[#16A34A] text-[#000000] bg-white uppercase">
                                         IN
                                     </span>
+                                @elseif($log->type === 'return')
+                                    <span class="inline-block px-3 py-1 rounded-md text-[11px] font-semibold border-2 border-[#D97706] text-[#000000] bg-white uppercase">
+                                        RETURN
+                                    </span>
                                 @else
                                     <span class="inline-block px-3 py-1 rounded-md text-[11px] font-semibold border-2 border-[#DC2626] text-[#000000] bg-white uppercase">
                                         OUT
@@ -124,7 +134,7 @@
                                             product_id: '{{ $log->product_id }}',
                                             product_name: '{{ $log->product->product_name ?? 'Select Product' }}',
                                             type: '{{ $log->type }}',
-                                            type_name: '{{ $log->type === 'in' ? 'IN (Stok In)' : 'OUT (Stok Out)' }}',
+                                            type_name: '{{ $log->type === 'in' ? 'IN (Stok In)' : ($log->type === 'return' ? 'RETURN' : 'OUT (Stok Out)') }}',
                                             customer_name: '{{ addslashes($log->customer_name ?? '') }}',
                                             quantity: '{{ $log->quantity }}',
                                             supplier_id: '{{ $log->supplier_id }}',
@@ -190,7 +200,7 @@
                                     <div class="py-1 border-slate-100">
                                         @foreach($products as $product)
                                             <div @click="productValue = '{{ $product->id }}'; productName = '{{ $product->product_name }}'; productOpen = false;" 
-                                                class="px-3.5 py-2.5 transition-colors cursor-pointer" :class="productValue == '{{ $product->id }}' ? 'font-semibold' : null">
+                                                class="px-3.5 py-2.5 cursor-pointer" :class="productValue == '{{ $product->id }}' ? 'font-semibold' : null">
                                                 {{ $product->product_name }}
                                             </div>
                                         @endforeach
@@ -218,8 +228,9 @@
                                         <img src="{{ asset('icons/Vector_option_arrow.png') }}" alt="Arrow" class="w-2.5 h-2.5 object-contain" :class="typeOpen ? 'rotate-180' : 'rotate-0'">
                                     </div>
                                     <div class="py-1 border-slate-100">
-                                        <div @click="typeValue = 'in'; typeName = 'IN (Stok In)'; typeOpen = false;" class="px-3.5 py-2.5 transition-colors cursor-pointer" :class="typeValue == 'in' ? 'font-semibold' : null">IN (Stok In)</div>
-                                        <div @click="typeValue = 'out'; typeName = 'OUT (Stok Out)'; typeOpen = false;" class="px-3.5 py-2.5 transition-colors cursor-pointer" :class="typeValue == 'out' ? 'font-semibold' : null">OUT (Stok Out)</div>
+                                        <div @click="typeValue = 'in'; typeName = 'IN (Stok In)'; typeOpen = false;" class="px-3.5 py-2.5 cursor-pointer" :class="typeValue == 'in' ? 'font-semibold' : null">IN (Stok In)</div>
+                                        <div @click="typeValue = 'out'; typeName = 'OUT (Stok Out)'; typeOpen = false;" class="px-3.5 py-2.5 cursor-pointer" :class="typeValue == 'out' ? 'font-semibold' : null">OUT (Stok Out)</div>
+                                        <div @click="typeValue = 'return'; typeName = 'RETURN'; typeOpen = false;" class="px-3.5 py-2.5 cursor-pointer" :class="typeValue == 'return' ? 'font-semibold' : null">RETURN</div>
                                     </div>
                                 </div>
                             </div>
@@ -260,7 +271,7 @@
                                     <div class="py-1 border-slate-100">
                                         @foreach($suppliers as $supplier)
                                             <div @click="supplierValue = '{{ $supplier->id }}'; supplierName = '{{ $supplier->supplier_name }}'; supplierOpen = false;" 
-                                                class="px-3.5 py-2.5 transition-colors cursor-pointer" :class="supplierValue == '{{ $supplier->id }}' ? 'font-semibold' : null">
+                                                class="px-3.5 py-2.5 cursor-pointer" :class="supplierValue == '{{ $supplier->id }}' ? 'font-semibold' : null">
                                                 {{ $supplier->supplier_name }}
                                             </div>
                                         @endforeach
@@ -323,7 +334,7 @@
                                     <div class="py-1 border-slate-100">
                                         @foreach($products as $product)
                                             <div @click="selectedLog.product_id = '{{ $product->id }}'; selectedLog.product_name = '{{ $product->product_name }}'; editProductOpen = false;" 
-                                                class="px-3.5 py-2.5 transition-colors cursor-pointer" :class="selectedLog.product_id == '{{ $product->id }}' ? 'font-semibold' : null">
+                                                class="px-3.5 py-2.5 cursor-pointer" :class="selectedLog.product_id == '{{ $product->id }}' ? 'font-semibold' : null">
                                                 {{ $product->product_name }}
                                             </div>
                                         @endforeach
@@ -351,8 +362,9 @@
                                         <img src="{{ asset('icons/Vector_option_arrow.png') }}" alt="Arrow" class="w-2.5 h-2.5 object-contain" :class="editTypeOpen ? 'rotate-180' : 'rotate-0'">
                                     </div>
                                     <div class="py-1 border-slate-100">
-                                        <div @click="selectedLog.type = 'in'; selectedLog.type_name = 'IN (Stok In)'; editTypeOpen = false;" class="px-3.5 py-2.5 transition-colors cursor-pointer" :class="selectedLog.type == 'in' ? 'font-semibold' : null">IN (Stok In)</div>
-                                        <div @click="selectedLog.type = 'out'; selectedLog.type_name = 'OUT (Stok Out)'; editTypeOpen = false;" class="px-3.5 py-2.5 transition-colors cursor-pointer" :class="selectedLog.type == 'out' ? 'font-semibold' : null">OUT (Stok Out)</div>
+                                        <div @click="selectedLog.type = 'in'; selectedLog.type_name = 'IN (Stok In)'; editTypeOpen = false;" class="px-3.5 py-2.5 cursor-pointer" :class="selectedLog.type == 'in' ? 'font-semibold' : null">IN (Stok In)</div>
+                                        <div @click="selectedLog.type = 'out'; selectedLog.type_name = 'OUT (Stok Out)'; editTypeOpen = false;" class="px-3.5 py-2.5 cursor-pointer" :class="selectedLog.type == 'out' ? 'font-semibold' : null">OUT (Stok Out)</div>
+                                        <div @click="selectedLog.type = 'return'; selectedLog.type_name = 'RETURN'; editTypeOpen = false;" class="px-3.5 py-2.5 cursor-pointer" :class="selectedLog.type == 'return' ? 'font-semibold' : null">RETURN</div>
                                     </div>
                                 </div>
                             </div>
@@ -393,7 +405,7 @@
                                     <div class="py-1 border-slate-100">
                                         @foreach($suppliers as $supplier)
                                             <div @click="selectedLog.supplier_id = '{{ $supplier->id }}'; selectedLog.supplier_name = '{{ $supplier->supplier_name }}'; editSupplierOpen = false;" 
-                                                class="px-3.5 py-2.5 transition-colors cursor-pointer" :class="selectedLog.supplier_id == '{{ $supplier->id }}' ? 'font-semibold' : null">
+                                                class="px-3.5 py-2.5 cursor-pointer" :class="selectedLog.supplier_id == '{{ $supplier->id }}' ? 'font-semibold' : null">
                                                 {{ $supplier->supplier_name }}
                                             </div>
                                         @endforeach
