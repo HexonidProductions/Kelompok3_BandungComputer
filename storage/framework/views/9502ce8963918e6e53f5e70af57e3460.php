@@ -32,7 +32,7 @@
                     <li><a href="<?php echo e(route('products')); ?>"><i class="fa-solid fa-box"></i> Products</a></li>
                     <li><a href="<?php echo e(route('users')); ?>"><i class="fa-solid fa-users"></i> Users</a></li>
                     <li><a href="<?php echo e(route('suppliers')); ?>"><i class="fa-solid fa-truck"></i> Suppliers</a></li>
-                    <li><a href="#"><i class="fa-solid fa-clipboard-list"></i> Inventory Logs</a></li>
+                   <li><a href="<?php echo e(route('inventory-logs')); ?>"><i class="fa-solid fa-clipboard-list"></i> Inventory Logs</a></li>
                     <li><a href="<?php echo e(route('daily-closing')); ?>"><i class="fa-solid fa-wrench"></i> Daily Closing</a></li>
                 </ul>
             </div>

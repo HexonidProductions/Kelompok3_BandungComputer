@@ -32,7 +32,7 @@
                     <li><a href="{{ route('products') }}"><i class="fa-solid fa-box"></i> Products</a></li>
                     <li><a href="{{ route('users') }}"><i class="fa-solid fa-users"></i> Users</a></li>
                     <li><a href="{{ route('suppliers') }}"><i class="fa-solid fa-truck"></i> Suppliers</a></li>
-                    <li><a href="#"><i class="fa-solid fa-clipboard-list"></i> Inventory Logs</a></li>
+                   <li><a href="{{ route('inventory-logs') }}"><i class="fa-solid fa-clipboard-list"></i> Inventory Logs</a></li>
                     <li><a href="{{ route('daily-closing') }}"><i class="fa-solid fa-wrench"></i> Daily Closing</a></li>
                 </ul>
             </div>
