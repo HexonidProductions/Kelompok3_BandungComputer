@@ -28,7 +28,7 @@
         <div class="login-form-section">
             
             <div class="back-link">
-                <a href="{{ route('home') }}">Back to homepage &lt;</a>
+                <a href="{{ route('login') }}">Back to homepage &lt;</a>
             </div>
 
             <div class="form-container">

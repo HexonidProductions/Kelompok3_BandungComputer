@@ -61,3 +61,7 @@ Route::get('/daily-closing', function () {
 Route::post('/logout', function () {
     return redirect()->route('login');
 })->name('logout');
+
+Route::get('/landing', function () {
+    return view('landing');
+})->name('landing');
