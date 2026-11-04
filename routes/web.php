@@ -60,3 +60,11 @@ Route::middleware(['auth', 'prevent-back-history'])->group(function () {
 });
 
 require __DIR__.'/auth.php';
+
+Route::get('/', function () {
+    return view('overview');
+});
+
+Route::get('/overview', function () {
+    return view('overview');
+});
