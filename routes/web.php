@@ -17,10 +17,13 @@ Route::get('/', function () {
     return view('welcome');
 })->name('homepage');
 
-// Halaman login (otomatis redirect jika sudah login)
+// Halaman login (otomatis redirect jika sudah login sesuai role)
 Route::get('/login', function () {
     if (Auth::check()) {
-        return redirect()->route('dashboard');
+        if (Auth::user()->role === 'admin') {
+            return redirect()->route('dashboard');
+        }
+        return redirect()->route('homepage');
     }
     return view('auth.login');
 })->name('login');

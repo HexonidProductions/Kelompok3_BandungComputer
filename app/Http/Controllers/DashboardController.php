@@ -23,9 +23,6 @@ class DashboardController extends Controller
                 ->latest()
                 ->paginate(8); // Menampilkan 5 data per halaman untuk overview
         }
-        $closings = DailyClosing::with('admin')
-            ->latest()
-            ->paginate(8); // Menampilkan 5 data per halaman untuk overview
 
         return view('dashboard.overview.index', compact('closings'));
     }

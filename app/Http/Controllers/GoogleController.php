@@ -40,39 +40,37 @@ class GoogleController extends Controller
             $phoneNumber = data_get($peopleData, 'phoneNumbers.0.value');
             $address = data_get($peopleData, 'addresses.0.formattedValue');
 
-            // Cek apakah user sudah terdaftar
-            $user = User::where('google_id', $googleUser->getId())->first();
+            // Cek apakah user sudah terdaftar berdasarkan google_id atau email
+            $user = User::where('google_id', $googleUser->getId())
+                ->orWhere('email', $googleUser->getEmail())
+                ->first();
 
-
-            if($user) {  // Jika user sudah terdaftar, perbarui google_id jika belum ada
+            if ($user) {
+                // Jika user sudah terdaftar, perbarui data Google jika belum ada
                 $user->update(array_filter([
+                    'google_id'    => $googleUser->getId(),
+                    'avatar'       => $googleUser->getAvatar(),
                     'phone_number' => $phoneNumber,
-                    'address' => $address,
+                    'address'      => $address,
                 ], fn ($value) => filled($value)));
-                if($user->google_id) {
-                    $user->update(['google_id' => $googleUser->getId()]);
-                } 
-                
-
             } else {
                 // Jika user belum terdaftar, buat user baru
                 $user = User::create([
-                    'name' => $googleUser->getName(),
-                    'email' => $googleUser->getEmail(),
-                    'google_id' => $googleUser->getId(),
-                    'password' => bcrypt(str()->random(16)), // Password acak karena login menggunakan Google
-                    'avatar' => $googleUser->getAvatar(),
+                    'name'         => $googleUser->getName(),
+                    'email'        => $googleUser->getEmail(),
+                    'google_id'    => $googleUser->getId(),
+                    'password'     => bcrypt(str()->random(16)), // Password acak karena login menggunakan Google
+                    'avatar'       => $googleUser->getAvatar(),
                     'phone_number' => $phoneNumber,
-                    'address' => $address,
-                    'role' => 'customer', // Set role default sebagai Customer
+                    'address'      => $address,
+                    'role'         => 'customer', // Set role default sebagai Customer
                 ]);
             }
-
 
             // Login user
             Auth::login($user);
 
-            // Redirect ke halaman home
+            // Redirect ke halaman sesuai role
             if (Auth::user()->role === 'admin') {
                 return redirect()->route('dashboard');
             } else {
