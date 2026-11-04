@@ -55,7 +55,7 @@
     <!-- Bagian Bawah: Profile Info & Logout -->
     <div class="p-4">
         <p class="text-[10px] font-normal tracking-wider mb-0.5">Admin</p>
-        <h4 class="text-xs font-bold text-white truncate mb-2.5">{{ Auth::user()?->name ?? 'Guest' }}</h4>
+        <h4 class="text-xs font-bold text-white truncate mb-6">{{ Auth::user()?->name ?? 'Guest' }}</h4>
 
         <form method="POST" action="{{ route('logout') }}" onsubmit="return confirm('Are you sure you want to logout?')">
             @csrf
