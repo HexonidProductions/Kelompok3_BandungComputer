@@ -1,4 +1,5 @@
 <?php
+
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DailyClosingController;
 use App\Http\Controllers\ProfileController;
@@ -8,40 +9,25 @@ use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\InventoryLogController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\UserController;
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\GoogleController;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
-Route::get('/', [UserController::class, 'index'])
-    ->name('homepage'); {
-}
+Route::get('/', function () {
+    return view('welcome');
+})->name('homepage');
+
 // Halaman login (otomatis redirect jika sudah login)
 Route::get('/login', function () {
     if (Auth::check()) {
         return redirect()->route('dashboard');
     }
-    return view('login');
+    return view('auth.login');
 })->name('login');
 
 // Login Google
 Route::get('/auth/google', [GoogleController::class, 'redirectToGoogle'])->name('google.login');
 Route::get('/auth/google/callback', [GoogleController::class, 'handleGoogleCallback'])->name('google.callback');
-
-// // Halaman setelah login
-// Route::middleware('auth')->group(function () {
-//     Route::get('/home', [DashboardController::class, 'index'])->name('home');
-//     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-//     Route::get('/logout', [GoogleController::class, 'logout'])->name('logout');
-// });
-
-
-// Route::get('/login', function () {
-//     return view('auth.login');
-// })->name('login');
-
-// Route::get('/dashboard', function () {
-//     return view('dashboard.overview.index');
-// })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware(['auth', 'prevent-back-history'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
@@ -60,11 +46,3 @@ Route::middleware(['auth', 'prevent-back-history'])->group(function () {
 });
 
 require __DIR__.'/auth.php';
-
-Route::get('/', function () {
-    return view('overview');
-});
-
-Route::get('/overview', function () {
-    return view('overview');
-});
