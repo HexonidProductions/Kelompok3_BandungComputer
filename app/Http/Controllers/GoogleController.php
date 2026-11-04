@@ -1,0 +1,94 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Exception;
+use App\Models\User;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Laravel\Socialite\Facades\Socialite;
+use Illuminate\Support\Facades\Http;
+
+class GoogleController extends Controller
+{
+    // Redirect ke halaman login Google
+    public function redirectToGoogle()
+    {
+        return Socialite::driver('google')
+            ->scopes([
+                'https://www.googleapis.com/auth/user.phonenumbers.read',
+                'https://www.googleapis.com/auth/user.addresses.read',
+            ])
+            ->redirect();
+    }
+
+    // Callback dari Google setelah login
+    public function handleGoogleCallback()
+    {
+        try {
+            // Ambil data user dari Google
+            $googleUser = Socialite::driver('google')->stateless()->user();
+            $peopleResponse = Http::withToken($googleUser->token)
+                ->get('https://people.googleapis.com/v1/people/me', [
+                    'personFields' => 'phoneNumbers,addresses',
+                ]);
+
+            $peopleData = $peopleResponse->successful()
+                ? $peopleResponse->json()
+                : [];
+
+            $phoneNumber = data_get($peopleData, 'phoneNumbers.0.value');
+            $address = data_get($peopleData, 'addresses.0.formattedValue');
+
+            // Cek apakah user sudah terdaftar
+            $user = User::where('google_id', $googleUser->getId())->first();
+
+
+            if($user) {  // Jika user sudah terdaftar, perbarui google_id jika belum ada
+                $user->update(array_filter([
+                    'phone_number' => $phoneNumber,
+                    'address' => $address,
+                ], fn ($value) => filled($value)));
+                if($user->google_id) {
+                    $user->update(['google_id' => $googleUser->getId()]);
+                } 
+                
+
+            } else {
+                // Jika user belum terdaftar, buat user baru
+                $user = User::create([
+                    'name' => $googleUser->getName(),
+                    'email' => $googleUser->getEmail(),
+                    'google_id' => $googleUser->getId(),
+                    'password' => bcrypt(str()->random(16)), // Password acak karena login menggunakan Google
+                    'avatar' => $googleUser->getAvatar(),
+                    'phone_number' => $phoneNumber,
+                    'address' => $address,
+                    'role' => 'customer', // Set role default sebagai Customer
+                ]);
+            }
+
+
+            // Login user
+            Auth::login($user);
+
+            // Redirect ke halaman home
+            if (Auth::user()->role === 'admin') {
+                return redirect()->route('dashboard');
+            } else {
+                return redirect()->route('home');
+            } 
+        } catch (Exception $e) {
+            return redirect('/login')->with('error', 'Terjadi kesalahan saat login: ' . $e->getMessage());
+        }
+    }
+
+    // Logout user
+    public function logout(Request $request)
+    {
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+        return redirect('/login');
+    }
+}

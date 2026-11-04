@@ -19,7 +19,7 @@ class UserController extends Controller
         $users = User::when($search, function ($query, $search) {
                 return $query->where(function ($q) use ($search) {
                     $q->where('name', 'like', "%{$search}%")
-                      ->orWhere('email', 'like', "%{$search}%");
+                    ->orWhere('email', 'like', "%{$search}%");
                 });
             })
             ->when($role, function ($query, $role) {
@@ -58,7 +58,7 @@ class UserController extends Controller
             'role'         => $request->role,
         ]);
 
-        return redirect()->route('users.index')->with('success', 'User added successfully!');
+        return redirect()->route('dashboard.users.index')->with('success', 'User added successfully!');
     }
 
     /**
@@ -90,7 +90,7 @@ class UserController extends Controller
 
         $user->update($data);
 
-        return redirect()->route('users.index')->with('success', 'User updated successfully');
+        return redirect()->route('dashboard.users.index')->with('success', 'User updated successfully');
     }
 
     /**
@@ -100,6 +100,6 @@ class UserController extends Controller
     {
         $user->delete();
 
-        return redirect()->route('users.index')->with('success', 'User deleted successfully!');
+        return redirect()->route('dashboard.users.index')->with('success', 'User deleted successfully!');
     }
 }

@@ -137,10 +137,10 @@
 
         {{-- Social Login Button (Google) --}}
         <div>
-            <button type="button" class="w-full h-11 flex items-center justify-center gap-2.5 text-xs bg-white text-gray-700 font-medium border border-[#448AFF] rounded-xl shadow-lg hover:shadow-none transition-all">
+            <a href="{{ route('google.login') }}" class="w-full h-11 flex items-center justify-center gap-2.5 text-xs bg-white text-gray-700 font-medium border border-[#448AFF] rounded-xl shadow-lg hover:shadow-none transition-all">
                 <img src="{{ asset('icons/material-icon-theme_google.png')}}" alt="Google Icon" class="w-8 h-8 object-contain">
                 Continue with google
-            </button>
+            </a>
         </div>
     </form>
 </div>

@@ -4,7 +4,8 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>{{ config('app.name', 'Laravel') }}</title>
+        <title>{{ config('app.name', 'Bandung Computer') }}</title>
+        <link rel="icon" href="{{ asset('icons/logo_bandung_computer.png') }}" type="image/png" />
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">

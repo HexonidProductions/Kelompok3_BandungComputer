@@ -13,6 +13,16 @@ class DashboardController extends Controller
     public function index()
     {
         // Ambil riwayat penutupan kasir dengan relasi admin dan pagination
+        if (auth()->user()->role === 'admin') {
+            $closings = DailyClosing::with('admin')
+                ->latest()
+                ->paginate(8); // Menampilkan 5 data per halaman untuk overview
+        } else {
+            $closings = DailyClosing::with('admin')
+                ->where('admin_id', auth()->id())
+                ->latest()
+                ->paginate(8); // Menampilkan 5 data per halaman untuk overview
+        }
         $closings = DailyClosing::with('admin')
             ->latest()
             ->paginate(8); // Menampilkan 5 data per halaman untuk overview

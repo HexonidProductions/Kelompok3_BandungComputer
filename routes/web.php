@@ -9,14 +9,35 @@ use App\Http\Controllers\InventoryLogController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\GoogleController;
+use Illuminate\Support\Facades\Auth;
 
-Route::get('/', function () {
-    return view('welcome');
-})->name('homepage');
-
+Route::get('/', [UserController::class, 'index'])
+    ->name('homepage'); {
+}
+// Halaman login (otomatis redirect jika sudah login)
 Route::get('/login', function () {
-    return view('auth.login');
+    if (Auth::check()) {
+        return redirect()->route('dashboard');
+    }
+    return view('login');
 })->name('login');
+
+// Login Google
+Route::get('/auth/google', [GoogleController::class, 'redirectToGoogle'])->name('google.login');
+Route::get('/auth/google/callback', [GoogleController::class, 'handleGoogleCallback'])->name('google.callback');
+
+// // Halaman setelah login
+// Route::middleware('auth')->group(function () {
+//     Route::get('/home', [DashboardController::class, 'index'])->name('home');
+//     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+//     Route::get('/logout', [GoogleController::class, 'logout'])->name('logout');
+// });
+
+
+// Route::get('/login', function () {
+//     return view('auth.login');
+// })->name('login');
 
 // Route::get('/dashboard', function () {
 //     return view('dashboard.overview.index');
@@ -24,6 +45,8 @@ Route::get('/login', function () {
 
 Route::middleware(['auth', 'prevent-back-history'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/dashboard/users', [UserController::class, 'index'])->name('dashboard.users.index');
+    Route::get('/home', [DashboardController::class, 'index'])->name('home');
     Route::resource('/daily-closings', DailyClosingController::class);
     Route::resource('/categories', CategoryController::class)->except(['create', 'edit', 'show']);
     Route::resource('/products', ProductController::class);
