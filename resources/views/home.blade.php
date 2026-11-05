@@ -22,7 +22,7 @@
         <ul class="nav-links">
             <li><a href="{{ route('home') }}#beranda" class="active">Beranda</a></li>
             <li><a href="{{ route('produk') }}">Produk</a></li>
-            <li><a href="{{ route('home') }}#tentang">Tentang Kami</a></li>
+            <li><a href="{{ route('about') }}">Tentang Kami</a></li>
             <li><a href="{{ route('contact') }}">Kontak</a></li>
         </ul>
         <a href="{{ route('login') }}" class="btn-masuk">Masuk</a>

@@ -22,7 +22,7 @@
         <ul class="nav-links">
             <li><a href="<?php echo e(route('home')); ?>#beranda" class="active">Beranda</a></li>
             <li><a href="<?php echo e(route('produk')); ?>">Produk</a></li>
-            <li><a href="<?php echo e(route('home')); ?>#tentang">Tentang Kami</a></li>
+            <li><a href="<?php echo e(route('about')); ?>">Tentang Kami</a></li>
             <li><a href="<?php echo e(route('contact')); ?>">Kontak</a></li>
         </ul>
         <a href="<?php echo e(route('login')); ?>" class="btn-masuk">Masuk</a>
