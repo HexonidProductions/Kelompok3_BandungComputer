@@ -16,17 +16,17 @@
 
     <!-- Navbar Navigasi -->
     <nav class="navbar">
-        <div class="nav-logo">
-            <img src="{{ asset('images/logo_bc.png') }}" alt="Bandung Computer Logo" onerror="this.src='{{ asset('images/logo_bc_hitam.png') }}'">
-        </div>
-        <ul class="nav-links">
-            <li><a href="{{ route('home') }}#beranda">Beranda</a></li>
-            <li><a href="{{ route('produk') }}" class="active">Produk</a></li>
-            <li><a href="{{ route('home') }}#tentang">Tentang Kami</a></li>
-            <li><a href="{{ route('contact') }}">Kontak</a></li>
-        </ul>
-        <a href="{{ route('login') }}" class="btn-masuk">Masuk</a>
-    </nav>
+    <div class="nav-logo">
+        <img src="{{ asset('images/logo_bc.png') }}" alt="Bandung Computer Logo" onerror="this.src='{{ asset('images/logo_bc_hitam.png') }}'">
+    </div>
+    <ul class="nav-links">
+        <li><a href="{{ route('home') }}">Beranda</a></li>
+        <li><a href="{{ route('produk') }}" class="active">Produk</a></li>
+        <li><a href="{{ route('about') }}">Tentang Kami</a></li>
+        <li><a href="{{ route('contact') }}">Kontak</a></li>
+    </ul>
+    <a href="{{ route('login') }}" class="btn-masuk">Masuk</a>
+</nav>
 
     <!-- Header Title -->
     <div class="catalog-header">
@@ -240,9 +240,9 @@
             <div>
                 <div class="footer-links-title">Tautan</div>
                 <ul class="footer-links-list">
-                    <li><a href="{{ route('home') }}#beranda">Beranda</a></li>
+                    <li><a href="{{ route('home') }}">Beranda</a></li>
                     <li><a href="{{ route('produk') }}">Produk</a></li>
-                    <li><a href="{{ route('home') }}#tentang">Tentang Kami</a></li>
+                    <li><a href="{{ route('about') }}">Tentang Kami</a></li>
                     <li><a href="{{ route('contact') }}">Kontak</a></li>
                 </ul>
             </div>
@@ -250,9 +250,9 @@
             <div>
                 <div class="footer-links-title">Ikuti Kami</div>
                 <div class="social-icons">
-                    <a href="#"><i class="fa-brands fa-tiktok"></i></a>
-                    <a href="#"><i class="fa-brands fa-instagram"></i></a>
-                    <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
+                    <a href="#" target="_blank"><i class="fa-brands fa-tiktok"></i></a>
+                    <a href="#" target="_blank"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="#" target="_blank"><i class="fa-brands fa-facebook-f"></i></a>
                 </div>
             </div>
         </div>
@@ -261,6 +261,3 @@
             &copy; 2026 Copyright Bandung Computer. All rights reserved
         </div>
     </footer>
-
-</body>
-</html>

@@ -73,3 +73,7 @@ Route::get('/kontak', function () {
 Route::get('/produk', function () {
     return view('produk');
 })->name('produk');
+
+Route::get('/tentang-kami', function () {
+    return view('about');
+})->name('about');

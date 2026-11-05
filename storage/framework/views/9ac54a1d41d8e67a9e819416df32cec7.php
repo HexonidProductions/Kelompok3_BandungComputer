@@ -14,19 +14,18 @@
 </head>
 <body>
 
-    <!-- Navbar -->
     <nav class="navbar">
-        <div class="nav-logo">
-            <img src="<?php echo e(asset('images/logo_bc.png')); ?>" alt="Bandung Computer Logo" onerror="this.src='<?php echo e(asset('images/logo_bc_hitam.png')); ?>'">
-        </div>
-        <ul class="nav-links">
-            <li><a href="<?php echo e(route('home')); ?>">Beranda</a></li>
-            <li><a href="<?php echo e(route('home')); ?>#produk">Produk</a></li>
-            <li><a href="<?php echo e(route('home')); ?>#tentang">Tentang Kami</a></li>
-            <li><a href="#" class="active">Kontak</a></li>
-        </ul>
-        <a href="<?php echo e(route('login')); ?>" class="btn-masuk">Masuk</a>
-    </nav>
+    <div class="nav-logo">
+        <img src="<?php echo e(asset('images/logo_bc.png')); ?>" alt="Bandung Computer Logo" onerror="this.src='<?php echo e(asset('images/logo_bc_hitam.png')); ?>'">
+    </div>
+    <ul class="nav-links">
+        <li><a href="<?php echo e(route('home')); ?>">Beranda</a></li>
+        <li><a href="<?php echo e(route('produk')); ?>">Produk</a></li>
+        <li><a href="<?php echo e(route('about')); ?>">Tentang Kami</a></li>
+        <li><a href="<?php echo e(route('contact')); ?>" class="active">Kontak</a></li>
+    </ul>
+    <a href="<?php echo e(route('login')); ?>" class="btn-masuk">Masuk</a>
+</nav>
 
     <!-- Section Ada Pertanyaan -->
     <section class="contact-hero-section">
@@ -139,15 +138,12 @@
                 <p>Bandung Computer — Solusi Perangkat IT & Komputer Terpercaya.</p>
             </div>
 
-            <div>
-                <div class="footer-links-title">Tautan</div>
-                <ul class="footer-links-list">
-                    <li><a href="<?php echo e(route('home')); ?>">Beranda</a></li>
-                    <li><a href="<?php echo e(route('home')); ?>#produk">Produk</a></li>
-                    <li><a href="<?php echo e(route('home')); ?>#tentang">Tentang Kami</a></li>
-                    <li><a href="#">Kontak</a></li>
-                </ul>
-            </div>
+            <ul class="footer-links-list">
+    <li><a href="<?php echo e(route('home')); ?>">Beranda</a></li>
+    <li><a href="<?php echo e(route('produk')); ?>">Produk</a></li>
+    <li><a href="<?php echo e(route('about')); ?>">Tentang Kami</a></li>
+    <li><a href="<?php echo e(route('contact')); ?>">Kontak</a></li>
+</ul>
 
             <div>
                 <div class="footer-links-title">Ikuti Kami</div>

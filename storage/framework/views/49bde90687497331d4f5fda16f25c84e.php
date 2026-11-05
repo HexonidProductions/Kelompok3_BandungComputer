@@ -187,7 +187,7 @@
         </div>
     </section>
 
-    <!-- Footer Front-End -->
+    <!-- Footer Navigasi -->
     <footer class="footer-main">
         <div class="footer-top">
             <div class="footer-brand">
@@ -195,12 +195,12 @@
                 <p>Bandung Computer — Solusi Perangkat IT & Komputer Terpercaya.</p>
             </div>
 
-           <div>
+            <div>
                 <div class="footer-links-title">Tautan</div>
                 <ul class="footer-links-list">
-                    <li><a href="<?php echo e(route('home')); ?>#beranda">Beranda</a></li>
+                    <li><a href="<?php echo e(route('home')); ?>">Beranda</a></li>
                     <li><a href="<?php echo e(route('produk')); ?>">Produk</a></li>
-                    <li><a href="<?php echo e(route('home')); ?>#tentang">Tentang Kami</a></li>
+                    <li><a href="<?php echo e(route('about')); ?>">Tentang Kami</a></li>
                     <li><a href="<?php echo e(route('contact')); ?>">Kontak</a></li>
                 </ul>
             </div>
@@ -208,9 +208,9 @@
             <div>
                 <div class="footer-links-title">Ikuti Kami</div>
                 <div class="social-icons">
-                    <a href="#"><i class="fa-brands fa-tiktok"></i></a>
-                    <a href="#"><i class="fa-brands fa-instagram"></i></a>
-                    <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
+                    <a href="#" target="_blank"><i class="fa-brands fa-tiktok"></i></a>
+                    <a href="#" target="_blank"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="#" target="_blank"><i class="fa-brands fa-facebook-f"></i></a>
                 </div>
             </div>
         </div>
@@ -218,25 +218,4 @@
         <div class="footer-bottom">
             &copy; 2026 Copyright Bandung Computer. All rights reserved
         </div>
-    </footer>
-
-    <!-- JavaScript Interaktif FAQ -->
-    <script>
-        function toggleFaq(element) {
-            const item = element.parentElement;
-            const icon = item.querySelector('.icon-faq');
-            
-            item.classList.toggle('active');
-            
-            if (item.classList.contains('active')) {
-                icon.classList.remove('fa-plus');
-                icon.classList.add('fa-minus');
-            } else {
-                icon.classList.remove('fa-minus');
-                icon.classList.add('fa-plus');
-            }
-        }
-    </script>
-
-</body>
-</html><?php /**PATH C:\Users\ADVAN\Kelompok3_BandungComputer\resources\views/home.blade.php ENDPATH**/ ?>
+    </footer><?php /**PATH C:\Users\ADVAN\Kelompok3_BandungComputer\resources\views/home.blade.php ENDPATH**/ ?>

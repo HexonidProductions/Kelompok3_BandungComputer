@@ -16,17 +16,17 @@
 
     <!-- Navbar Navigasi -->
     <nav class="navbar">
-        <div class="nav-logo">
-            <img src="<?php echo e(asset('images/logo_bc.png')); ?>" alt="Bandung Computer Logo" onerror="this.src='<?php echo e(asset('images/logo_bc_hitam.png')); ?>'">
-        </div>
-        <ul class="nav-links">
-            <li><a href="<?php echo e(route('home')); ?>#beranda">Beranda</a></li>
-            <li><a href="<?php echo e(route('produk')); ?>" class="active">Produk</a></li>
-            <li><a href="<?php echo e(route('home')); ?>#tentang">Tentang Kami</a></li>
-            <li><a href="<?php echo e(route('contact')); ?>">Kontak</a></li>
-        </ul>
-        <a href="<?php echo e(route('login')); ?>" class="btn-masuk">Masuk</a>
-    </nav>
+    <div class="nav-logo">
+        <img src="<?php echo e(asset('images/logo_bc.png')); ?>" alt="Bandung Computer Logo" onerror="this.src='<?php echo e(asset('images/logo_bc_hitam.png')); ?>'">
+    </div>
+    <ul class="nav-links">
+        <li><a href="<?php echo e(route('home')); ?>">Beranda</a></li>
+        <li><a href="<?php echo e(route('produk')); ?>" class="active">Produk</a></li>
+        <li><a href="<?php echo e(route('about')); ?>">Tentang Kami</a></li>
+        <li><a href="<?php echo e(route('contact')); ?>">Kontak</a></li>
+    </ul>
+    <a href="<?php echo e(route('login')); ?>" class="btn-masuk">Masuk</a>
+</nav>
 
     <!-- Header Title -->
     <div class="catalog-header">
@@ -240,9 +240,9 @@
             <div>
                 <div class="footer-links-title">Tautan</div>
                 <ul class="footer-links-list">
-                    <li><a href="<?php echo e(route('home')); ?>#beranda">Beranda</a></li>
+                    <li><a href="<?php echo e(route('home')); ?>">Beranda</a></li>
                     <li><a href="<?php echo e(route('produk')); ?>">Produk</a></li>
-                    <li><a href="<?php echo e(route('home')); ?>#tentang">Tentang Kami</a></li>
+                    <li><a href="<?php echo e(route('about')); ?>">Tentang Kami</a></li>
                     <li><a href="<?php echo e(route('contact')); ?>">Kontak</a></li>
                 </ul>
             </div>
@@ -250,9 +250,9 @@
             <div>
                 <div class="footer-links-title">Ikuti Kami</div>
                 <div class="social-icons">
-                    <a href="#"><i class="fa-brands fa-tiktok"></i></a>
-                    <a href="#"><i class="fa-brands fa-instagram"></i></a>
-                    <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
+                    <a href="#" target="_blank"><i class="fa-brands fa-tiktok"></i></a>
+                    <a href="#" target="_blank"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="#" target="_blank"><i class="fa-brands fa-facebook-f"></i></a>
                 </div>
             </div>
         </div>
@@ -260,7 +260,4 @@
         <div class="footer-bottom">
             &copy; 2026 Copyright Bandung Computer. All rights reserved
         </div>
-    </footer>
-
-</body>
-</html><?php /**PATH C:\Users\ADVAN\Kelompok3_BandungComputer\resources\views/produk.blade.php ENDPATH**/ ?>
+    </footer><?php /**PATH C:\Users\ADVAN\Kelompok3_BandungComputer\resources\views/produk.blade.php ENDPATH**/ ?>
