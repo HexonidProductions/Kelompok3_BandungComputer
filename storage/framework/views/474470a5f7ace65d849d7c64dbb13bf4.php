@@ -10,26 +10,25 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     
     <!-- CSS Landing Page -->
-    <link rel="stylesheet" href="{{ asset('css/landing.css') }}">
+    <link rel="stylesheet" href="<?php echo e(asset('css/landing.css')); ?>">
 </head>
 <body>
 
     <!-- Navbar -->
     <nav class="navbar">
         <div class="nav-logo">
-            <img src="{{ asset('images/logo_bc.png') }}" alt="Bandung Computer Logo" onerror="this.src='{{ asset('images/logo_bc_hitam.png') }}'">
+            <img src="<?php echo e(asset('images/logo_bc.png')); ?>" alt="Bandung Computer Logo" onerror="this.src='<?php echo e(asset('images/logo_bc_hitam.png')); ?>'">
         </div>
         <ul class="nav-links">
-            <li><a href="#beranda" class="active">Beranda</a></li>
-            <li><a href="#produk">Produk</a></li>
-            <li><a href="#tentang">Tentang Kami</a></li>
-            <li><a href="#kontak">Kontak</a></li>
+            <li><a href="<?php echo e(route('home')); ?>#beranda" class="active">Beranda</a></li>
+            <li><a href="<?php echo e(route('home')); ?>#produk">Produk</a></li>
+            <li><a href="<?php echo e(route('home')); ?>#tentang">Tentang Kami</a></li>
+            <li><a href="<?php echo e(route('contact')); ?>">Kontak</a></li>
         </ul>
-        <a href="{{ route('login') }}" class="btn-masuk">Masuk</a>
+        <a href="<?php echo e(route('login')); ?>" class="btn-masuk">Masuk</a>
     </nav>
-
     <!-- Hero Section (Ganti gambar di bagian url asset 'images/tentang_kami.png' jika ingin ganti banner) -->
-    <section class="hero" id="beranda" style="background: linear-gradient(rgba(15, 23, 42, 0.75), rgba(15, 23, 42, 0.85)), url('{{ asset('images/banner_users (1).png') }}') center/cover no-repeat;">
+    <section class="hero" id="beranda" style="background: linear-gradient(rgba(15, 23, 42, 0.75), rgba(15, 23, 42, 0.85)), url('<?php echo e(asset('images/banner_users (1).png')); ?>') center/cover no-repeat;">
         <div class="hero-content">
             <h1 class="hero-title">Solusi Lengkap untuk Kebutuhan Komputer Anda</h1>
             <p class="hero-subtitle">Komputer dan aksesori berkualitas tinggi untuk memenuhi semua kebutuhanmu.</p>
@@ -42,19 +41,19 @@
         <h2 class="section-title">Belanja dari koleksi</h2>
         <div class="category-grid">
             <div class="category-card-img">
-                <img src="{{ asset('images/gaming.png') }}" alt="Gaming">
+                <img src="<?php echo e(asset('images/gaming.png')); ?>" alt="Gaming">
             </div>
             <div class="category-card-img">
-                <img src="{{ asset('images/pc.png') }}" alt="Sparepart PC">
+                <img src="<?php echo e(asset('images/pc.png')); ?>" alt="Sparepart PC">
             </div>
             <div class="category-card-img">
-                <img src="{{ asset('images/acsesories.png') }}" alt="Aksesoris">
+                <img src="<?php echo e(asset('images/acsesories.png')); ?>" alt="Aksesoris">
             </div>
             <div class="category-card-img">
-                <img src="{{ asset('images/printer.png') }}" alt="Printer">
+                <img src="<?php echo e(asset('images/printer.png')); ?>" alt="Printer">
             </div>
             <div class="category-card-img">
-                <img src="{{ asset('images/kabel.png') }}" alt="Kabel">
+                <img src="<?php echo e(asset('images/kabel.png')); ?>" alt="Kabel">
             </div>
         </div>
     </section>
@@ -69,22 +68,22 @@
         <div class="products-grid">
             <!-- Product 1: Gambar full card -->
             <div class="product-card-full">
-                <img src="{{ asset('images/xbox.png') }}" alt="Xbox Series X">
+                <img src="<?php echo e(asset('images/xbox.png')); ?>" alt="Xbox Series X">
             </div>
 
             <!-- Product 2: Gambar full card -->
             <div class="product-card-full">
-                <img src="{{ asset('images/macbook.png') }}" alt="Macbook Pro 16">
+                <img src="<?php echo e(asset('images/macbook.png')); ?>" alt="Macbook Pro 16">
             </div>
 
              <!-- Product 2: Gambar full card -->
             <div class="product-card-full">
-                <img src="{{ asset('images/asus.png') }}" alt="Macbook Pro 16">
+                <img src="<?php echo e(asset('images/asus.png')); ?>" alt="Macbook Pro 16">
             </div>
 
              <!-- Product 2: Gambar full card -->
             <div class="product-card-full">
-                <img src="{{ asset('images/mouse.png') }}" alt="Macbook Pro 16">
+                <img src="<?php echo e(asset('images/mouse.png')); ?>" alt="Macbook Pro 16">
             </div>
 
 
@@ -192,7 +191,7 @@
     <footer class="footer-main">
         <div class="footer-top">
             <div class="footer-brand">
-                <img src="{{ asset('images/logo_bc.png') }}" alt="Bandung Computer" onerror="this.src='{{ asset('images/logo_bc_hitam.png') }}'">
+                <img src="<?php echo e(asset('images/logo_bc.png')); ?>" alt="Bandung Computer" onerror="this.src='<?php echo e(asset('images/logo_bc_hitam.png')); ?>'">
                 <p>Bandung Computer — Solusi Perangkat IT & Komputer Terpercaya.</p>
             </div>
 
@@ -240,4 +239,4 @@
     </script>
 
 </body>
-</html>
+</html><?php /**PATH C:\Users\ADVAN\Kelompok3_BandungComputer\resources\views/landing.blade.php ENDPATH**/ ?>

@@ -62,6 +62,14 @@ Route::post('/logout', function () {
     return redirect()->route('login');
 })->name('logout');
 
-Route::get('/landing', function () {
-    return view('landing');
-})->name('landing');
+Route::get('/home', function () {
+    return view('home');
+})->name('home');
+
+Route::get('/kontak', function () {
+    return view('contact');
+})->name('contact');
+
+Route::get('/produk', function () {
+    return view('produk');
+})->name('produk');
