@@ -108,15 +108,15 @@
                             <td class="py-3.5 px-3 font-bold text-slate-900 whitespace-nowrap">{{ $log->product->product_name ?? '-' }}</td>
                             <td class="py-3.5 px-3 text-center whitespace-nowrap">
                                 @if($log->type === 'in')
-                                    <span class="inline-block px-3 py-1 rounded-md text-[11px] font-semibold border-2 border-[#16A34A] text-[#000000] bg-white uppercase">
+                                    <span class="inline-block w-20 px-3 py-1 rounded-md text-[11px] font-semibold border-2 border-[#16A34A] text-[#000000] bg-white uppercase">
                                         IN
                                     </span>
                                 @elseif($log->type === 'return')
-                                    <span class="inline-block px-3 py-1 rounded-md text-[11px] font-semibold border-2 border-[#D97706] text-[#000000] bg-white uppercase">
+                                    <span class="inline-block w-20 px-3 py-1 rounded-md text-[11px] font-semibold border-2 border-[#D97706] text-[#000000] bg-white uppercase">
                                         RETURN
                                     </span>
                                 @else
-                                    <span class="inline-block px-3 py-1 rounded-md text-[11px] font-semibold border-2 border-[#DC2626] text-[#000000] bg-white uppercase">
+                                    <span class="inline-block w-20 px-3 py-1 rounded-md text-[11px] font-semibold border-2 border-[#DC2626] text-[#000000] bg-white uppercase">
                                         OUT
                                     </span>
                                 @endif

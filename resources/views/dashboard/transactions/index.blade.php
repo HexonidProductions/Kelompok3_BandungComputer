@@ -292,7 +292,7 @@
 
                             @if(strtolower($tx->payment_status) === 'paid')
 
-                            <span class="inline-block px-3 py-1 rounded-md text-[11px] font-semibold border-2 border-[#16A34A] text-[#000000] bg-white">
+                            <span class="inline-block w-20 px-3 py-1 rounded-md text-[11px] font-semibold border-2 border-[#16A34A] text-[#000000] bg-white">
 
                             Paid
 
@@ -300,7 +300,7 @@
 
                             @elseif(strtolower($tx->payment_status) === 'not paid')
 
-                            <span class="inline-block px-3 py-1 rounded-md text-[11px] font-semibold border-2 border-[#DC2626] text-[#000000] bg-white">
+                            <span class="inline-block w-20 px-3 py-1 rounded-md text-[11px] font-semibold border-2 border-[#DC2626] text-[#000000] bg-white">
 
                             Not Paid
 
