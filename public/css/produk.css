@@ -12,21 +12,40 @@ body {
 }
 
 /* Navbar */
+/* 1. Navbar Container: Menurunkan padding kiri agar logo lebih geser ke kiri */
 .navbar {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 16px 64px;
+    padding: 16px 32px 16px 24px; /* Padding kiri diperkecil dari 64px jadi 24px */
     background-color: #0f172a;
     position: sticky;
     top: 0;
     z-index: 1000;
 }
 
+/* 2. Logo Navbar (Atas): Memperbesar tinggi logo */
 .nav-logo img {
-    height: 50px;
+    height: 65px; /* Diperbesar dari 50px ke 65px */
     width: auto;
     object-fit: contain;
+    display: block;
+}
+
+/* 3. Footer Container: Menurunkan padding kiri agar logo footer geser ke kiri */
+.footer-main {
+    background-color: #0f172a;
+    color: #ffffff;
+    padding: 48px 32px 24px 24px; /* Padding kiri diperkecil dari 64px jadi 24px */
+    border-top: 1px solid #1e293b;
+}
+
+/* 4. Logo Footer (Bawah): Memperbesar tinggi logo */
+.footer-brand img {
+    height: 70px; /* Diperbesar dari 55px ke 70px */
+    margin-bottom: 12px;
+    object-fit: contain;
+    display: block;
 }
 
 .nav-links {

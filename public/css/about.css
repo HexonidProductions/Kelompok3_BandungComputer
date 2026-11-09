@@ -11,12 +11,12 @@ body {
     overflow-x: hidden;
 }
 
-/* Navbar */
+/* Navbar (Logo Geser Lebih ke Kiri & Diperbesar) */
 .navbar {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 16px 64px;
+    padding: 16px 32px 16px 24px;
     background-color: #0f172a;
     position: sticky;
     top: 0;
@@ -24,9 +24,10 @@ body {
 }
 
 .nav-logo img {
-    height: 50px;
+    height: 65px;
     width: auto;
     object-fit: contain;
+    display: block;
 }
 
 .nav-links {
@@ -61,8 +62,8 @@ body {
 /* Badge Section */
 .badge-container {
     text-align: center;
-    margin-top: 48px;
-    margin-bottom: 16px;
+    margin-top: 36px;
+    margin-bottom: 12px;
 }
 
 .badge-label {
@@ -81,7 +82,7 @@ body {
     text-align: center;
     padding: 0 64px;
     max-width: 840px;
-    margin: 0 auto 40px auto;
+    margin: 0 auto 32px auto;
 }
 
 .about-title {
@@ -102,12 +103,12 @@ body {
 .banner-container {
     padding: 0 64px;
     max-width: 1120px;
-    margin: 0 auto 64px auto;
+    margin: 0 auto 48px auto;
 }
 
 .about-banner {
     width: 100%;
-    height: 480px;
+    height: 460px;
     border-radius: 16px;
     overflow: hidden;
     box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
@@ -122,32 +123,30 @@ body {
 
 /* Why Choose Us Section */
 .why-section {
-    padding: 64px;
+    padding: 0 64px;
     background-color: #ffffff;
     max-width: 1120px;
-    margin: 0 auto;
+    margin: 0 auto 24px auto;
 }
 
 .why-header {
     text-align: center;
-    margin-bottom: 40px;
+    margin-bottom: 24px;
 }
 
 .why-title {
     font-size: 28px;
     font-weight: 800;
     color: #0f172a;
-    margin-top: 12px;
 }
 
 .why-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 24px;
-    margin-bottom: 64px;
 }
 
-/* Card */
+/* Card Why Choose Us */
 .why-card {
     background-color: #ffffff;
     border: 1px solid #e2e8f0;
@@ -198,10 +197,10 @@ body {
     line-height: 1.5;
 }
 
-/* CTA Card */
+/* CTA Section (Jarak Dibuat Rapat) */
 .cta-container {
     max-width: 1120px;
-    margin: 0 auto 64px auto;
+    margin: 0 auto 48px auto;
     padding: 0 64px;
 }
 
@@ -240,11 +239,11 @@ body {
     background-color: #1d4ed8;
 }
 
-/* Footer */
+/* Footer (Logo Geser Lebih ke Kiri, Diperbesar & Lengkap Medsos) */
 .footer-main {
     background-color: #0f172a;
     color: #ffffff;
-    padding: 48px 64px 24px 64px;
+    padding: 48px 32px 24px 24px;
     border-top: 1px solid #1e293b;
 }
 
@@ -255,9 +254,10 @@ body {
 }
 
 .footer-brand img {
-    height: 55px;
+    height: 70px;
     margin-bottom: 12px;
     object-fit: contain;
+    display: block;
 }
 
 .footer-brand p {
@@ -294,14 +294,19 @@ body {
 .social-icons a {
     color: #ffffff;
     background: #1e293b;
-    width: 32px;
-    height: 32px;
+    width: 36px;
+    height: 36px;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     text-decoration: none;
-    font-size: 14px;
+    font-size: 15px;
+    transition: background-color 0.2s;
+}
+
+.social-icons a:hover {
+    background-color: #2563eb;
 }
 
 .footer-bottom {
@@ -312,19 +317,17 @@ body {
     color: #64748b;
 }
 
-/* Media Queries Responsif (Tablet & Smartphone) */
+/* Responsive Media Queries (Tablet & Smartphone) */
 @media screen and (max-width: 1024px) {
     .navbar {
-        padding: 16px 32px;
+        padding: 16px 24px;
     }
-    
     .about-hero, .banner-container, .why-section, .cta-container, .footer-main {
-        padding-left: 32px;
-        padding-right: 32px;
+        padding-left: 24px;
+        padding-right: 24px;
     }
-
     .about-banner {
-        height: 360px;
+        height: 340px;
     }
 }
 
@@ -332,56 +335,44 @@ body {
     .navbar {
         padding: 14px 20px;
     }
-    
     .nav-links {
         display: none;
     }
-
     .badge-container {
-        margin-top: 32px;
+        margin-top: 24px;
     }
-
     .about-hero, .banner-container, .why-section, .cta-container, .footer-main {
-        padding-left: 20px;
-        padding-right: 20px;
+        padding-left: 16px;
+        padding-right: 16px;
     }
-
     .about-title {
         font-size: 24px;
     }
-
     .about-desc {
         font-size: 13px;
     }
-
     .about-banner {
-        height: 240px;
+        height: 220px;
     }
-
     .why-title {
         font-size: 22px;
     }
-
     .why-grid {
         grid-template-columns: 1fr;
         gap: 16px;
     }
-
     .cta-card {
         flex-direction: column;
         padding: 24px;
         text-align: center;
     }
-
     .cta-text {
         font-size: 18px;
     }
-
     .btn-cta {
         width: 100%;
         text-align: center;
     }
-
     .footer-top {
         flex-direction: column;
         gap: 28px;

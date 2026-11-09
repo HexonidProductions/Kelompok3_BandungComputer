@@ -14,20 +14,21 @@
 </head>
 <body>
 
+    <!-- Navbar Navigasi -->
     <nav class="navbar">
-    <div class="nav-logo">
-        <img src="<?php echo e(asset('images/logo_bc.png')); ?>" alt="Bandung Computer Logo" onerror="this.src='<?php echo e(asset('images/logo_bc_hitam.png')); ?>'">
-    </div>
-    <ul class="nav-links">
-        <li><a href="<?php echo e(route('home')); ?>">Beranda</a></li>
-        <li><a href="<?php echo e(route('produk')); ?>">Produk</a></li>
-        <li><a href="<?php echo e(route('about')); ?>" class="active">Tentang Kami</a></li>
-        <li><a href="<?php echo e(route('contact')); ?>">Kontak</a></li>
-    </ul>
-    <a href="<?php echo e(route('login')); ?>" class="btn-masuk">Masuk</a>
-</nav>
+        <div class="nav-logo">
+            <img src="<?php echo e(asset('images/logo_bc.png')); ?>" alt="Bandung Computer Logo" onerror="this.src='<?php echo e(asset('images/logo_bc_hitam.png')); ?>'">
+        </div>
+        <ul class="nav-links">
+            <li><a href="<?php echo e(route('home')); ?>">Beranda</a></li>
+            <li><a href="<?php echo e(route('produk')); ?>">Produk</a></li>
+            <li><a href="<?php echo e(route('about')); ?>" class="active">Tentang Kami</a></li>
+            <li><a href="<?php echo e(route('contact')); ?>">Kontak</a></li>
+        </ul>
+        <a href="<?php echo e(route('login')); ?>" class="btn-masuk">Masuk</a>
+    </nav>
 
-    <!-- Badge Section -->
+    <!-- Badge Header -->
     <div class="badge-container">
         <span class="badge-label">Tentang Kami</span>
     </div>
@@ -38,14 +39,14 @@
         <p class="about-desc">Temukan solusi komputer dan aksesori teknologi dengan informasi produk yang jelas serta pelayanan terpercaya.</p>
     </section>
 
-    <!-- Banner Image (Custom Kolaborasi HD Bandung Computer) -->
+    <!-- Banner Image HD -->
     <div class="banner-container">
         <div class="about-banner">
-            <img src="<?php echo e(asset('images/tentang_kami_hd.png')); ?>" alt="Kolaborasi Tim Bandung Computer" onerror="this.src='<?php echo e(asset('images/tentang_kami.png')); ?>'">
+            <img src="<?php echo e(asset('images/tentang_kami_hd.png')); ?>" alt="Tim Bandung Computer" onerror="this.src='<?php echo e(asset('images/tentang_kami.png')); ?>'">
         </div>
     </div>
 
-    <!-- Section Alasan Memilih Kami -->
+    <!-- Badge Section Mengapa Memilih Kami -->
     <div class="badge-container">
         <span class="badge-label">Alasan Memilih Kami</span>
     </div>
@@ -102,7 +103,7 @@
         </div>
     </section>
 
-    <!-- CTA Card Section -->
+    <!-- Badge CTA & Card CTA -->
     <div class="badge-container">
         <span class="badge-label">CTA</span>
     </div>
@@ -114,7 +115,7 @@
         </div>
     </div>
 
-    <!-- Footer Navigasi -->
+    <!-- Footer Navigasi & Medsos -->
     <footer class="footer-main">
         <div class="footer-top">
             <div class="footer-brand">
@@ -145,4 +146,7 @@
         <div class="footer-bottom">
             &copy; 2026 Copyright Bandung Computer. All rights reserved
         </div>
-    </footer><?php /**PATH C:\Users\ADVAN\Kelompok3_BandungComputer\resources\views/about.blade.php ENDPATH**/ ?>
+    </footer>
+
+</body>
+</html><?php /**PATH C:\Users\ADVAN\Kelompok3_BandungComputer\resources\views/about.blade.php ENDPATH**/ ?>

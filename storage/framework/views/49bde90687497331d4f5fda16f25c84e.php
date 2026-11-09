@@ -130,62 +130,97 @@
         </div>
     </section>
 
-    <!-- Section FAQ Accordion -->
-    <section class="faq-section" id="tentang">
-        <h2 class="faq-title">FAQ</h2>
+    <!-- Section FAQ -->
+<section class="faq-section">
+    <div class="faq-title">FAQ</div>
+    <div class="faq-accordion">
         
-        <div class="faq-accordion">
-            <div class="faq-item active">
-                <div class="faq-question" onclick="toggleFaq(this)">
-                    <span>Apakah saya bisa datang langsung ke toko untuk melihat dan mencoba produk?</span>
-                    <i class="fa-solid fa-minus icon-faq"></i>
-                </div>
-                <div class="faq-answer">
-                    Sangat bisa! Anda dapat mengunjungi toko fisik kami untuk melihat unit, melakukan konsultasi spesifikasi, serta mencoba langsung produk yang ingin dibeli.
-                </div>
+        <div class="faq-item active">
+            <div class="faq-question">
+                <span>Apakah saya bisa datang langsung ke toko untuk melihat dan mencoba produk?</span>
+                <i class="fa-solid fa-minus faq-icon"></i>
             </div>
-
-            <div class="faq-item">
-                <div class="faq-question" onclick="toggleFaq(this)">
-                    <span>Apakah produk bisa dites terlebih dahulu sebelum dibawa pulang?</span>
-                    <i class="fa-solid fa-plus icon-faq"></i>
-                </div>
-                <div class="faq-answer">
-                    Ya, setiap pembelian di toko fisik kami menyediakan layanan pengujian unit secara menyeluruh sebelum Anda membawa barang pulang.
-                </div>
-            </div>
-
-            <div class="faq-item">
-                <div class="faq-question" onclick="toggleFaq(this)">
-                    <span>Metode pembayaran apa saja yang bisa digunakan?</span>
-                    <i class="fa-solid fa-plus icon-faq"></i>
-                </div>
-                <div class="faq-answer">
-                    Kami menerima Tunai (Cash), Transfer Bank, Kartu Debit, dan QRIS (GoPay, OVO, Dana, LinkAja).
-                </div>
-            </div>
-
-            <div class="faq-item">
-                <div class="faq-question" onclick="toggleFaq(this)">
-                    <span>Apakah Bandung Computer melayani pesan antar (delivery)? Berapa ongkirnya?</span>
-                    <i class="fa-solid fa-plus icon-faq"></i>
-                </div>
-                <div class="faq-answer">
-                    Kami melayani pengiriman area Banjarbaru & Banjarmasin dengan kurir toko serta pengiriman luar kota via ekspedisi terpercaya.
-                </div>
-            </div>
-
-            <div class="faq-item">
-                <div class="faq-question" onclick="toggleFaq(this)">
-                    <span>Bagaimana prosedur klaim garansi jika barang yang dibeli mengalami kerusakan pabrik?</span>
-                    <i class="fa-solid fa-plus icon-faq"></i>
-                </div>
-                <div class="faq-answer">
-                    Cukup bawa produk beserta nota/resmi pembelian ke toko kami, tim teknisi kami akan membantu proses klaim garansi resmi ke pihak distributor.
-                </div>
+            <div class="faq-answer">
+                Sangat bisa! Anda dapat mengunjungi toko fisik kami untuk melihat unit, melakukan konsultasi spesifikasi, serta mencoba langsung produk yang ingin dibeli.
             </div>
         </div>
-    </section>
+
+        <div class="faq-item">
+            <div class="faq-question">
+                <span>Apakah produk bisa dites terlebih dahulu sebelum dibawa pulang?</span>
+                <i class="fa-solid fa-plus faq-icon"></i>
+            </div>
+            <div class="faq-answer">
+                Tentu saja. Semua perangkat yang dibeli di toko kami akan diuji fungsi dan performanya bersama tim teknisi kami sebelum Anda membawanya pulang.
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <div class="faq-question">
+                <span>Metode pembayaran apa saja yang bisa digunakan?</span>
+                <i class="fa-solid fa-plus faq-icon"></i>
+            </div>
+            <div class="faq-answer">
+                Kami menerima pembayaran secara tunai, transfer bank, debit/kredit, serta pembayaran digital via QRIS dan e-wallet.
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <div class="faq-question">
+                <span>Apakah Bandung Computer melayani pesan antar (delivery)? Berapa ongkirnya?</span>
+                <i class="fa-solid fa-plus faq-icon"></i>
+            </div>
+            <div class="faq-answer">
+                Ya, kami melayani pengiriman area lokal maupun luar kota. Biaya ongkir akan disesuaikan dengan jarak lokasi pengiriman dan ekspedisi yang dipilih.
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <div class="faq-question">
+                <span>Bagaimana prosedur klaim garansi jika barang yang dibeli mengalami kerusakan pabrik?</span>
+                <i class="fa-solid fa-plus faq-icon"></i>
+            </div>
+            <div class="faq-answer">
+                Anda cukup membawa unit beserta nota pembelian dan kartu garansi ke toko kami. Tim kami akan membantu proses klaim garansi resmi hingga selesai.
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<!-- Script Interaktif FAQ Accordion -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const faqItems = document.querySelectorAll('.faq-item');
+
+        faqItems.forEach(item => {
+            const question = item.querySelector('.faq-question');
+            question.addEventListener('click', () => {
+                const isOpen = item.classList.contains('active');
+
+                // Tutup item lain yang sedang terbuka
+                faqItems.forEach(otherItem => {
+                    otherItem.classList.remove('active');
+                    const icon = otherItem.querySelector('.faq-icon');
+                    if (icon) {
+                        icon.classList.remove('fa-minus');
+                        icon.classList.add('fa-plus');
+                    }
+                });
+
+                // Toggle item yang diklik
+                if (!isOpen) {
+                    item.classList.add('active');
+                    const icon = item.querySelector('.faq-icon');
+                    if (icon) {
+                        icon.classList.remove('fa-plus');
+                        icon.classList.add('fa-minus');
+                    }
+                }
+            });
+        });
+    });
+</script>
 
     <!-- Footer Navigasi -->
     <footer class="footer-main">

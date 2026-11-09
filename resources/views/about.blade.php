@@ -14,20 +14,21 @@
 </head>
 <body>
 
+    <!-- Navbar Navigasi -->
     <nav class="navbar">
-    <div class="nav-logo">
-        <img src="{{ asset('images/logo_bc.png') }}" alt="Bandung Computer Logo" onerror="this.src='{{ asset('images/logo_bc_hitam.png') }}'">
-    </div>
-    <ul class="nav-links">
-        <li><a href="{{ route('home') }}">Beranda</a></li>
-        <li><a href="{{ route('produk') }}">Produk</a></li>
-        <li><a href="{{ route('about') }}" class="active">Tentang Kami</a></li>
-        <li><a href="{{ route('contact') }}">Kontak</a></li>
-    </ul>
-    <a href="{{ route('login') }}" class="btn-masuk">Masuk</a>
-</nav>
+        <div class="nav-logo">
+            <img src="{{ asset('images/logo_bc.png') }}" alt="Bandung Computer Logo" onerror="this.src='{{ asset('images/logo_bc_hitam.png') }}'">
+        </div>
+        <ul class="nav-links">
+            <li><a href="{{ route('home') }}">Beranda</a></li>
+            <li><a href="{{ route('produk') }}">Produk</a></li>
+            <li><a href="{{ route('about') }}" class="active">Tentang Kami</a></li>
+            <li><a href="{{ route('contact') }}">Kontak</a></li>
+        </ul>
+        <a href="{{ route('login') }}" class="btn-masuk">Masuk</a>
+    </nav>
 
-    <!-- Badge Section -->
+    <!-- Badge Header -->
     <div class="badge-container">
         <span class="badge-label">Tentang Kami</span>
     </div>
@@ -38,14 +39,14 @@
         <p class="about-desc">Temukan solusi komputer dan aksesori teknologi dengan informasi produk yang jelas serta pelayanan terpercaya.</p>
     </section>
 
-    <!-- Banner Image (Custom Kolaborasi HD Bandung Computer) -->
+    <!-- Banner Image HD -->
     <div class="banner-container">
         <div class="about-banner">
-            <img src="{{ asset('images/tentang_kami_hd.png') }}" alt="Kolaborasi Tim Bandung Computer" onerror="this.src='{{ asset('images/tentang_kami.png') }}'">
+            <img src="{{ asset('images/tentang_kami_hd.png') }}" alt="Tim Bandung Computer" onerror="this.src='{{ asset('images/tentang_kami.png') }}'">
         </div>
     </div>
 
-    <!-- Section Alasan Memilih Kami -->
+    <!-- Badge Section Mengapa Memilih Kami -->
     <div class="badge-container">
         <span class="badge-label">Alasan Memilih Kami</span>
     </div>
@@ -102,7 +103,7 @@
         </div>
     </section>
 
-    <!-- CTA Card Section -->
+    <!-- Badge CTA & Card CTA -->
     <div class="badge-container">
         <span class="badge-label">CTA</span>
     </div>
@@ -114,7 +115,7 @@
         </div>
     </div>
 
-    <!-- Footer Navigasi -->
+    <!-- Footer Navigasi & Medsos -->
     <footer class="footer-main">
         <div class="footer-top">
             <div class="footer-brand">
@@ -146,3 +147,6 @@
             &copy; 2026 Copyright Bandung Computer. All rights reserved
         </div>
     </footer>
+
+</body>
+</html>
