@@ -48,4 +48,10 @@ Route::middleware(['auth', 'prevent-back-history'])->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+// Complete profile routes for Google login customers
+Route::middleware(['auth'])->group(function () {
+    Route::get('/complete-profile', [GoogleController::class, 'showCompleteProfile'])->name('complete.profile');
+    Route::post('/complete-profile', [GoogleController::class, 'storeCompleteProfile'])->name('complete.profile.store');
+});
+
 require __DIR__.'/auth.php';

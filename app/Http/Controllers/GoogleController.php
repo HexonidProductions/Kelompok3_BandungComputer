@@ -70,13 +70,38 @@ class GoogleController extends Controller
             // Login user
             Auth::login($user);
 
-            // Redirect ke halaman sesuai role
-            if (Auth::user()->role !== 'admin') {
-                return redirect()->route('homepage'); // Redirect ke halaman utama untuk customer
+            // Admin langsung ke dashboard
+            if (Auth::user()->role === 'admin') {
+                return redirect()->route('dashboard');
             }
+            // Customer: jika belum lengkap data, ke complete profile
+            if (blank($user->phone_number) || blank($user->address)) {
+                return redirect()->route('complete.profile');
+            }
+            // Customer dengan data lengkap ke homepage
+            return redirect()->route('homepage');
         } catch (Exception $e) {
             return redirect('/login')->with('error', 'Terjadi kesalahan saat login: ' . $e->getMessage());
         }
+    }
+
+    // Tampilkan form lengkapi data (phone & address) untuk customer Google
+    public function showCompleteProfile()
+    {
+        return view('auth.complete-profile');
+    }
+
+    // Simpan phone & address manual, lalu arahkan ke homepage
+    public function storeCompleteProfile(Request $request)
+    {
+        $validated = $request->validate([
+            'phone_number' => 'required|string|max:20',
+            'address'      => 'required|string',
+        ]);
+
+        $request->user()->update($validated);
+
+        return redirect()->route('homepage');
     }
 
     // Logout user
