@@ -25,9 +25,9 @@
 
                 <ul class="sidebar-menu">
                     <li><a href="{{ route('overview') }}"><i class="fa-solid fa-border-all"></i> Overview</a></li>
-                    <li><a href="{{ route('categories') }}"><i class="fa-solid fa-tag"></i> Categories</a></li>
-                    <li><a href="{{ route('transactions') }}"><i class="fa-solid fa-cart-shopping"></i> Transactions</a></li>
                     <li><a href="{{ route('products') }}"><i class="fa-solid fa-box"></i> Products</a></li>
+                    <li><a href="{{ route('transactions') }}"><i class="fa-solid fa-cart-shopping"></i> Transactions</a></li>
+                    <li><a href="{{ route('categories') }}"><i class="fa-solid fa-tag"></i> Categories</a></li>
                     <li><a href="{{ route('users') }}" class="active"><i class="fa-solid fa-users"></i> Users</a></li>
                     <li><a href="{{ route('suppliers') }}"><i class="fa-solid fa-truck"></i> Suppliers</a></li>
                     <li><a href="{{ route('inventory-logs') }}"><i class="fa-solid fa-clipboard-list"></i> Inventory Logs</a></li>
