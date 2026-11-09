@@ -62,7 +62,7 @@
     <section class="section-container" id="produk">
         <div class="section-header-flex">
             <h2 class="section-title" style="margin-bottom: 0;">Produk Terbaru di Toko Kami</h2>
-            <a href="#" class="view-all-link">View All <i class="fa-solid fa-arrow-right"></i></a>
+            <a href="{{ route('produk') }}"class="view-all-link">View All <i class="fa-solid fa-arrow-right"></i></a>
         </div>
 
         <div class="products-grid">
