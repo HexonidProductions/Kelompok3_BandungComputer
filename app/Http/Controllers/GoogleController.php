@@ -71,11 +71,9 @@ class GoogleController extends Controller
             Auth::login($user);
 
             // Redirect ke halaman sesuai role
-            if (Auth::user()->role === 'admin') {
-                return redirect()->route('dashboard');
-            } else {
-                return redirect()->route('home');
-            } 
+            if (Auth::user()->role !== 'admin') {
+                return redirect()->route('homepage'); // Redirect ke halaman utama untuk customer
+            }
         } catch (Exception $e) {
             return redirect('/login')->with('error', 'Terjadi kesalahan saat login: ' . $e->getMessage());
         }
