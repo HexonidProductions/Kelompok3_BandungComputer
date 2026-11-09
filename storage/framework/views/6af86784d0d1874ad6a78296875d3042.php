@@ -23,16 +23,17 @@
                     <img src="<?php echo e(asset('images/logo_bc.png')); ?>" alt="Bandung Computer Logo" onerror="this.src='<?php echo e(asset('images/logo_bc_hitam.png')); ?>'">
                 </div>
 
-                <ul class="sidebar-menu">
-                    <li><a href="<?php echo e(route('overview')); ?>"><i class="fa-solid fa-border-all"></i> Overview</a></li>
-                    <li><a href="<?php echo e(route('categories')); ?>"><i class="fa-solid fa-tag"></i> Categories</a></li>
-                    <li><a href="<?php echo e(route('transactions')); ?>"><i class="fa-solid fa-cart-shopping"></i> Transactions</a></li>
-                    <li><a href="<?php echo e(route('products')); ?>"><i class="fa-solid fa-box"></i> Products</a></li>
-                    <li><a href="<?php echo e(route('users')); ?>"><i class="fa-solid fa-users"></i> Users</a></li>
-                    <li><a href="<?php echo e(route('suppliers')); ?>"><i class="fa-solid fa-truck"></i> Suppliers</a></li>
-                   <li><a href="<?php echo e(route('inventory-logs')); ?>"><i class="fa-solid fa-clipboard-list"></i> Inventory Logs</a></li>
-                    <li><a href="<?php echo e(route('daily-closing')); ?>"><i class="fa-solid fa-wrench"></i> Daily Closing</a></li>
-                </ul>
+               <ul class="sidebar-menu">
+    <li><a href="<?php echo e(route('overview')); ?>"><i class="fa-solid fa-border-all"></i> Overview</a></li>
+    <li><a href="<?php echo e(route('categories')); ?>"><i class="fa-solid fa-tag"></i> Categories</a></li>
+    <li><a href="<?php echo e(route('transactions')); ?>"><i class="fa-solid fa-cart-shopping"></i> Transactions</a></li>
+    <li><a href="<?php echo e(route('products')); ?>"><i class="fa-solid fa-box"></i> Products</a></li>
+    <li><a href="<?php echo e(route('users')); ?>"><i class="fa-solid fa-users"></i> Users</a></li>
+    <li><a href="<?php echo e(route('suppliers')); ?>"><i class="fa-solid fa-truck"></i> Suppliers</a></li>
+    
+    <li><a href="<?php echo e(route('inventory-logs')); ?>" class="active"><i class="fa-solid fa-clipboard-list"></i> Inventory Logs</a></li>
+    <li><a href="<?php echo e(route('daily-closing')); ?>"><i class="fa-solid fa-wrench"></i> Daily Closing</a></li>
+</ul>
             </div>
 
             <div class="sidebar-bottom">

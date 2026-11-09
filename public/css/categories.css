@@ -6,93 +6,117 @@
 }
 
 body {
-    background-color: #1e1e1e;
+    background-color: #f8fafc;
     color: #1e293b;
-    min-height: 100vh;
+    overflow-x: hidden;
 }
 
+/* Layout Container Grid */
 .dashboard-container {
     display: flex;
     min-height: 100vh;
 }
 
-/* Sidebar Freeze / Fixed */
+/* ==========================================
+   1. SIDEBAR NAVIGATION (FIXED LEFT)
+   ========================================== */
 .sidebar {
     width: 260px;
-    background-color: #0f172a;
+    background-color: #0d1527; /* Dark navy background */
     color: #ffffff;
-    padding: 24px 16px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     position: fixed;
     top: 0;
-    left: 0;
     bottom: 0;
-    height: 100vh;
-    z-index: 50;
-    overflow-y: auto;
+    left: 0;
+    z-index: 100;
+    padding: 24px 0;
 }
 
+/* Logo Box */
 .logo-box {
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    padding: 12px 8px;
-    margin-bottom: 28px;
-    width: 100%;
+    padding: 8px 20px 28px 16px; /* Padding disesuaikan agar logo lebih rapat ke kiri dan atas */
 }
 
 .logo-box img {
-    height: 75px;
+    height: 75px; /* Ukuran diperbesar dari 48px menjadi 75px */
     width: auto;
+    max-width: 100%;
     object-fit: contain;
+    display: block;
 }
 
+/* List Menu Sidebar */
 .sidebar-menu {
     list-style: none;
+    padding: 0 !important;
+    margin: 0;
     display: flex;
     flex-direction: column;
     gap: 6px;
+    width: 100%;
 }
 
-.sidebar-menu a {
+.sidebar-menu li a {
     display: flex;
     align-items: center;
-    gap: 12px;
-    padding: 12px 16px;
+    gap: 14px;
     color: #94a3b8;
     text-decoration: none;
     font-size: 14px;
     font-weight: 500;
-    border-radius: 10px;
-    transition: all 0.2s;
+    padding: 14px 24px;
+    width: 100%;
+    border-radius: 0 !important;
+    transition: all 0.2s ease;
 }
 
-.sidebar-menu a:hover,
-.sidebar-menu a.active {
-    background-color: #2563eb;
+.sidebar-menu li a i {
+    font-size: 16px;
+    width: 20px;
+    text-align: center;
+}
+
+.sidebar-menu li a:hover {
     color: #ffffff;
 }
 
+/* MENU AKTIF (CATEGORIES) - Full Biru Ujung ke Ujung */
+.sidebar-menu li a.active {
+    background-color: #2563eb !important; /* Biru terang */
+    color: #ffffff !important;
+    font-weight: 600;
+    border-radius: 0 !important;
+    width: 100% !important;
+    box-shadow: none;
+}
+
+/* Section Profil Admin & Logout Bottom */
 .sidebar-bottom {
+    padding: 0 24px;
     border-top: 1px solid #1e293b;
-    padding-top: 16px;
+    padding-top: 20px;
 }
 
 .admin-info {
-    margin-bottom: 12px;
+    margin-bottom: 16px;
 }
 
 .admin-role {
     font-size: 12px;
     color: #64748b;
+    margin-bottom: 2px;
 }
 
 .admin-name {
     font-size: 14px;
-    font-weight: 600;
-    color: #f8fafc;
+    font-weight: 700;
+    color: #ffffff;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .btn-logout {
@@ -105,22 +129,29 @@ body {
     font-size: 14px;
     font-weight: 600;
     cursor: pointer;
+    transition: background-color 0.2s;
 }
 
-/* Content Area */
+.btn-logout:hover {
+    background-color: #1e40af;
+}
+
+/* ==========================================
+   2. MAIN CONTENT AREA
+   ========================================== */
 .main-content {
     margin-left: 260px;
-    flex-grow: 1;
-    padding: 32px;
+    flex: 1;
+    padding: 36px 40px;
     background-color: #f8fafc;
     min-height: 100vh;
 }
 
 .page-title {
-    font-size: 24px;
-    font-weight: 600;
-    margin-bottom: 24px;
+    font-size: 26px;
+    font-weight: 700;
     color: #0f172a;
+    margin-bottom: 24px;
 }
 
 /* Search Bar & Add Button Row */
@@ -136,31 +167,37 @@ body {
     width: 320px;
 }
 
-.search-box input {
-    width: 100%;
-    padding: 10px 14px 10px 40px;
-    border: 1px solid #e2e8f0;
-    border-radius: 10px;
-    font-size: 13px;
-    outline: none;
-    background-color: #ffffff;
-}
-
 .search-icon {
     position: absolute;
     left: 14px;
     top: 50%;
     transform: translateY(-50%);
-    color: #94a3b8;
+    color: #64748b;
     font-size: 14px;
+}
+
+.search-box input {
+    width: 100%;
+    padding: 10px 16px 10px 40px;
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 13px;
+    color: #0f172a;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.search-box input:focus {
+    border-color: #2563eb;
 }
 
 .btn-add {
     background-color: #2563eb;
     color: #ffffff;
     border: none;
-    padding: 10px 18px;
-    border-radius: 10px;
+    padding: 10px 20px;
+    border-radius: 8px;
     font-size: 13px;
     font-weight: 600;
     cursor: pointer;
@@ -174,155 +211,166 @@ body {
     background-color: #1d4ed8;
 }
 
-/* Card Table */
+/* ==========================================
+   3. TABLE CARD SECTION
+   ========================================== */
 .card-table {
-    background: #ffffff;
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
     border-radius: 14px;
     padding: 24px;
-    border: 1px solid #e2e8f0;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
 }
 
 .card-title {
-    font-size: 14px;
-    font-weight: 700;
-    color: #0f172a;
-    margin-bottom: 16px;
-}
-
-table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 13px;
-}
-
-th {
-    background-color: #e2e8f0;
-    color: #334155;
-    text-align: left;
-    padding: 12px 16px;
-    font-weight: 600;
-}
-
-th:first-child {
-    border-top-left-radius: 8px;
-    border-bottom-left-radius: 8px;
-}
-
-th:last-child {
-    border-top-right-radius: 8px;
-    border-bottom-right-radius: 8px;
-    text-align: right;
-}
-
-td {
-    padding: 14px 16px;
-    border-bottom: 1px solid #f1f5f9;
-    color: #334155;
-}
-
-td.action-cell {
-    text-align: right;
-}
-
-.action-btn {
-    background: none;
-    border: none;
-    cursor: pointer;
-    font-size: 14px;
-    margin-left: 10px;
-}
-
-.btn-edit {
-    color: #64748b;
-}
-
-.btn-edit:hover {
-    color: #2563eb;
-}
-
-.btn-delete {
-    color: #ef4444;
-}
-
-.btn-delete:hover {
-    color: #dc2626;
-}
-
-/* Pagination */
-.pagination-wrapper {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 20px;
-    font-size: 12px;
-    color: #64748b;
-}
-
-.pagination {
-    display: flex;
-    gap: 4px;
-}
-
-.page-btn {
-    padding: 6px 12px;
-    border: 1px solid #e2e8f0;
-    background: #ffffff;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 12px;
-}
-
-.page-btn.active {
-    background: #2563eb;
-    color: #ffffff;
-    border-color: #2563eb;
-}
-
-/* Modal Popup Styling */
-.modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.4);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 100;
-    opacity: 0;
-    visibility: hidden;
-    transition: all 0.2s ease;
-}
-
-.modal-overlay.active {
-    opacity: 1;
-    visibility: visible;
-}
-
-.modal-box {
-    background: #ffffff;
-    border-radius: 16px;
-    width: 100%;
-    max-width: 440px;
-    padding: 24px;
-    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
-}
-
-.modal-title {
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 700;
     color: #0f172a;
     margin-bottom: 20px;
 }
 
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 24px;
+}
+
+thead tr {
+    background-color: #f1f5f9;
+}
+
+th {
+    padding: 12px 16px;
+    text-align: left;
+    font-size: 12px;
+    font-weight: 600;
+    color: #475569;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+td {
+    padding: 14px 16px;
+    font-size: 13px;
+    color: #334155;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+tbody tr:hover {
+    background-color: #f8fafc;
+}
+
+/* Action Cell Buttons (Ikon Pensil & Trash Sesuai Gambar) */
+.action-cell {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+.action-btn {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    padding: 4px;
+    transition: transform 0.1s ease;
+}
+
+.action-btn:hover {
+    transform: scale(1.15);
+}
+
+.btn-edit {
+    color: #475569; /* Abu-abu kehitaman */
+}
+
+.btn-delete {
+    color: #ef4444; /* Merah untuk ikon sampah */
+}
+
+/* Pagination Wrapper */
+.pagination-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 12px;
+    color: #64748b;
+    padding-top: 8px;
+}
+
+.pagination {
+    display: flex;
+    gap: 6px;
+}
+
+.page-btn {
+    background: #ffffff;
+    border: 1px solid #cbd5e1;
+    color: #334155;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.page-btn:hover {
+    background-color: #f1f5f9;
+}
+
+.page-btn.active {
+    background-color: #2563eb;
+    color: #ffffff;
+    border-color: #2563eb;
+}
+
+/* ==========================================
+   4. MODAL POP-UP STYLES
+   ========================================== */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(15, 23, 42, 0.4);
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease;
+}
+
+.modal-overlay.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.modal-box {
+    background: #ffffff;
+    border-radius: 14px;
+    padding: 24px;
+    width: 400px;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+}
+
+.modal-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: #0f172a;
+    margin-bottom: 16px;
+}
+
 .modal-input {
     width: 100%;
-    padding: 12px 14px;
-    border: 1px solid #e2e8f0;
-    border-radius: 10px;
+    padding: 10px 14px;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
     font-size: 13px;
-    margin-bottom: 24px;
+    margin-bottom: 20px;
     outline: none;
 }
 
@@ -333,15 +381,15 @@ td.action-cell {
 .modal-actions {
     display: flex;
     justify-content: flex-end;
-    gap: 12px;
+    gap: 10px;
 }
 
 .btn-cancel {
-    background: #ffffff;
-    border: 1px solid #94a3b8;
-    color: #334155;
-    padding: 10px 20px;
-    border-radius: 8px;
+    background: #f1f5f9;
+    color: #475569;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
     font-size: 13px;
     font-weight: 600;
     cursor: pointer;
@@ -349,11 +397,15 @@ td.action-cell {
 
 .btn-save {
     background: #2563eb;
-    border: none;
     color: #ffffff;
-    padding: 10px 24px;
-    border-radius: 8px;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
     font-size: 13px;
     font-weight: 600;
     cursor: pointer;
+}
+
+.btn-save:hover {
+    background: #1d4ed8;
 }

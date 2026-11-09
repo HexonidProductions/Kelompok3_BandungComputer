@@ -59,10 +59,10 @@
                         <input type="text" id="searchInput" placeholder="Search username" onkeyup="filterTable()">
                     </div>
 
+                    <!-- Role Filter: Hanya Admin & Customer -->
                     <select id="roleFilter" class="filter-select" onchange="filterTable()">
                         <option value="All">Role: All</option>
                         <option value="Admin">Admin</option>
-                        <option value="Cashier">Cashier</option>
                         <option value="Customer">Customer</option>
                     </select>
                 </div>
@@ -104,7 +104,7 @@
                             <td class="password-hash">$2y$12$89aJSmMrlbaXAKlvkndyyurYiJ1T4NOsBg8TULcE0NI.</td>
                             <td>082654231039</td>
                             <td>Jl. Merdeka 1</td>
-                            <td>Cashier</td>
+                            <td>Customer</td>
                             <td style="text-align: center;"><button class="action-btn" onclick="openEditModal(this)"><i class="fa-solid fa-ellipsis"></i></button></td>
                         </tr>
                         <tr>
@@ -142,7 +142,7 @@
 
     </div>
 
-    <!-- Modal Dynamic Form User (Add & Edit) -->
+    <!-- Modal Form User (Add & Edit) -->
     <div class="modal-overlay" id="userModal">
         <div class="modal-box-lg">
             <h3 class="modal-title" id="modalTitle">Add New User</h3>
@@ -167,12 +167,12 @@
                     </div>
                 </div>
 
+                <!-- Role Input Modal: Hanya Admin & Customer -->
                 <div class="form-group">
                     <label>Role</label>
-                    <select id="roleInput" class="form-control">
+                    <select id="roleInput" class="form-control" required>
                         <option value="" disabled selected>Select user role</option>
                         <option value="Admin">Admin</option>
-                        <option value="Cashier">Cashier</option>
                         <option value="Customer">Customer</option>
                     </select>
                 </div>
@@ -212,7 +212,7 @@
             document.getElementById('usernameInput').value = cells[0].innerText.trim();
             document.getElementById('emailInput').value = cells[1].innerText.trim();
             document.getElementById('passwordInput').value = ""; 
-            document.getElementById('passwordInput').required = false; // tidak wajib isi kalau edit
+            document.getElementById('passwordInput').required = false; 
             document.getElementById('phoneInput').value = cells[3].innerText.trim();
             document.getElementById('addressInput').value = cells[4].innerText.trim();
             document.getElementById('roleInput').value = cells[5].innerText.trim();
