@@ -5,8 +5,9 @@
     <div class="h-screen w-screen overflow-hidden flex flex-col md:flex-row bg-[#F8FAFC]">
 
         {{-- Left Side: Image Panel (md and up) --}}
-        <div class="hidden md:flex md:w-1/2 h-full bg-[#F8FAFC] justify-center items-center overflow-hidden p-2 lg:p-3">
-            <img src="{{ asset('images/banner_login_page_revision.png') }}" alt="Banner Image" class="w-full h-full object-cover rounded-2xl">
+        <div class="hidden md:flex md:w-1/2 h-full bg-[#F8FAFC] justify-center items-center overflow-hidden p-3 lg:p-4">
+            {{-- Menggunakan object-contain agar gambar banner utuh tidak terpotong --}}
+            <img src="{{ asset('images/banner_login_page_revision.png') }}" alt="Banner Image" class="w-full h-full object-contain rounded-2xl">
         </div>
 
         {{-- Right Side: Form Panel --}}
@@ -38,8 +39,8 @@
                 </div>
             </div>
 
-            {{-- Middle Row: Form --}}
-            <div class="w-full pb-4">
+            {{-- Middle Row: Form & Bottom Link --}}
+            <div class="w-full my-auto">
                 <form method="POST" action="{{ route('login') }}" class="w-full max-w-sm mx-auto space-y-3 lg:space-y-4">
                     @csrf
 
@@ -116,15 +117,18 @@
                         </a>
                     </div>
                 </form>
+
+                {{-- Bottom Row: Sign Up Link (Berjarak Rapat di Bawah Google) --}}
+                <div class="flex justify-center text-xs lg:text-sm text-gray-600 space-x-1 mt-3">
+                    <p>Don't have an account?</p>
+                    <a href="{{ route('register') }}" class="text-blue-600 hover:text-[#0F172A] hover:underline font-semibold">
+                        Sign up
+                    </a>
+                </div>
             </div>
 
-            {{-- Bottom Row: Sign Up Link --}}
-            <div class="flex justify-center text-xs lg:text-sm text-gray-600 space-x-1 mb-16">
-                <p>Don't have an account?</p>
-                <a href="{{ route('register') }}" class="text-blue-600 hover:text-[#0F172A] hover:underline font-semibold">
-                    Sign up
-                </a>
-            </div>
+            {{-- Empty Space Spacer for Flex Balance --}}
+            <div class="h-2"></div>
         </div>
     </div>
 </x-guest-layout>
