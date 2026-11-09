@@ -8,14 +8,15 @@ use Illuminate\Support\Facades\Route;
 |--------------------------------------------------------------------------
 */
 
-// Auth / Login Route
+// Home / Landing Page Route (Halaman Utama saat pertama buka web)
 Route::get('/', function () {
-    return view('login');
-})->name('login');
+    return view('home');
+})->name('home');
 
+// Auth / Login Route
 Route::get('/login', function () {
     return view('login');
-})->name('login.page');
+})->name('login');
 
 // Dashboard / Overview Route
 Route::get('/overview', function () {
