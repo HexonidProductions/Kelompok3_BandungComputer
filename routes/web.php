@@ -38,7 +38,7 @@ Route::middleware(['auth', 'prevent-back-history'])->group(function () {
     Route::get('/homepage', [UserController::class, 'index'])->name('home');
     Route::resource('/daily-closings', DailyClosingController::class);
     Route::resource('/categories', CategoryController::class)->except(['create', 'edit', 'show']);
-    Route::resource('/products', ProductController::class);
+    Route::resource('/products', ProductController::class);      
     Route::resource('/suppliers', SupplierController::class);
     Route::resource('/inventory-logs', InventoryLogController::class);
     Route::resource('/transactions', TransactionController::class);
