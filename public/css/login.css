@@ -5,253 +5,230 @@
     font-family: 'Inter', sans-serif;
 }
 
-body {
-    background-color: #1e1e1e;
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-}
-
-.login-card {
-    background-color: #ffffff;
+/* Full Screen Container Window */
+html, body {
     width: 100%;
-    max-width: 1000px;
-    border-radius: 24px;
+    height: 100%;
     overflow: hidden;
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-    display: flex;
-    flex-direction: row;
-    align-items: stretch;
+    background-color: #ffffff;
 }
 
-.login-image-section {
-    width: 50%;
-    padding: 12px;
+/* Card Utama Login Full Screen 100vw x 100vh */
+.login-card {
     display: flex;
+    width: 100vw;
+    height: 100vh;
+    background-color: #ffffff;
+    border-radius: 0;
+    box-shadow: none;
+    overflow: hidden;
+}
+
+/* ==========================================
+   1. SISI KIRI: GAMBAR BANNER (DENGAN JARAK PADDING)
+   ========================================== */
+.login-image-section {
+    flex: 1;
+    height: 100%;
+    position: relative;
+    background-color: #ffffff;
+    padding: 20px; /* Jarak sedikit dari pinggir luar */
 }
 
 .login-image-wrapper {
     width: 100%;
-    min-height: 480px;
-    border-radius: 16px;
+    height: 100%;
+    border-radius: 16px; /* Sudut melengkung halus */
     overflow: hidden;
-    position: relative;
 }
 
 .login-image-wrapper img {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    object-position: bottom center; /* <--- Diubah ke bottom agar bagian bawah gambar yang kelihatan */
+    display: block;
+    border-radius: 16px;
 }
-
+/* ==========================================
+   2. SISI KANAN: FORM LOGIN
+   ========================================== */
 .login-form-section {
-    width: 50%;
-    padding: 40px;
+    flex: 1;
+    height: 100%;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    position: relative;
+    padding: 36px 60px;
+    background-color: #ffffff;
+    overflow-y: auto;
 }
 
+/* Back to Homepage Link Top Right */
 .back-link {
     text-align: right;
+    margin-bottom: 16px;
 }
 
 .back-link a {
-    font-size: 12px;
-    font-weight: 600;
-    color: #6b7280;
+    color: #64748b;
+    font-size: 13px;
+    font-weight: 500;
     text-decoration: none;
-    transition: color 0.2s;
+    transition: color 0.2s ease;
 }
 
 .back-link a:hover {
-    color: #111827;
+    color: #2563eb;
 }
 
+/* Container Form Tengah */
+.form-container {
+    max-width: 400px;
+    width: 100%;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+/* Logo Box & Header (Logo Diperbesar) */
 .form-header {
     text-align: center;
     margin-bottom: 28px;
 }
 
 .logo-box {
+    margin-bottom: 18px;
     display: flex;
-    align-items: center;
     justify-content: center;
-    margin-bottom: 16px;
-    width: 100%;
 }
 
 .logo-box img {
-    height: 100px; /* Atur tinggi logo sesuai selera (contoh: 60px) */
+    height: 130px; /* Ukuran Logo Bandung Computer Diperbesar */
     width: auto;
     object-fit: contain;
 }
 
-.logo-icon {
-    font-size: 18px;
-    color: #000000;
-}
-
-.logo-text {
-    text-align: left;
-    line-height: 1.1;
-}
-
-.logo-text span {
-    display: block;
-    font-size: 12px;
-    font-weight: 700;
-    letter-spacing: 0.5px;
-    color: #000000;
-}
-
 .form-header h1 {
-    font-size: 24px;
-    font-weight: 700;
+    font-size: 26px;
+    font-weight: 800;
     color: #0f172a;
-    margin-bottom: 4px;
+    margin-bottom: 8px;
 }
 
 .form-header p {
-    font-size: 12px;
-    color: #9ca3af;
-    font-weight: 500;
-    line-height: 1.4;
+    font-size: 13px;
+    color: #64748b;
+    line-height: 1.5;
 }
 
-.form-container {
-    max-width: 320px;
-    margin: 0 auto;
-    width: 100%;
-}
-
+/* Input Fields Style */
 .input-group {
-    margin-bottom: 16px;
+    margin-bottom: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
 }
 
 .input-group label {
-    display: block;
     font-size: 12px;
-    font-weight: 700;
-    color: #4b5563;
-    margin-bottom: 6px;
+    font-weight: 600;
+    color: #0f172a;
 }
 
 .input-wrapper {
     position: relative;
+    display: flex;
+    align-items: center;
 }
 
 .input-wrapper input {
     width: 100%;
-    font-size: 12px;
-    padding: 12px 36px 12px 14px;
-    border: 1px solid #d1d5db;
-    border-radius: 12px;
+    padding: 12px 42px 12px 16px;
+    border: 1px solid #cbd5e1;
+    border-radius: 10px;
+    font-size: 13px;
+    color: #0f172a;
     outline: none;
-    transition: border-color 0.2s, box-shadow 0.2s;
-}
-
-.input-wrapper input::placeholder {
-    color: #d1d5db;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .input-wrapper input:focus {
-    border-color: #0047ba;
-    box-shadow: 0 0 0 3px rgba(0, 71, 186, 0.15);
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
 }
 
 .input-icon {
     position: absolute;
-    right: 14px;
-    top: 50%;
-    transform: translateY(-50%);
-    color: #374151;
+    right: 16px;
+    color: #64748b;
     font-size: 14px;
 }
 
+/* Tombol Submit Login */
 .btn-submit {
     width: 100%;
-    background-color: #0047ba;
+    background-color: #0256e8;
     color: #ffffff;
-    font-size: 12px;
-    font-weight: 600;
-    padding: 12px;
     border: none;
-    border-radius: 12px;
+    padding: 12px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
     cursor: pointer;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-    transition: background-color 0.2s;
     margin-top: 8px;
+    transition: background-color 0.2s ease;
 }
 
 .btn-submit:hover {
-    background-color: #00368c;
+    background-color: #1d4ed8;
 }
 
+/* Separator Pembatas OR */
 .separator {
     display: flex;
     align-items: center;
-    margin: 16px 0;
+    margin: 20px 0;
 }
 
 .separator-line {
-    flex-grow: 1;
+    flex: 1;
     height: 1px;
-    background-color: #e5e7eb;
+    background-color: #e2e8f0;
 }
 
 .separator-text {
-    font-size: 10px;
+    font-size: 11px;
     font-weight: 600;
-    color: #9ca3af;
+    color: #94a3b8;
     padding: 0 12px;
 }
 
+/* Tombol Google */
 .btn-google {
     width: 100%;
     background-color: #ffffff;
-    border: 1px solid #d1d5db;
-    color: #374151;
-    font-size: 12px;
+    border: 1px solid #cbd5e1;
+    padding: 11px;
+    border-radius: 10px;
+    font-size: 13px;
     font-weight: 600;
-    padding: 10px;
-    border-radius: 12px;
+    color: #334155;
+    cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 8px;
-    cursor: pointer;
-    transition: background-color 0.2s;
+    gap: 10px;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
 }
 
 .btn-google:hover {
-    background-color: #f9fafb;
+    background-color: #f8fafc;
+    border-color: #94a3b8;
 }
 
 .btn-google svg {
-    width: 16px;
-    height: 16px;
-}
-
-@media (max-width: 768px) {
-    .login-card {
-        flex-direction: column;
-    }
-
-    .login-image-section {
-        width: 100%;
-    }
-
-    .login-image-wrapper {
-        min-height: 250px;
-        height: 250px;
-    }
-
-    .login-form-section {
-        width: 100%;
-        padding: 24px;
-    }
+    width: 18px;
+    height: 18px;
 }
