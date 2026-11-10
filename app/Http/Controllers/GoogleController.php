@@ -95,8 +95,8 @@ class GoogleController extends Controller
     public function storeCompleteProfile(Request $request)
     {
         $validated = $request->validate([
-            'phone_number' => 'required|string|max:20',
-            'address'      => 'required|string',
+            'phone_number' => 'required|numeric|digits_between:10,13',
+            'address'      => 'required|string|max:500',
         ]);
 
         $request->user()->update($validated);

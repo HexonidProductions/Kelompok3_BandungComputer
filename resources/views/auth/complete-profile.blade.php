@@ -16,11 +16,14 @@
             <div>
                 <x-input-label for="phone_number" :value="__('Nomor Handphone')" class="text-sm font-medium text-[#0F172A] mb-1" />
                 <input id="phone_number"
-                    type="text"
+                    type="tel"
                     name="phone_number"
                     value="{{ old('phone_number', auth()->user()->phone_number) }}"
                     required
-                    placeholder="Masukkan nomor handphone"
+                    placeholder="08xxxxxxxxx"
+                    pattern="[0-9]{10,13}"
+                    inputmode="numeric"
+                    maxlength="13"
                     class="block w-full h-11 px-4 text-sm bg-white text-gray-800 border border-gray-200 rounded-xl focus:border-gray-300 focus:ring-0 focus:outline-none placeholder-gray-400 transition-colors">
                 <x-input-error :messages="$errors->get('phone_number')" class="mt-1" />
             </div>
@@ -32,7 +35,7 @@
                     name="address"
                     rows="3"
                     required
-                    placeholder="Masukkan alamat lengkap"
+                    placeholder="Jl. Merdeka No. 1, RT/RW, Kelurahan, Kecamatan, Kota"
                     class="block w-full px-4 py-2 text-sm bg-white text-gray-800 border border-gray-200 rounded-xl focus:border-gray-300 focus:ring-0 focus:outline-none placeholder-gray-400 transition-colors resize-none">{{ old('address', auth()->user()->address) }}</textarea>
                 <x-input-error :messages="$errors->get('address')" class="mt-1" />
             </div>
