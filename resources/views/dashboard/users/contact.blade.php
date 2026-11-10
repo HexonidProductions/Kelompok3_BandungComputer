@@ -24,7 +24,18 @@
         <li><a href="{{ route('about') }}">Tentang Kami</a></li>
         <li><a href="{{ route('contact') }}" class="active">Kontak</a></li>
     </ul>
-    <a href="{{ route('login') }}" class="btn-masuk">Masuk</a>
+    @guest
+        <a href="{{ route('login') }}" class="btn-masuk">Masuk</a>
+    @else
+        @if (Auth::user()->role === 'customer')
+            <form action="{{ route('logout') }}" method="POST" class="d-inline">
+                @csrf
+                <button type="submit" class="btn-masuk">Logout</button>
+            </form>
+        @else
+            <a href="{{ route('dashboard') }}" class="btn-masuk">Dashboard</a>
+        @endif
+    @endguest
 </nav>
 
     <!-- Section Ada Pertanyaan -->

@@ -13,16 +13,10 @@ class CategorySeeder extends Seeder
      */
     public function run(): void
     {
-        Category::create([
-            'category_name' => 'Laptop',
-        ]);
-
-        Category::create([
-            'category_name' => 'Handphone',
-        ]);
-
-        Category::create([
-            'category_name' => 'Headset',
-        ]);
+        Category::firstOrCreate(['category_name' => 'Laptop']);
+        Category::firstOrCreate(['category_name' => 'Handphone']);
+        Category::firstOrCreate(['category_name' => 'Headset']);
+        Category::firstOrCreate(['category_name' => 'Gaming']);
+        Category::firstOrCreate(['category_name' => 'Aksesoris']);
     }
 }

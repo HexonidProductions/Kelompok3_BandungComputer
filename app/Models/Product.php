@@ -24,4 +24,18 @@ class Product extends Model
     {
         return $this->belongsTo(Category::class, 'category_id');
     }
+
+    public function getImageUrlAttribute()
+    {
+        if (!$this->image) {
+            return asset('images/placeholder.png');
+        }
+        if (str_starts_with($this->image, 'http')) {
+            return $this->image;
+        }
+        if (file_exists(public_path($this->image))) {
+            return asset($this->image);
+        }
+        return asset('storage/' . $this->image);
+    }
 }

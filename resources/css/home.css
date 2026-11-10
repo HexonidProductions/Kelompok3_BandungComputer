@@ -125,29 +125,81 @@ body {
     margin-bottom: 32px;
 }
 
-/* Section Koleksi Kategori (Murni Gambar) */
+/* Section Koleksi Kategori - Product image with custom shape & badge */
 .category-grid {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
-    gap: 20px;
+    gap: 24px;
+    justify-items: center;
 }
 
-.category-card-img {
-    border-radius: 100px 100px 24px 24px;
+@media (max-width: 1024px) {
+    .category-grid {
+        display: flex;
+        overflow-x: auto;
+        gap: 20px;
+        padding-bottom: 12px;
+        justify-content: flex-start;
+    }
+}
+
+.category-card {
+    display: block;
+    position: relative;
+    width: 100%;
+    max-width: 200px;
+    aspect-ratio: 1 / 1;
+    border-radius: 100px 100px 100px 0;
     overflow: hidden;
-    height: 200px;
-    transition: transform 0.2s ease;
+    background-color: #ffffff;
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.08);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    text-decoration: none;
+    flex-shrink: 0;
 }
 
-.category-card-img:hover {
+.category-card:hover {
     transform: translateY(-4px);
+    box-shadow: 0 16px 32px rgba(0, 0, 0, 0.12);
 }
 
-.category-card-img img {
+.category-img-wrapper {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+}
+
+.category-img {
     width: 100%;
     height: 100%;
     object-fit: cover;
     object-position: center;
+    transition: transform 0.35s ease;
+}
+
+.category-card:hover .category-img {
+    transform: scale(1.06);
+}
+
+.category-label {
+    position: absolute;
+    bottom: 20px;
+    left: 0;
+    background-color: #2563eb;
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 500;
+    padding: 6px 18px 6px 14px;
+    border-radius: 0 9999px 9999px 0;
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.35);
+    transition: background-color 0.2s ease;
+    white-space: nowrap;
+    z-index: 2;
+}
+
+.category-card:hover .category-label {
+    background-color: #1d4ed8;
 }
 
 /* Section Produk Terbaru */
@@ -195,50 +247,77 @@ body {
 }
 
 .product-card {
+    position: relative;
     background: #ffffff;
-    border: 1px solid #e2e8f0;
-    border-radius: 16px;
-    padding: 20px;
+    border: 1px solid #334155;
+    border-radius: 12px;
+    padding: 24px 20px 20px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    height: 400px;
+    min-height: 430px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.product-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08);
+}
+
+.product-badge-special {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    background-color: #dc2626;
+    color: #ffffff;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 3px 8px;
+    border-radius: 4px;
+    letter-spacing: 0.3px;
+    z-index: 2;
 }
 
 .product-img-box {
-    height: 200px;
+    height: 220px;
     width: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
     margin-bottom: 16px;
+    padding: 8px;
 }
 
 .product-img-box img {
     max-height: 100%;
     max-width: 100%;
     object-fit: contain;
+    transition: transform 0.3s ease;
+}
+
+.product-card:hover .product-img-box img {
+    transform: scale(1.04);
 }
 
 .product-name {
     font-size: 13px;
-    font-weight: 600;
+    font-weight: 500;
     color: #1e293b;
     text-align: center;
     margin-bottom: 12px;
-    height: 36px;
+    min-height: 38px;
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
 .product-price {
-    font-size: 15px;
+    font-size: 18px;
     font-weight: 700;
     color: #0f172a;
     text-align: center;
-    margin-bottom: 16px;
+    margin-bottom: 18px;
 }
 
 .btn-detail {
@@ -247,12 +326,12 @@ body {
     background-color: #2563eb;
     color: #ffffff;
     text-align: center;
-    padding: 10px;
+    padding: 11px 0;
     border-radius: 8px;
     text-decoration: none;
-    font-size: 13px;
-    font-weight: 600;
-    transition: background 0.2s;
+    font-size: 14px;
+    font-weight: 500;
+    transition: background-color 0.2s ease;
 }
 
 .btn-detail:hover {

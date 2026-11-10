@@ -10,7 +10,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     
     <!-- CSS Landing Page -->
-    <link rel="stylesheet" href="{{ asset('css/home.css') }}">
+    @vite('resources/css/home.css')
 </head>
 <body>
 
@@ -20,12 +20,23 @@
             <img src="{{ asset('images/logo_bc.png') }}" alt="Bandung Computer Logo" onerror="this.src='{{ asset('images/logo_bc_hitam.png') }}'">
         </div>
         <ul class="nav-links">
-            <li><a href="{{ route('home') }}#beranda" class="active">Beranda</a></li>
+            <li><a href="{{ route('homepage') }}#beranda" class="active">Beranda</a></li>
             <li><a href="{{ route('produk') }}">Produk</a></li>
             <li><a href="{{ route('about') }}">Tentang Kami</a></li>
             <li><a href="{{ route('contact') }}">Kontak</a></li>
         </ul>
-        <a href="{{ route('login') }}" class="btn-masuk">Masuk</a>
+        @guest
+            <a href="{{ route('login') }}" class="btn-masuk">Masuk</a>
+        @else
+            @if (Auth::user()->role === 'customer')
+                <form action="{{ route('logout') }}" method="POST" class="d-inline">
+                    @csrf
+                    <button type="submit" class="btn-masuk">Logout</button>
+                </form>
+            @else
+                <a href="{{ route('dashboard') }}" class="btn-masuk">Dashboard</a>
+            @endif
+        @endguest
     </nav>
     <!-- Hero Section (Ganti gambar di bagian url asset 'images/tentang_kami.png' jika ingin ganti banner) -->
     <section class="hero" id="beranda" style="background: linear-gradient(rgba(15, 23, 42, 0.75), rgba(15, 23, 42, 0.85)), url('{{ asset('images/banner_users (1).png') }}') center/cover no-repeat;">
@@ -40,21 +51,25 @@
     <section class="section-container">
         <h2 class="section-title">Belanja dari koleksi</h2>
         <div class="category-grid">
-            <div class="category-card-img">
-                <img src="{{ asset('images/gaming.png') }}" alt="Gaming">
-            </div>
-            <div class="category-card-img">
-                <img src="{{ asset('images/pc.png') }}" alt="Sparepart PC">
-            </div>
-            <div class="category-card-img">
-                <img src="{{ asset('images/acsesories.png') }}" alt="Aksesoris">
-            </div>
-            <div class="category-card-img">
-                <img src="{{ asset('images/printer.png') }}" alt="Printer">
-            </div>
-            <div class="category-card-img">
-                <img src="{{ asset('images/kabel.png') }}" alt="Kabel">
-            </div>
+            @php
+                $collections = [
+                    ['name' => 'Gaming', 'image' => 'images/koleksihomepage/gaming.jpg'],
+                    ['name' => 'Sparepart PC', 'image' => 'images/koleksihomepage/sparepartpc.jpg'],
+                    ['name' => 'Aksesoris', 'image' => 'images/koleksihomepage/Aksesoris.jpg'],
+                    ['name' => 'Printer', 'image' => 'images/koleksihomepage/Printer.jpg'],
+                    ['name' => 'Kabel', 'image' => 'images/koleksihomepage/Kabel.png'],
+                ];
+            @endphp
+            @foreach ($collections as $item)
+                <a href="{{ route('produk', ['search' => $item['name']]) }}" class="category-card">
+                    <div class="category-img-wrapper">
+                        <img src="{{ asset($item['image']) }}" 
+                             alt="{{ $item['name'] }}"
+                             class="category-img">
+                    </div>
+                    <span class="category-label">{{ $item['name'] }}</span>
+                </a>
+            @endforeach
         </div>
     </section>
 
@@ -62,31 +77,28 @@
     <section class="section-container" id="produk">
         <div class="section-header-flex">
             <h2 class="section-title" style="margin-bottom: 0;">Produk Terbaru di Toko Kami</h2>
-            <a href="{{ route('produk') }}"class="view-all-link">View All <i class="fa-solid fa-arrow-right"></i></a>
+            <a href="{{ route('produk') }}" class="view-all-link">View All <i class="fa-solid fa-arrow-right"></i></a>
         </div>
 
         <div class="products-grid">
-            <!-- Product 1: Gambar full card -->
-            <div class="product-card-full">
-                <img src="{{ asset('images/xbox.png') }}" alt="Xbox Series X">
-            </div>
-
-            <!-- Product 2: Gambar full card -->
-            <div class="product-card-full">
-                <img src="{{ asset('images/macbook.png') }}" alt="Macbook Pro 16">
-            </div>
-
-             <!-- Product 2: Gambar full card -->
-            <div class="product-card-full">
-                <img src="{{ asset('images/asus.png') }}" alt="Macbook Pro 16">
-            </div>
-
-             <!-- Product 2: Gambar full card -->
-            <div class="product-card-full">
-                <img src="{{ asset('images/mouse.png') }}" alt="Macbook Pro 16">
-            </div>
-
-
+            @forelse ($latestProducts as $product)
+                <div class="product-card">
+                    @if(str_contains(strtolower($product->product_name), 'special edition') || str_contains(strtolower($product->description ?? ''), 'special edition') || str_contains($product->product_name, 'Galaxy Black'))
+                        <span class="product-badge-special">Special Edition</span>
+                    @endif
+                    <div class="product-img-box">
+                        <img src="{{ $product->image_url }}" 
+                             alt="{{ $product->product_name }}">
+                    </div>
+                    <div class="product-name">{{ $product->product_name }}</div>
+                    <div class="product-price">Rp. {{ number_format($product->sell_price, 0, ',', '.') }}</div>
+                    <a href="{{ route('produk', ['search' => $product->product_name]) }}" class="btn-detail">Lihat Detail</a>
+                </div>
+            @empty
+                <div class="col-span-full text-center py-8 text-gray-500">
+                    Belum ada produk tersedia saat ini.
+                </div>
+            @endforelse
         </div>
     </section>
 
@@ -233,7 +245,7 @@
             <div>
                 <div class="footer-links-title">Tautan</div>
                 <ul class="footer-links-list">
-                    <li><a href="{{ route('home') }}">Beranda</a></li>
+                    <li><a href="{{ route('homepage') }}">Beranda</a></li>
                     <li><a href="{{ route('produk') }}">Produk</a></li>
                     <li><a href="{{ route('about') }}">Tentang Kami</a></li>
                     <li><a href="{{ route('contact') }}">Kontak</a></li>
