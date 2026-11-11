@@ -101,6 +101,13 @@ class GoogleController extends Controller
 
         $request->user()->update($validated);
 
+        if ($request->wantsJson() || $request->ajax()) {
+            return response()->json([
+                'success' => true,
+                'redirect_url' => route('homepage'),
+            ]);
+        }
+
         return redirect()->route('homepage');
     }
 

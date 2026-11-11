@@ -41,7 +41,7 @@
 
             {{-- Middle Row: Form & Bottom Link --}}
             <div class="w-full my-auto">
-                <form method="POST" action="{{ route('login') }}" class="w-full max-w-sm mx-auto space-y-3 lg:space-y-4">
+                <form id="loginForm" method="POST" action="{{ route('login') }}" class="w-full max-w-sm mx-auto space-y-3 lg:space-y-4">
                     @csrf
 
                     {{-- Email Address --}}
@@ -62,6 +62,7 @@
                             </div>
                         </div>
                         <x-input-error :messages="$errors->get('email')" class="mt-1" />
+                        <p id="email-error-client" class="text-xs text-red-600 mt-1 hidden"></p>
                     </div>
 
                     {{-- Password --}}
@@ -93,6 +94,7 @@
                             </button>
                         </div>
                         <x-input-error :messages="$errors->get('password')" class="mt-1" />
+                        <p id="password-error-client" class="text-xs text-red-600 mt-1 hidden"></p>
                     </div>
 
                     {{-- Login Button --}}
@@ -131,4 +133,74 @@
             <div class="h-2"></div>
         </div>
     </div>
+
+    {{-- Success Login Overlay --}}
+    <x-login-success-overlay />
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('loginForm');
+            if (!form) return;
+
+            const emailErr = document.getElementById('email-error-client');
+            const passErr = document.getElementById('password-error-client');
+
+            form.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                const submitBtn = form.querySelector('button[type="submit"]');
+                const originalText = submitBtn.innerHTML;
+
+                if (emailErr) {
+                    emailErr.innerText = '';
+                    emailErr.classList.add('hidden');
+                }
+                if (passErr) {
+                    passErr.innerText = '';
+                    passErr.classList.add('hidden');
+                }
+
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = 'Memproses...';
+
+                try {
+                    const formData = new FormData(form);
+                    const response = await fetch(form.action, {
+                        method: 'POST',
+                        body: formData,
+                        headers: {
+                            'X-Requested-With': 'XMLHttpRequest',
+                            'Accept': 'application/json'
+                        }
+                    });
+
+                    const data = await response.json();
+
+                    if (response.ok && data.success) {
+                        triggerLoginSuccess(data.redirect_url, 2500);
+                    } else {
+                        submitBtn.disabled = false;
+                        submitBtn.innerHTML = originalText;
+
+                        if (data.errors) {
+                            if (data.errors.email && emailErr) {
+                                emailErr.innerText = data.errors.email[0];
+                                emailErr.classList.remove('hidden');
+                            }
+                            if (data.errors.password && passErr) {
+                                passErr.innerText = data.errors.password[0];
+                                passErr.classList.remove('hidden');
+                            }
+                        } else if (data.message && emailErr) {
+                            emailErr.innerText = data.message;
+                            emailErr.classList.remove('hidden');
+                        }
+                    }
+                } catch (err) {
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = originalText;
+                    form.submit();
+                }
+            });
+        });
+    </script>
 </x-guest-layout>
