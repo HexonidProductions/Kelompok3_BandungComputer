@@ -31,7 +31,7 @@ Route::get('/', function () {
         return $cat;
     });
 
-    return view('dashboard.users.home', compact('latestProducts', 'categories'));
+    return view('home', compact('latestProducts', 'categories'));
 })->name('homepage');
 
 Route::get('/produk', function (Request $request) {
@@ -85,10 +85,10 @@ Route::get('/produk', function (Request $request) {
         $q->where('status', 'Available');
     }])->get();
 
-    return view('dashboard.users.produk', compact('products', 'categories', 'search', 'category', 'priceMin', 'priceMax', 'inStock', 'sort'));
+    return view('produk', compact('products', 'categories', 'search', 'category', 'priceMin', 'priceMax', 'inStock', 'sort'));
 })->name('produk');
-Route::get('/tentang', fn() => view('dashboard.users.about'))->name('about');
-Route::get('/kontak', fn() => view('dashboard.users.contact'))->name('contact');
+Route::get('/tentang', fn() => view('about'))->name('about');
+Route::get('/kontak', fn() => view('contact'))->name('contact');
 
 // Halaman login (otomatis redirect jika sudah login sesuai role)
 Route::get('/login', function () {
