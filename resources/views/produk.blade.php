@@ -9,35 +9,46 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     
-    <!-- CSS Produk -->
-    @vite('resources/css/produk.css')
+    <!-- CSS Eksternal & Tailwind (via Vite) -->
+    @vite(['resources/css/produk.css'])
+
+    <!-- CSS Tambahan Khusus Ikon Centang Toggle agar Path asset() Terbaca Laravel -->
+    <style>
+        .switch input:checked + .slider:before {
+            transform: translateX(16px);
+            background-image: url('{{ asset("icons/akar-icons_check.png") }}') !important;
+            background-size: 8px 8px !important;
+            background-repeat: no-repeat !important;
+            background-position: center !important;
+        }
+    </style>
 </head>
 <body>
 
     <!-- Navbar Navigasi -->
     <nav class="navbar">
-    <div class="nav-logo">
-        <img src="{{ asset('images/logo_bc.png') }}" alt="Bandung Computer Logo" onerror="this.src='{{ asset('images/logo_bc_hitam.png') }}'">
-    </div>
-    <ul class="nav-links">
-        <li><a href="{{ route('homepage') }}">Beranda</a></li>
-        <li><a href="{{ route('produk') }}" class="active">Produk</a></li>
-        <li><a href="{{ route('about') }}">Tentang Kami</a></li>
-        <li><a href="{{ route('contact') }}">Kontak</a></li>
-    </ul>
-    @guest
-        <a href="{{ route('login') }}" class="btn-masuk">Masuk</a>
-    @else
-        @if (Auth::user()->role === 'customer')
-            <form action="{{ route('logout') }}" method="POST" class="d-inline">
-                @csrf
-                <button type="submit" class="btn-masuk">Logout</button>
-            </form>
+        <div class="nav-logo">
+            <img src="{{ asset('images/logo_bc.png') }}" alt="Bandung Computer Logo" onerror="this.src='{{ asset('images/logo_bc_hitam.png') }}'">
+        </div>
+        <ul class="nav-links">
+            <li><a href="{{ route('homepage') }}">Beranda</a></li>
+            <li><a href="{{ route('produk') }}" class="active">Produk</a></li>
+            <li><a href="{{ route('about') }}">Tentang Kami</a></li>
+            <li><a href="{{ route('contact') }}">Kontak</a></li>
+        </ul>
+        @guest
+            <a href="{{ route('login') }}" class="btn-masuk">Masuk</a>
         @else
-            <a href="{{ route('dashboard') }}" class="btn-masuk">Dashboard</a>
-        @endif
-    @endguest
-</nav>
+            @if (Auth::user()->role === 'customer')
+                <form action="{{ route('logout') }}" method="POST" class="d-inline">
+                    @csrf
+                    <button type="submit" class="btn-masuk">Logout</button>
+                </form>
+            @else
+                <a href="{{ route('dashboard') }}" class="btn-masuk">Dashboard</a>
+            @endif
+        @endguest
+    </nav>
 
     <!-- Header Title -->
     <div class="catalog-header">
@@ -47,124 +58,185 @@
     <!-- Catalog Container -->
     <div class="catalog-container">
         
-        <!-- Sidebar Filter Left -->
-        <form method="GET" action="{{ route('produk') }}">
+        <!-- Sidebar Filter Left (Dengan Tombol Terapkan Filter) -->
+        <form method="GET" action="{{ route('produk') }}" class="sidebar-form" id="filterForm" onsubmit="localStorage.setItem('scrollPosition', window.scrollY);">
             <aside class="sidebar-filter">
                 <div class="filter-header">
                     <span class="filter-title">Filter</span>
                     <a href="{{ route('produk') }}" class="clear-all">Clear All</a>
                 </div>
 
-            <!-- Kategori Section -->
-            <div class="filter-section">
-                <div class="filter-section-title">
-                    <span>Kategori</span>
-                    <i class="fa-solid fa-chevron-up"></i>
-                </div>
-                <div class="category-list">
-                    @foreach ($categories as $cat)
-                        <div class="category-item">
-                            <label>
-                                <input type="checkbox" name="category" value="{{ $cat->id }}" {{ $category == $cat->id ? 'checked' : '' }}>
-                                {{ $cat->name }}
-                            </label>
-                            <span class="category-count">{{ $cat->products_count }}</span>
-                        </div>
-                    @endforeach
-                </div>
-            </div>
-
-            <!-- Harga Section -->
-            <div class="filter-section">
-                <div class="filter-section-title">
-                    <span>Harga</span>
-                </div>
-                <div class="price-inputs">
-                    <div class="price-field">
-                        <label>Min</label>
-                        <div class="input-with-symbol">
-                            <span>Rp</span>
-                            <input type="number" name="price_min" value="{{ $priceMin }}" placeholder="0">
-                        </div>
+                <!-- Kategori Section (Eksklusif/Bergantian tanpa auto-submit) -->
+                <div class="filter-section">
+                    <div class="filter-section-title">
+                        <span>Kategori</span>
+                        <i class="fa-solid fa-chevron-up"></i>
                     </div>
-                    <div class="price-field">
-                        <label>Max</label>
-                        <div class="input-with-symbol">
-                            <span>Rp</span>
-                            <input type="number" name="price_max" value="{{ $priceMax }}" placeholder="100000000">
-                        </div>
+                    <div class="category-list">
+                        @foreach ($categories as $cat)
+                            <div class="category-item">
+                                <label style="cursor: pointer; display: flex; align-items: center; gap: 8px;">
+                                    <input type="checkbox" name="category" value="{{ $cat->id }}" 
+                                        {{ request('category') == $cat->id ? 'checked' : '' }} 
+                                        onchange="
+                                            document.querySelectorAll('input[name=\'category\']').forEach(el => {
+                                                if(el !== this) el.checked = false;
+                                            });
+                                        ">
+                                    {{ $cat->category_name ?? $cat->name }}
+                                </label>
+                                <span class="category-count">{{ $cat->products_count ?? 0 }}</span>
+                            </div>
+                        @endforeach
                     </div>
                 </div>
-            </div>
 
-            <!-- Stok Toggle Section -->
-            <div class="stock-toggle-box">
-                <span class="stock-toggle-label">Stok</span>
-                <label class="switch">
-                    <input type="checkbox" name="in_stock" {{ $inStock ? 'checked' : '' }}>
-                    <span class="slider"></span>
-                </label>
-            </div>
-            <div style="font-size: 11px; color: #64748b; margin-top: 4px;">Tampilkan yang tersedia</div>
-            
-            <button type="submit" class="btn-apply-filter" style="width: 100%; margin-top: 16px; padding: 10px; background: #2563eb; color: white; border: none; border-radius: 8px; font-weight: 600;">Terapkan Filter</button>
-        </aside>
-    </form>
+                <!-- Harga Section -->
+                <div class="filter-section">
+                    <div class="filter-section-title">
+                        <span>Harga</span>
+                    </div>
+                    <div class="price-inputs">
+                        <div class="price-field">
+                            <label>Min</label>
+                            <div class="input-with-symbol">
+                                <span>Rp</span>
+                                <input type="number" name="price_min" value="{{ request('price_min') }}" placeholder="0">
+                            </div>
+                        </div>
+                        <div class="price-field">
+                            <label>Max</label>
+                            <div class="input-with-symbol">
+                                <span>Rp</span>
+                                <input type="number" name="price_max" value="{{ request('price_max') }}" placeholder="100000000">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Stok Toggle Section (Tanpa auto-submit) -->
+                <div class="filter-section">
+                    <div class="filter-section-title" style="margin-bottom: 8px;">
+                        <span>Stok</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <label class="switch" style="display: inline-block; margin-bottom: 0; flex-shrink: 0;">
+                            <input type="checkbox" name="in_stock" value="1" {{ request('in_stock') ? 'checked' : '' }}>
+                            <span class="slider"></span>
+                        </label>
+                        <span style="font-size: 11px; color: #000000; line-height: 1.2;">Tampilkan yang tersedia</span>
+                    </div>
+                </div>
+
+                <!-- Tombol Terapkan Filter -->
+                <div style="margin-top: 20px;">
+                    <button type="submit" class="btn-terapkan">
+                        Terapkan Filter
+                    </button>
+                </div>
+            </aside>
+        </form>
 
         <!-- Content Area Right -->
         <main class="content-area">
             
             <!-- Top Bar Search & Sort -->
-            <div class="top-bar">
-                <form method="GET" class="search-box" style="display: flex; gap: 8px;">
-                    @foreach(['category' => $category, 'price_min' => $priceMin, 'price_max' => $priceMax, 'in_stock' => $inStock, 'sort' => $sort] as $key => $val)
+            <div class="top-bar" style="display: flex; gap: 16px; margin-bottom: 24px;">
+                
+                <!-- Search Box -->
+                <form method="GET" class="search-box" onsubmit="localStorage.setItem('scrollPosition', window.scrollY);">
+                    @foreach(['category' => request('category'), 'price_min' => request('price_min'), 'price_max' => request('price_max'), 'in_stock' => request('in_stock'), 'sort' => request('sort')] as $key => $val)
                         @if($val)
                             <input type="hidden" name="{{ $key }}" value="{{ $val }}">
                         @endif
                     @endforeach
-                    <i class="fa-solid fa-magnifying-glass" style="align-self: center; margin-left: 12px; color: #94a3b8;"></i>
-                    <input type="text" name="search" value="{{ $search }}" placeholder="Cari nama produk" style="flex: 1; padding: 10px 12px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 14px;">
+                    <i class="fa-solid fa-magnifying-glass" style="color: #94a3b8; font-size: 13px; margin-right: 8px;"></i>
+                    <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari nama atau kode produk" style="flex: 1; border: none; outline: none; font-size: 13px; background: transparent;">
                 </form>
-                <form method="GET" class="sort-box" style="display: flex; gap: 8px; align-items: center;">
-                    @foreach(['search' => $search, 'category' => $category, 'price_min' => $priceMin, 'price_max' => $priceMax, 'in_stock' => $inStock] as $key => $val)
-                        @if($val)
-                            <input type="hidden" name="{{ $key }}" value="{{ $val }}">
-                        @endif
-                    @endforeach
-                    <select name="sort" onchange="this.form.submit()" style="padding: 10px 12px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 14px; background: white;">
-                        <option value="terbaru" {{ $sort === 'terbaru' ? 'selected' : '' }}>Terbaru</option>
-                        <option value="harga_terendah" {{ $sort === 'harga_terendah' ? 'selected' : '' }}>Harga: Terendah</option>
-                        <option value="harga_tertinggi" {{ $sort === 'harga_tertinggi' ? 'selected' : '' }}>Harga: Tertinggi</option>
-                    </select>
-                </form>
+
+                <!-- Sort Box Custom ala Figma (Rata Kiri, Teks Aktif Bold) -->
+                <div class="sort-dropdown-container" id="sortDropdownContainer">
+                    <form method="GET" action="{{ route('produk') }}" id="sortForm" class="sort-box" onclick="toggleSortMenu(event)" onsubmit="localStorage.setItem('scrollPosition', window.scrollY);">
+                        @foreach(['search' => request('search'), 'category' => request('category'), 'price_min' => request('price_min'), 'price_max' => request('price_max'), 'in_stock' => request('in_stock')] as $key => $val)
+                            @if($val)
+                                <input type="hidden" name="{{ $key }}" value="{{ $val }}">
+                            @endif
+                        @endforeach
+                        <input type="hidden" name="sort" id="sortInput" value="{{ request('sort', 'terbaru') }}">
+                        
+                        <img src="{{ asset('icons/fluent_arrow-sort-16-filled.png') }}" alt="Sort Icon" class="sort-icon">
+                        <span id="sortSelectedLabel" style="font-size: 12px; color: #1e293b; white-space: nowrap; flex: 1;">
+                            @php
+                                $sortVal = request('sort', 'terbaru');
+                                $labels = [
+                                    'terbaru' => 'Sortir: Paling Relevan',
+                                    'terbaru_waktu' => 'Sortir: Terbaru',
+                                    'harga_terendah' => 'Sortir: Harga Terendah',
+                                    'harga_tertinggi' => 'Sortir: Harga Termahal'
+                                ];
+                                echo $labels[$sortVal] ?? 'Sortir: Paling Relevan';
+                            @endphp
+                        </span>
+                    </form>
+
+                    <!-- Menu Pop-up List Sesuai Figma -->
+                    <div class="sort-menu-list" id="sortMenuList">
+                        <div class="sort-menu-item" data-value="terbaru" onclick="selectSort('terbaru', 'Sortir: Paling Relevan')">
+                            <img src="{{ asset('icons/fluent_arrow-sort-16-filled.png') }}" alt="" style="width: 14px; height: 14px; opacity: 0.7;">
+                            <span>Sortir: Paling Relevan</span>
+                        </div>
+                        <div class="sort-menu-item" data-value="terbaru_waktu" onclick="selectSort('terbaru_waktu', 'Sortir: Terbaru')">
+                            <img src="{{ asset('icons/fluent_arrow-sort-16-filled.png') }}" alt="" style="width: 14px; height: 14px; opacity: 0.7;">
+                            <span>Sortir: Terbaru</span>
+                        </div>
+                        <div class="sort-menu-item" data-value="harga_terendah" onclick="selectSort('harga_terendah', 'Sortir: Harga Terendah')">
+                            <img src="{{ asset('icons/fluent_arrow-sort-16-filled.png') }}" alt="" style="width: 14px; height: 14px; opacity: 0.7;">
+                            <span>Sortir: Harga Terendah</span>
+                        </div>
+                        <div class="sort-menu-item" data-value="harga_tertinggi" onclick="selectSort('harga_tertinggi', 'Sortir: Harga Termahal')">
+                            <img src="{{ asset('icons/fluent_arrow-sort-16-filled.png') }}" alt="" style="width: 14px; height: 14px; opacity: 0.7;">
+                            <span>Sortir: Harga Termahal</span>
+                        </div>
+                    </div>
+                </div>
             </div>
 
-            <!-- Product Grid (Gambar Besar) -->
+            <!-- Product Grid -->
             <div class="product-grid">
                 @forelse ($products as $product)
                     <div class="catalog-card">
                         <div class="card-img-wrapper">
-                            <img src="{{ $product->image ? asset('storage/' . $product->image) : asset('images/placeholder.png') }}" alt="{{ $product->product_name }}">
+                            <!-- Memanfaatkan Accessor getImageUlrAttribute dari Model Product -->
+                            <img src="{{ $product->image_url }}" alt="{{ $product->product_name }}">
                         </div>
                         <div class="card-title">{{ $product->product_name }}</div>
                         <div class="card-price">Rp {{ number_format($product->sell_price, 0, ',', '.') }}</div>
-                        <div class="status-badge {{ $product->status === 'Available' ? 'available' : 'out' }}">
-                            <i class="fa-regular fa-circle-{{ $product->status === 'Available' ? 'check' : 'xmark' }}"></i>
-                            {{ $product->status === 'Available' ? 'Tersedia • ' . $product->stock . ' unit' : 'Stok habis' }}
+                        
+                        <!-- Menyesuaikan status badge dengan kolom ENUM database -->
+                        <div class="status-badge {{ $product->stock > 0 && $product->status === 'Available' ? 'available' : 'out' }}">
+                            <i class="fa-regular fa-circle-{{ $product->stock > 0 && $product->status === 'Available' ? 'check' : 'xmark' }}"></i>
+                            {{ $product->stock > 0 && $product->status === 'Available' ? 'Tersedia • ' . $product->stock . ' Unit' : ($product->status ?? 'Stok habis') }}
                         </div>
                     </div>
                 @empty
-                    <div class="col-span-full text-center py-12 text-gray-500">
+                    <div style="grid-column: span 4; text-align: center; padding: 48px; color: #64748b;">
                         <i class="fa-solid fa-box-open fa-2x mb-2"></i>
-                        <p>Tidak ada produk yang sesuai dengan filter.</p>
+                        <p>Tidak ada produk yang ditemukan.</p>
                     </div>
                 @endforelse
             </div>
 
-            <!-- Pagination -->
-            <div class="pagination-wrapper" style="margin-top: 24px; display: flex; justify-content: center;">
-                {{ $products->links() }}
-            </div>
+            <!-- Pagination (Menggunakan Tailwind & Component Pagination kustom) -->
+            @if($products->count() > 0)
+                <div class="flex items-center justify-between mt-6 text-xs text-slate-500">
+                    <div>
+                        Showing {{ $products->firstItem() }}-{{ $products->lastItem() }} out of {{ $products->total() }} Products
+                    </div>
+                    <div>
+                        {{ $products->links('components.pagination') }}
+                    </div>
+                </div>
+            @endif
         </main>
     </div>
 
@@ -200,3 +272,47 @@
             &copy; 2026 Copyright Bandung Computer. All rights reserved
         </div>
     </footer>
+
+    <script>
+        // Script Dropdown Sortir
+        function toggleSortMenu(event) {
+            event.stopPropagation();
+            const menu = document.getElementById('sortMenuList');
+            menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex';
+        }
+
+        function selectSort(value, label) {
+            localStorage.setItem('scrollPosition', window.scrollY);
+            document.getElementById('sortInput').value = value;
+            document.getElementById('sortSelectedLabel').innerText = label;
+            document.getElementById('sortForm').submit();
+        }
+
+        // Mengembalikan posisi scroll layar setelah halaman dimuat ulang
+        document.addEventListener("DOMContentLoaded", function () {
+            const scrollPos = localStorage.getItem('scrollPosition');
+            if (scrollPos !== null) {
+                window.scrollTo(0, parseInt(scrollPos));
+                localStorage.removeItem('scrollPosition');
+            }
+
+            // Tandai item sortir aktif
+            const currentSort = document.getElementById('sortInput') ? document.getElementById('sortInput').value : '';
+            const menuItems = document.querySelectorAll('.sort-menu-item');
+            menuItems.forEach(item => {
+                if (item.getAttribute('data-value') === currentSort) {
+                    item.classList.add('active');
+                } else {
+                    item.classList.remove('active');
+                }
+            });
+        });
+
+        // Menutup menu sortir jika diklik di luar area
+        window.addEventListener('click', function() {
+            const menu = document.getElementById('sortMenuList');
+            if (menu) menu.style.display = 'none';
+        });
+    </script>
+</body>
+</html>
