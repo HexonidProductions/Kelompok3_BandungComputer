@@ -46,15 +46,15 @@
             
             <div class="info-list">
                 <div class="info-item">
-                    <div class="info-icon"><i class="fa-solid fa-phone"></i></div>
+                    <div class="info-icon"><img src="{{ asset('icons/bxs_phone-call.png') }}" alt="Phone Icon"></div>
                     <span>(+62)-0858-4962-6858</span>
                 </div>
                 <div class="info-item">
-                    <div class="info-icon"><i class="fa-regular fa-envelope"></i></div>
+                    <div class="info-icon"><img src="{{ asset('icons/griddy-icons_email-alt-filled.png') }}" alt="Email Icon"></div>
                     <span>bandungcomputer@gmail.com</span>
                 </div>
                 <div class="info-item">
-                    <div class="info-icon"><i class="fa-solid fa-location-dot"></i></div>
+                    <div class="info-icon"><img src="{{ asset('icons/carbon_location-filled.png') }}" alt="Location Icon"></div>
                     <span>Jl. Panglima Batur, Loktabat Utara, Kec. Banjarbaru Utara</span>
                 </div>
             </div>

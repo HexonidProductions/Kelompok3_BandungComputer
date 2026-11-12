@@ -2,7 +2,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Inter', sans-serif;
+    font-family: "Inter", sans-serif;
 }
 
 body {
@@ -50,13 +50,20 @@ body {
 }
 
 .btn-masuk {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 38px;
+    line-height: 1;
     background-color: #2563eb;
     color: #ffffff;
-    padding: 8px 24px;
+    padding: 0 24px;
     border-radius: 8px;
     text-decoration: none;
+    border: none;
     font-size: 14px;
     font-weight: 600;
+    cursor: pointer;
 }
 
 /* Badge Section */
@@ -67,13 +74,12 @@ body {
 }
 
 .badge-label {
-    background-color: #eff6ff;
     color: #2563eb;
     font-size: 11px;
     font-weight: 700;
     padding: 6px 16px;
     border-radius: 100px;
-    border: 1px solid #dbeafe;
+    border: 1px solid rgba(0, 0, 0, 0.2);
     display: inline-block;
 }
 
@@ -149,13 +155,15 @@ body {
 /* Card Why Choose Us */
 .why-card {
     background-color: #ffffff;
-    border: 1px solid #e2e8f0;
+    border: 1px solid #000000;
     border-radius: 16px;
     padding: 24px;
     display: flex;
     flex-direction: column;
     gap: 16px;
-    transition: transform 0.2s, box-shadow 0.2s;
+    transition:
+        transform 0.2s,
+        box-shadow 0.2s;
 }
 
 .why-card:hover {
@@ -169,20 +177,17 @@ body {
     gap: 12px;
 }
 
-.icon-wrapper {
-    width: 40px;
-    height: 40px;
-    border-radius: 8px;
+
+.icon-wrapper img {
+    width: 48px;
+    height: 48px;
+    object-fit: contain;
+    flex-shrink: 0;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 18px;
-    flex-shrink: 0;
-}
-
-.icon-blue {
-    background-color: #dbeafe;
-    color: #2563eb;
+    background-color: #2563eb;
+    border-radius: 12px;
 }
 
 .card-title {
@@ -206,13 +211,14 @@ body {
 
 .cta-card {
     background: #ffffff;
-    border: 1px solid #e2e8f0;
+    border: 1px solid #000000;
     border-radius: 16px;
     padding: 32px 48px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     gap: 24px;
+    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
 }
 
 .cta-text {
@@ -223,6 +229,10 @@ body {
 }
 
 .btn-cta {
+    display: inline-flex;        /* wajib, supaya width berlaku */
+    align-items: center;
+    justify-content: center;     /* teks tetap di tengah */
+    width: 420px;                /* ganti sesuai kebutuhan, atau 100% */
     background-color: #2563eb;
     color: #ffffff;
     padding: 14px 28px;
@@ -322,7 +332,11 @@ body {
     .navbar {
         padding: 16px 24px;
     }
-    .about-hero, .banner-container, .why-section, .cta-container, .footer-main {
+    .about-hero,
+    .banner-container,
+    .why-section,
+    .cta-container,
+    .footer-main {
         padding-left: 24px;
         padding-right: 24px;
     }
@@ -341,7 +355,11 @@ body {
     .badge-container {
         margin-top: 24px;
     }
-    .about-hero, .banner-container, .why-section, .cta-container, .footer-main {
+    .about-hero,
+    .banner-container,
+    .why-section,
+    .cta-container,
+    .footer-main {
         padding-left: 16px;
         padding-right: 16px;
     }

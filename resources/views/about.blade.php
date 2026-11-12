@@ -71,8 +71,8 @@
             <!-- Card 1 -->
             <div class="why-card">
                 <div class="card-top">
-                    <div class="icon-wrapper icon-blue">
-                        <i class="fa-solid fa-box-open"></i>
+                    <div class="icon-wrapper">
+                        <img src="{{ asset('icons/fluent-mdl2_product.png') }}" alt="Pilihan Produk" onerror="this.src='{{ asset('icons/fluent-mdl2_product.png') }}'">
                     </div>
                     <h3 class="card-title">Pilihan Produk</h3>
                 </div>
@@ -82,8 +82,8 @@
             <!-- Card 2 -->
             <div class="why-card">
                 <div class="card-top">
-                    <div class="icon-wrapper icon-blue">
-                        <i class="fa-solid fa-circle-info"></i>
+                    <div class="icon-wrapper">
+                        <img src="{{ asset('icons/fluent-mdl2_product (1).png') }}" alt="Informasi Jelas" onerror="this.src='{{ asset('icons/fluent-mdl2_product.png') }}'">
                     </div>
                     <h3 class="card-title">Informasi Jelas</h3>
                 </div>
@@ -93,8 +93,8 @@
             <!-- Card 3 -->
             <div class="why-card">
                 <div class="card-top">
-                    <div class="icon-wrapper icon-blue">
-                        <i class="fa-solid fa-headset"></i>
+                    <div class="icon-wrapper">
+                        <img src="{{ asset('icons/fluent-mdl2_product (2).png') }}" alt="Pelayanan Ramah" onerror="this.src='{{ asset('icons/fluent-mdl2_product.png') }}'">
                     </div>
                     <h3 class="card-title">Pelayanan Ramah</h3>
                 </div>
@@ -104,8 +104,8 @@
             <!-- Card 4 -->
             <div class="why-card">
                 <div class="card-top">
-                    <div class="icon-wrapper icon-blue">
-                        <i class="fa-solid fa-shield-halved"></i>
+                    <div class="icon-wrapper">
+                        <img src="{{ asset('icons/fluent-mdl2_product (3).png') }}" alt="Kepercayaan" onerror="this.src='{{ asset('icons/fluent-mdl2_product.png') }}'">
                     </div>
                     <h3 class="card-title">Kepercayaan</h3>
                 </div>
@@ -116,7 +116,7 @@
 
     <!-- Badge CTA & Card CTA -->
     <div class="badge-container">
-        <span class="badge-label">CTA</span>
+        <span class="badge-label">Kunjungi halaman produk kami</span>
     </div>
 
     <div class="cta-container">
