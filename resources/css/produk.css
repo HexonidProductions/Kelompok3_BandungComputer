@@ -498,6 +498,18 @@ input:checked + .slider:before {
     font-size: 12px;
 }
 
+/* Khusus halaman yang memakai Tailwind Preflight: samakan dengan Home */
+.social-icons a {
+    line-height: normal;
+}
+
+.social-icons a img,
+.social-icons a svg {
+    display: inline;
+    vertical-align: baseline;
+    max-width: none;
+}
+
 .social-icons {
     display: flex;
     gap: 12px;
@@ -515,7 +527,6 @@ input:checked + .slider:before {
     text-decoration: none;
     font-size: 14px;
 }
-
 .footer-bottom {
     text-align: center;
     border-top: 1px solid #1e293b;

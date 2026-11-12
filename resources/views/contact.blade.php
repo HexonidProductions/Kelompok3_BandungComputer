@@ -141,7 +141,7 @@
         </div>
     </section>
 
-    <!-- Footer -->
+    <!-- Footer Navigasi -->
     <footer class="footer-main">
         <div class="footer-top">
             <div class="footer-brand">
@@ -149,19 +149,22 @@
                 <p>Bandung Computer — Solusi Perangkat IT & Komputer Terpercaya.</p>
             </div>
 
-            <ul class="footer-links-list">
-    <li><a href="{{ route('homepage') }}">Beranda</a></li>
-    <li><a href="{{ route('produk') }}">Produk</a></li>
-    <li><a href="{{ route('about') }}">Tentang Kami</a></li>
-    <li><a href="{{ route('contact') }}">Kontak</a></li>
-</ul>
+            <div>
+                <div class="footer-links-title">Tautan</div>
+                <ul class="footer-links-list">
+                    <li><a href="{{ route('homepage') }}">Beranda</a></li>
+                    <li><a href="{{ route('produk') }}">Produk</a></li>
+                    <li><a href="{{ route('about') }}">Tentang Kami</a></li>
+                    <li><a href="{{ route('contact') }}">Kontak</a></li>
+                </ul>
+            </div>
 
             <div>
                 <div class="footer-links-title">Ikuti Kami</div>
                 <div class="social-icons">
-                    <a href="#"><i class="fa-brands fa-tiktok"></i></a>
-                    <a href="#"><i class="fa-brands fa-instagram"></i></a>
-                    <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
+                    <a href="#" target="_blank"><img src="{{ asset('icons/mage_tiktok-circle.png') }}" alt="TikTok" class="social-icon"></a>
+                    <a href="#" target="_blank"><img src="{{ asset('icons/basil_instagram-solid.png') }}" alt="Instagram" class="social-icon"></a>
+                    <a href="#" target="_blank"><img src="{{ asset('icons/stash_social-facebook-solid.png') }}" alt="Facebook" class="social-icon"></a>
                 </div>
             </div>
         </div>

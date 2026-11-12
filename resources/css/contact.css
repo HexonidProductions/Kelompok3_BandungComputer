@@ -250,7 +250,7 @@ body {
     display: block;
 }
 
-/* Footer Front-End */
+/* Footer — disamakan dengan Home */
 .footer-main {
     background-color: #0f172a;
     color: #ffffff;
@@ -265,7 +265,8 @@ body {
 }
 
 .footer-brand img {
-    height: 55px;
+    height: 65px;
+    width: auto;
     margin-bottom: 12px;
     object-fit: contain;
 }
@@ -312,6 +313,19 @@ body {
     justify-content: center;
     text-decoration: none;
     font-size: 14px;
+}
+
+/* Pembatal Tailwind Preflight: samakan dengan halaman tanpa Tailwind */
+.footer-brand img,
+.social-icons a img,
+.social-icons a svg {
+    display: inline;
+    vertical-align: baseline;
+    max-width: none;
+}
+
+.social-icons a {
+    line-height: normal;
 }
 
 .footer-bottom {

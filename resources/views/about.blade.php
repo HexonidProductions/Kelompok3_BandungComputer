@@ -126,7 +126,7 @@
         </div>
     </div>
 
-    <!-- Footer Navigasi & Medsos -->
+    <!-- Footer Navigasi -->
     <footer class="footer-main">
         <div class="footer-top">
             <div class="footer-brand">
@@ -147,9 +147,9 @@
             <div>
                 <div class="footer-links-title">Ikuti Kami</div>
                 <div class="social-icons">
-                    <a href="#" target="_blank"><i class="fa-brands fa-tiktok"></i></a>
-                    <a href="#" target="_blank"><i class="fa-brands fa-instagram"></i></a>
-                    <a href="#" target="_blank"><i class="fa-brands fa-facebook-f"></i></a>
+                    <a href="#" target="_blank"><img src="{{ asset('icons/mage_tiktok-circle.png') }}" alt="TikTok" class="social-icon"></a>
+                    <a href="#" target="_blank"><img src="{{ asset('icons/basil_instagram-solid.png') }}" alt="Instagram" class="social-icon"></a>
+                    <a href="#" target="_blank"><img src="{{ asset('icons/stash_social-facebook-solid.png') }}" alt="Facebook" class="social-icon"></a>
                 </div>
             </div>
         </div>

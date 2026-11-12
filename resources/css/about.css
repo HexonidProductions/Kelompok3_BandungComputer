@@ -249,11 +249,11 @@ body {
     background-color: #1d4ed8;
 }
 
-/* Footer (Logo Geser Lebih ke Kiri, Diperbesar & Lengkap Medsos) */
+/* Footer — disamakan dengan Home */
 .footer-main {
     background-color: #0f172a;
     color: #ffffff;
-    padding: 48px 32px 24px 24px;
+    padding: 48px 64px 24px 64px;
     border-top: 1px solid #1e293b;
 }
 
@@ -264,10 +264,10 @@ body {
 }
 
 .footer-brand img {
-    height: 70px;
+    height: 65px;
+    width: auto;
     margin-bottom: 12px;
     object-fit: contain;
-    display: block;
 }
 
 .footer-brand p {
@@ -304,19 +304,27 @@ body {
 .social-icons a {
     color: #ffffff;
     background: #1e293b;
-    width: 36px;
-    height: 36px;
+    width: 32px;
+    height: 32px;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     text-decoration: none;
-    font-size: 15px;
-    transition: background-color 0.2s;
+    font-size: 14px;
 }
 
-.social-icons a:hover {
-    background-color: #2563eb;
+/* Pembatal Tailwind Preflight: samakan dengan halaman tanpa Tailwind */
+.footer-brand img,
+.social-icons a img,
+.social-icons a svg {
+    display: inline;
+    vertical-align: baseline;
+    max-width: none;
+}
+
+.social-icons a {
+    line-height: normal;
 }
 
 .footer-bottom {
