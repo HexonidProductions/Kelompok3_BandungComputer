@@ -109,17 +109,17 @@
             
             <div class="contact-group">
                 <div class="contact-label">Email</div>
-                <div class="contact-detail"><i class="fa-regular fa-envelope"></i> bandungcomputer@gmail.com</div>
+                <div class="contact-detail"><img src="{{ asset('icons/ic_round-email.png') }}" alt="Email Icon">bandungcomputer@gmail.com</div>
             </div>
 
             <div class="contact-group">
                 <div class="contact-label">Nomor Telepon</div>
-                <div class="contact-detail"><i class="fa-solid fa-phone"></i> 0858-4962-6858</div>
+                <div class="contact-detail"><img src="{{ asset('icons/bxs_phone-call (1).png') }}" alt="Phone Icon"> 0858-4962-6858</div>
             </div>
 
             <div class="contact-group">
                 <div class="contact-label">Jam Operasional</div>
-                <div class="contact-detail"><i class="fa-regular fa-clock"></i> Senin – Minggu (08.00 – 20.00 WITA)</div>
+                <div class="contact-detail"><img src="{{ asset('icons/carbon_time-filled.png') }}" alt="Time Icon"> Senin – Minggu (08.00 – 20.00 WITA)</div>
             </div>
         </div>
 
