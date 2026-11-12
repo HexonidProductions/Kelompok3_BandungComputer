@@ -261,9 +261,9 @@
             <div>
                 <div class="footer-links-title">Ikuti Kami</div>
                 <div class="social-icons">
-                    <a href="#" target="_blank"><img src="{{ asset('icons/mage_tiktok-circle.png') }}" alt="TikTok" class="social-icon"></a>
-                    <a href="#" target="_blank"><img src="{{ asset('icons/basil_instagram-solid.png') }}" alt="Instagram" class="social-icon"></a>
-                    <a href="#" target="_blank"><img src="{{ asset('icons/stash_social-facebook-solid.png') }}" alt="Facebook" class="social-icon"></a>
+                    <a href="https://www.tiktok.com/@bandungcomputerbjm?_r=1&_t=ZS-9BKonxKlv61" target="_blank"><img src="{{ asset('icons/mage_tiktok-circle.png') }}" alt="TikTok" class="social-icon"></a>
+                    <a href="https://www.instagram.com/bandungcomputer?dlrf=MWFsdnFtaG1qaXlv" target="_blank"><img src="{{ asset('icons/basil_instagram-solid.png') }}" alt="Instagram" class="social-icon"></a>
+                    <a href="https://www.facebook.com/share/1ECt6qqnQt/" target="_blank"><img src="{{ asset('icons/stash_social-facebook-solid.png') }}" alt="Facebook" class="social-icon"></a>
                 </div>
             </div>
         </div>
