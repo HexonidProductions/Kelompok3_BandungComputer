@@ -61,15 +61,15 @@
                 ];
             @endphp
             @foreach ($collections as $item)
-                <a href="{{ route('produk', ['search' => $item['name']]) }}" class="category-card">
-                    <div class="category-img-wrapper">
-                        <img src="{{ asset($item['image']) }}" 
-                             alt="{{ $item['name'] }}"
-                             class="category-img">
-                    </div>
-                    <span class="category-label">{{ $item['name'] }}</span>
-                </a>
-            @endforeach
+            <div class="category-card">
+                <div class="category-img-wrapper">
+                    <img src="{{ asset($item['image']) }}"
+                            alt="{{ $item['name'] }}"
+                            class="category-img">
+                </div>
+                <span class="category-label">{{ $item['name'] }}</span>
+            </div>
+        @endforeach
         </div>
     </section>
 
