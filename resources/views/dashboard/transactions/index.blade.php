@@ -931,11 +931,11 @@
                             </div>
 
                             <div>
-
                                 <label class="block font-semibold text-slate-700 mb-1">Total Amount</label>
-
-                                <input type="number" name="total_amount" x-model="selectedTx.total_amount" class="w-full border border-slate-200 rounded-lg px-3 py-2 text-slate-700 focus:outline-none focus:ring-0 focus:border-slate-300 placeholder:text-[13px] [appearance: textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none" placeholder="Rp 0">
-
+                                <input type="number" name="total_amount" x-model="selectedTx.total_amount"
+                                readonly tabindex="-1"
+                                class="w-full border border-slate-200 bg-slate-100 rounded-lg px-3 py-2 text-xs cursor-not-allowed focus:outline-none focus:ring-0 focus:border-slate-300 pointer-events-none"
+                                placeholder="Rp 0">
                             </div>
 
                         </div>

@@ -15,19 +15,19 @@
                 <span>Overview</span>
             </a>
 
-            <a href="{{ route('categories.index') }}" class="w-full flex items-center gap-3 px-4 py-2.5 rounded-none text-xs font-normal text-white transition-all duration-150 {{ request()->routeIs('categories.*') ? 'bg-[#2563EB]' : null }}">
-                <img src="{{ asset('icons/Categories_icon.png')}}" alt="Categories Icon" class="w-4 h-4 object-contain">
-                <span>Categories</span>
+            <a href="{{ route('products.index') }}" class="w-full flex items-center gap-3 px-4 py-2.5 rounded-none text-xs font-normal text-white transition-all duration-150 {{ request()->routeIs('products.*') ? 'bg-[#2563EB]' : null }}">
+                <img src="{{ asset('icons/Products_icon.png')}}" alt="Products Icon" class="w-4 h-4 object-contain">
+                <span>Products</span>
             </a>
-
             <a href="{{ route('transactions.index') }}" class="w-full flex items-center gap-3 px-4 py-2.5 rounded-none text-xs font-normal text-white transition-all duration-150 {{ request()->routeIs('transactions.*') ? 'bg-[#2563EB]' : null }}">
                 <img src="{{ asset('icons/Transactions_icon.png')}}" alt="Transactions Icon" class="w-4 h-4 object-contain">
                 <span>Transactions</span>
             </a>
 
-            <a href="{{ route('products.index') }}" class="w-full flex items-center gap-3 px-4 py-2.5 rounded-none text-xs font-normal text-white transition-all duration-150 {{ request()->routeIs('products.*') ? 'bg-[#2563EB]' : null }}">
-                <img src="{{ asset('icons/Products_icon.png')}}" alt="Products Icon" class="w-4 h-4 object-contain">
-                <span>Products</span>
+
+            <a href="{{ route('categories.index') }}" class="w-full flex items-center gap-3 px-4 py-2.5 rounded-none text-xs font-normal text-white transition-all duration-150 {{ request()->routeIs('categories.*') ? 'bg-[#2563EB]' : null }}">
+                <img src="{{ asset('icons/Categories_icon.png')}}" alt="Categories Icon" class="w-4 h-4 object-contain">
+                <span>Categories</span>
             </a>
 
             <a href="{{ route('users.index') }}" class="w-full flex items-center gap-3 px-4 py-2.5 rounded-none text-xs font-normal text-white transition-all duration-150 {{ request()->routeIs('users.*') ? 'bg-[#2563EB]' : null }}">
