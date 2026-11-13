@@ -40,7 +40,7 @@
     </nav>
 
     <!-- Badge Header -->
-    <div class="badge-container">
+    <div class="badge-container badge-hero">
         <span class="badge-label">Tentang Kami</span>
     </div>
 
@@ -58,7 +58,7 @@
     </div>
 
     <!-- Badge Section Mengapa Memilih Kami -->
-    <div class="badge-container">
+    <div class="badge-container badge-why">
         <span class="badge-label">Alasan Memilih Kami</span>
     </div>
 
@@ -115,7 +115,7 @@
     </section>
 
     <!-- Badge CTA & Card CTA -->
-    <div class="badge-container">
+    <div class="badge-container badge-cta">
         <span class="badge-label">Kunjungi halaman produk kami</span>
     </div>
 

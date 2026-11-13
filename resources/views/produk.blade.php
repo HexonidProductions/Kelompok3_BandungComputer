@@ -66,28 +66,30 @@
                     <a href="{{ route('produk') }}" class="clear-all">Clear All</a>
                 </div>
 
-                <!-- Kategori Section (Eksklusif/Bergantian tanpa auto-submit) -->
+                <!-- Kategori Section -->
                 <div class="filter-section">
-                    <div class="filter-section-title">
+                    <div class="filter-section-title" onclick="toggleCategoryDropdown()" style="cursor: pointer;">
                         <span>Kategori</span>
-                        <i class="fa-solid fa-chevron-up"></i>
+                        <i class="fa-solid fa-chevron-down" id="categoryArrow" style="transition: transform 0.3s ease;"></i>
                     </div>
-                    <div class="category-list">
-                        @foreach ($categories as $cat)
-                            <div class="category-item">
-                                <label style="cursor: pointer; display: flex; align-items: center; gap: 8px;">
-                                    <input type="checkbox" name="category" value="{{ $cat->id }}" 
-                                        {{ request('category') == $cat->id ? 'checked' : '' }} 
-                                        onchange="
-                                            document.querySelectorAll('input[name=\'category\']').forEach(el => {
-                                                if(el !== this) el.checked = false;
-                                            });
-                                        ">
-                                    {{ $cat->category_name ?? $cat->name }}
-                                </label>
-                                <span class="category-count">{{ $cat->products_count ?? 0 }}</span>
-                            </div>
-                        @endforeach
+                    <div class="category-dropdown-container" id="categoryDropdownList" style="display: none;">
+                        <div class="category-list">
+                            @foreach ($categories as $cat)
+                                <div class="category-item">
+                                    <label style="cursor: pointer; display: flex; align-items: center; gap: 8px;">
+                                        <input type="checkbox" name="category" value="{{ $cat->id }}" 
+                                            {{ request('category') == $cat->id ? 'checked' : '' }} 
+                                            onchange="
+                                                document.querySelectorAll('input[name=\'category\']').forEach(el => {
+                                                    if(el !== this) el.checked = false;
+                                                });
+                                            ">
+                                        {{ $cat->category_name ?? $cat->name }}
+                                    </label>
+                                    <span class="category-count">{{ $cat->products_count ?? 0 }}</span>
+                                </div>
+                            @endforeach
+                        </div>
                     </div>
                 </div>
 
@@ -101,14 +103,14 @@
                             <label>Min</label>
                             <div class="input-with-symbol">
                                 <span>Rp</span>
-                                <input type="number" name="price_min" value="{{ request('price_min') }}" placeholder="0">
+                                <input type="number" name="price_min" min="0" step="1" value="{{ request('price_min') }}" placeholder="0">
                             </div>
                         </div>
                         <div class="price-field">
                             <label>Max</label>
                             <div class="input-with-symbol">
                                 <span>Rp</span>
-                                <input type="number" name="price_max" value="{{ request('price_max') }}" placeholder="100000000">
+                                <input type="number" name="price_max" min="0" step="1" value="{{ request('price_max') }}" placeholder="100000000">
                             </div>
                         </div>
                     </div>
@@ -274,6 +276,24 @@
     </footer>
 
     <script>
+        // Fungsi untuk dropdown Kategori dengan menyimpan state ke localStorage
+        function toggleCategoryDropdown() {
+            const dropdown = document.getElementById('categoryDropdownList');
+            const arrow = document.getElementById('categoryArrow');
+            
+            if (dropdown.style.display === 'none' || dropdown.style.display === '') {
+                dropdown.style.display = 'block';
+                arrow.classList.remove('fa-chevron-down');
+                arrow.classList.add('fa-chevron-up');
+                localStorage.setItem('categoryDropdownOpen', 'true');
+            } else {
+                dropdown.style.display = 'none';
+                arrow.classList.remove('fa-chevron-up');
+                arrow.classList.add('fa-chevron-down');
+                localStorage.setItem('categoryDropdownOpen', 'false');
+            }
+        }
+
         // Script Dropdown Sortir
         function toggleSortMenu(event) {
             event.stopPropagation();
@@ -288,12 +308,31 @@
             document.getElementById('sortForm').submit();
         }
 
-        // Mengembalikan posisi scroll layar setelah halaman dimuat ulang
+        // Mengembalikan posisi scroll dan status dropdown setelah halaman dimuat ulang
         document.addEventListener("DOMContentLoaded", function () {
             const scrollPos = localStorage.getItem('scrollPosition');
             if (scrollPos !== null) {
                 window.scrollTo(0, parseInt(scrollPos));
                 localStorage.removeItem('scrollPosition');
+            }
+
+            // Memeriksa apakah kategori sedang aktif atau sebelumnya dibuka
+            const urlParams = new URLSearchParams(window.location.search);
+            const hasActiveCategory = urlParams.has('category');
+            const dropdownState = localStorage.getItem('categoryDropdownOpen');
+
+            const dropdown = document.getElementById('categoryDropdownList');
+            const arrow = document.getElementById('categoryArrow');
+
+            // Buka dropdown otomatis jika ada kategori yang dipilih atau state sebelumnya 'true'
+            if (hasActiveCategory || dropdownState === 'true') {
+                dropdown.style.display = 'block';
+                arrow.classList.remove('fa-chevron-down');
+                arrow.classList.add('fa-chevron-up');
+            } else {
+                dropdown.style.display = 'none';
+                arrow.classList.remove('fa-chevron-up');
+                arrow.classList.add('fa-chevron-down');
             }
 
             // Tandai item sortir aktif

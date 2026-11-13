@@ -6,7 +6,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: "Inter", sans-serif;
+    font-family: 'Inter', sans-serif;
 }
 
 body {
@@ -54,20 +54,13 @@ body {
 }
 
 .btn-masuk {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    height: 38px;
-    line-height: 1;
     background-color: #2563eb;
     color: #ffffff;
-    padding: 0 24px;
+    padding: 8px 24px;
     border-radius: 8px;
     text-decoration: none;
-    border: none;
     font-size: 14px;
     font-weight: 600;
-    cursor: pointer;
 }
 
 /* Catalog Header */
@@ -137,10 +130,26 @@ body {
     cursor: pointer;
 }
 
+.category-dropdown-container {
+    margin-top: 8px;
+}
+
 .category-list {
     display: flex;
     flex-direction: column;
     gap: 10px;
+    max-height: 200px;
+    overflow-y: auto;
+    padding-right: 4px;
+}
+
+.category-list::-webkit-scrollbar {
+    width: 4px;
+}
+
+.category-list::-webkit-scrollbar-thumb {
+    background-color: #cbd5e1;
+    border-radius: 4px;
 }
 
 .category-item {
@@ -161,6 +170,13 @@ body {
 .category-item input[type="checkbox"] {
     accent-color: #2563eb;
 }
+
+.category-item input[type="checkbox"]:focus,
+.category-item input[type="checkbox"]:focus-visible {
+    outline: none;
+    box-shadow: none;
+}
+
 
 .category-count {
     color: #94a3b8;
@@ -194,6 +210,13 @@ body {
     background-color: #ffffff;
     height: 38px;
     box-sizing: border-box;
+}
+
+.input-with-symbol input:focus,
+.input-with-symbol input:focus-visible {
+    outline: none;
+    box-shadow: none;
+    border: none;
 }
 
 .input-with-symbol span {
@@ -240,12 +263,9 @@ body {
 .slider {
     position: absolute;
     cursor: pointer;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
+    top: 0; left: 0; right: 0; bottom: 0;
     background-color: #334155;
-    transition: 0.3s;
+    transition: .3s;
     border-radius: 20px;
 }
 
@@ -256,14 +276,14 @@ body {
     width: 14px;
     left: 3px;
     bottom: 3px;
-    background-color: #d9d9d9;
-    transition: 0.3s;
+    background-color: #D9D9D9;
+    transition: .3s;
     border-radius: 50%;
 }
 
 input:checked + .slider:before {
     transform: translateX(16px);
-    background-image: url("/icons/akar-icons_check.png");
+    background-image: url('/icons/akar-icons_check.png');
     background-size: 8px 8px;
     background-repeat: no-repeat;
     background-position: center;
@@ -308,12 +328,6 @@ input:checked + .slider:before {
     padding: 8px 14px;
     background-color: #ffffff;
     height: 38px;
-}
-
-.search-box input {
-    border: none;
-    outline: none;
-    box-shadow: none;
 }
 
 /* Custom Sort Dropdown Container ala Figma */
@@ -370,10 +384,15 @@ input:checked + .slider:before {
     transition: background 0.15s ease;
 }
 
+.sort-menu-item:hover {
+    background-color: #f1f5f9;
+}
+
 /* Opsi Aktif / Terpilih */
 .sort-menu-item.active {
     font-weight: 700;
     color: #0f172a;
+    background-color: #f8fafc;
 }
 
 /* Grid Produk 4 Kolom Desktop */
@@ -391,9 +410,7 @@ input:checked + .slider:before {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    transition:
-        transform 0.2s ease,
-        box-shadow 0.2s ease;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .catalog-card:hover {
@@ -402,22 +419,22 @@ input:checked + .slider:before {
 }
 
 .card-img-wrapper {
-    background-color: #ffffff;
-    border-top-left-radius: 16px;
+    background-color: #FFFFFF; 
+    border-top-left-radius: 16px; 
     border-top-right-radius: 16px;
     height: 200px;
     display: flex;
     align-items: center;
     justify-content: center;
     overflow: hidden;
-    margin: -16px -16px 12px -16px;
+    margin: -16px -16px 12px -16px; 
     padding: 0;
 }
 
 .card-img-wrapper img {
     width: 100%;
     height: 100%;
-    object-fit: contain;
+    object-fit: contain; 
     display: block;
 }
 
@@ -451,13 +468,12 @@ input:checked + .slider:before {
     color: #dc2626;
 }
 
-/* Footer */
+/* Footer Front-End */
 .footer-main {
     background-color: #0f172a;
     color: #ffffff;
     padding: 48px 64px 24px 64px;
     border-top: 1px solid #1e293b;
-    margin-top: 64px;
 }
 
 .footer-top {
@@ -467,7 +483,8 @@ input:checked + .slider:before {
 }
 
 .footer-brand img {
-    height: 55px;
+    height: 65px;
+    width: auto;
     margin-bottom: 12px;
     object-fit: contain;
 }
@@ -498,35 +515,30 @@ input:checked + .slider:before {
     font-size: 12px;
 }
 
-/* Khusus halaman yang memakai Tailwind Preflight: samakan dengan Home */
-.social-icons a {
-    line-height: normal;
-}
-
-.social-icons a img,
-.social-icons a svg {
-    display: inline;
-    vertical-align: baseline;
-    max-width: none;
-}
-
-.social-icons {
+.footer-main .social-icons {
     display: flex;
+    flex-direction: row;
+    align-items: center;
     gap: 12px;
 }
 
-.social-icons a {
-    color: #ffffff;
-    background: #1e293b;
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
+.footer-main .social-icons a {
     display: flex;
     align-items: center;
     justify-content: center;
-    text-decoration: none;
-    font-size: 14px;
+    width: 32px;
+    height: 32px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    background: #1e293b;
+    line-height: normal;
 }
+
+.footer-main .social-icons .social-icon {
+    max-width: none;
+    vertical-align: baseline;
+}
+
 .footer-bottom {
     text-align: center;
     border-top: 1px solid #1e293b;

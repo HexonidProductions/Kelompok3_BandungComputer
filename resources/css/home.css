@@ -2,7 +2,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Inter', sans-serif;
+    font-family: "Inter", sans-serif;
 }
 
 body {
@@ -32,8 +32,6 @@ body {
     object-fit: contain;
     display: block;
 }
-
-
 
 .nav-links {
     list-style: none;
@@ -70,7 +68,6 @@ body {
     font-weight: 600;
     cursor: pointer;
 }
-
 
 /* Hero Section */
 .hero {
@@ -156,7 +153,9 @@ body {
     overflow: hidden;
     background-color: #ffffff;
     box-shadow: 0 10px 24px rgba(0, 0, 0, 0.08);
-    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease;
     text-decoration: none;
     flex-shrink: 0;
 }
@@ -260,7 +259,9 @@ body {
     justify-content: space-between;
     min-height: 430px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
 }
 
 .product-card:hover {
@@ -400,7 +401,7 @@ body {
     color: #0f172a;
     padding: 16px;
     border-radius: 12px;
-    box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
 }
 
 .map-overlay-title {

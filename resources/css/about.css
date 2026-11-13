@@ -76,11 +76,22 @@ body {
 .badge-label {
     color: #2563eb;
     font-size: 11px;
-    font-weight: 700;
+    font-weight: 900;
     padding: 6px 16px;
     border-radius: 100px;
     border: 1px solid rgba(0, 0, 0, 0.2);
     display: inline-block;
+}
+
+.badge-hero {
+    margin-top: 80px;
+    margin-bottom: 60px;
+}
+
+.badge-why,
+.badge-cta {
+    margin-top: 50px;
+    margin-bottom: 50px;
 }
 
 /* Hero Section */
@@ -137,7 +148,7 @@ body {
 
 .why-header {
     text-align: center;
-    margin-bottom: 24px;
+    margin-bottom: 50px;
 }
 
 .why-title {
@@ -360,9 +371,26 @@ body {
     .nav-links {
         display: none;
     }
+
     .badge-container {
-        margin-top: 24px;
+    margin-top: 24px;
     }
+
+    .badge-hero {
+    margin-top: 40px;
+    margin-bottom: 32px;
+    }
+
+    .badge-why,
+    .badge-cta {
+    margin-top: 36px;
+    margin-bottom: 36px;
+    }
+
+    .why-header {
+    margin-bottom: 32px;
+    }
+
     .about-hero,
     .banner-container,
     .why-section,
