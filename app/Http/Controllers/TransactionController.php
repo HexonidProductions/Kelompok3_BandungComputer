@@ -62,8 +62,8 @@ class TransactionController extends Controller
             'customer_name'    => 'nullable|string|max:255',
             'shipping_address' => 'nullable|string',
             'payment_method'   => 'required|in:Cash,Bank Transfer,QRIS',
-            'total_amount'     => 'required|numeric|min:0',
-            'shipping_fee'     => 'required|numeric|min:0',
+            'total_amount'     => 'required|numeric|min:0|max:9999999999',
+            'shipping_fee'     => 'required|numeric|min:0|max:9999999999',
             'payment_status'   => 'required|in:paid,not paid',
             'items'            => 'nullable|array',
         ]);
@@ -165,8 +165,8 @@ class TransactionController extends Controller
             'customer_name'    => 'nullable|string|max:255',
             'shipping_address' => 'nullable|string',
             'payment_method'   => 'required|in:Cash,Bank Transfer,QRIS',
-            'total_amount'     => 'required|numeric|min:0',
-            'shipping_fee'     => 'required|numeric|min:0',
+            'total_amount'     => 'required|numeric|min:0|max:9999999999',
+            'shipping_fee'     => 'required|numeric|min:0|max:9999999999',
             'payment_status'   => 'required|in:paid,not paid',
             'items'            => 'nullable|array',
         ]);
@@ -281,7 +281,6 @@ class TransactionController extends Controller
                             'product_id'    => $product->id,
                             'supplier_id'   => null,
                             'type'          => 'in',
-                            'quantity'      ->is_array ?? $item->quantity, // atau langsung $item->quantity
                             'quantity'      => $item->quantity,
                             'customer_name' => $transaction->customer_name,
                             'notes'         => 'Pengembalian stok dari penghapusan Transaksi No. Resi: ' . $transaction->receipt_number,

@@ -30,11 +30,11 @@ class DailyClosingController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'total_income' => 'required|numeric|min:0',
+            'total_income' => 'required|numeric|min:0|max:9999999999',
             'notes'        => 'nullable|string',
         ]);
 
-        $user = \aPP\Models\User::where('name', $request->admin_name)->first();
+        $user = \App\Models\User::where('name', $request->admin_name)->first();
         $adminId = $user ? $user->id : Auth::id(); // Jika admin_name tidak ditemukan, gunakan ID admin yang login
         DailyClosing::create([
             'admin_id'     => $adminId,
@@ -50,28 +50,28 @@ class DailyClosingController extends Controller
      * Memperbarui data penutupan kasir (Edit/Update Data).
      */
     public function update(Request $request, DailyClosing $dailyClosing)
-{
-    $request->validate([
-        'total_income' => 'required|numeric|min:0',
-        'notes'        => 'nullable|string',
-        'admin_name'   => 'nullable|string|max:255',
-    ]);
-
-    // 1. Update data Daily Closing
-    $dailyClosing->update([
-        'total_income' => $request->total_income,
-        'notes'        => $request->notes,
-    ]);
-
-    // 2. Update nama admin jika diisi & relasinya ada
-    if ($request->filled('admin_name') && $dailyClosing->admin) {
-        $dailyClosing->admin->update([
-            'name' => $request->admin_name,
+    {
+        $request->validate([
+            'total_income' => 'required|numeric|min:0|max:9999999999',
+            'notes'        => 'nullable|string',
+            'admin_name'   => 'nullable|string|max:255',
         ]);
-    }
 
-    return redirect()->back()->with('success', 'Data daily closing updated successfully!');
-}
+        // 1. Update data Daily Closing
+        $dailyClosing->update([
+            'total_income' => $request->total_income,
+            'notes'        => $request->notes,
+        ]);
+
+        // 2. Update nama admin jika diisi & relasinya ada
+        if ($request->filled('admin_name') && $dailyClosing->admin) {
+            $dailyClosing->admin->update([
+                'name' => $request->admin_name,
+            ]);
+        }
+
+        return redirect()->back()->with('success', 'Data daily closing updated successfully!');
+    }
 
     /**
      * Menghapus riwayat penutupan kasir.

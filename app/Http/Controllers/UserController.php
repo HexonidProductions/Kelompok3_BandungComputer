@@ -44,7 +44,7 @@ class UserController extends Controller
             'name'         => 'required|string|max:255',
             'email'        => 'required|email|unique:tb_users,email',
             'password'     => 'required|string|min:8',
-            'phone_number' => 'nullable|string|max:20',
+            'phone_number' => 'nullable|string|max:15',
             'address'      => 'nullable|string',
             'role'         => 'required|in:Admin,Customer',
         ]);
@@ -70,7 +70,7 @@ class UserController extends Controller
             'name'         => 'required|string|max:255',
             'email'        => 'required|email|unique:tb_users,email,' . $user->id,
             'password'     => 'nullable|string|min:8',
-            'phone_number' => 'nullable|string|max:20',
+            'phone_number' => 'nullable|string|max:15',
             'address'      => 'nullable|string',
             'role'         => 'required|in:Admin,Customer',
         ]);

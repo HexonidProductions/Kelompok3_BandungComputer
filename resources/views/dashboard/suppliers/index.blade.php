@@ -198,6 +198,7 @@
                         <div>
                             <label class="block text-xs font-semibold text-slate-700 mb-1">Contact</label>
                             <input type="text" name="phone_number" required placeholder="Enter contact" value="{{ old('phone_number') }}"
+                                maxlength="15" oninput="if(this.value.length > 15) this.value = this.value.slice(0, 15);"
                                 class="w-full h-10 border border-slate-200 rounded-lg px-3.5 text-xs text-slate-700 focus:outline-none focus:ring-0 focus:border-slate-300">
                         </div>
 
@@ -274,6 +275,7 @@
                         <div>
                             <label class="block text-xs font-semibold text-slate-700 mb-1">Contact</label>
                             <input type="text" name="phone_number" x-model="selectedSupplier.phone_number" required 
+                                maxlength="15" oninput="if(this.value.length > 15) this.value = this.value.slice(0, 15);"
                                 class="w-full h-10 px-3.5 border border-slate-200 rounded-lg text-xs text-slate-700 bg-white focus:outline-none focus:ring-0 focus:border-slate-300">
                         </div>
 

@@ -239,7 +239,7 @@
                         <!-- Quantity -->
                         <div>
                             <label class="block text-xs font-semibold text-slate-700 mb-1">Quantity</label>
-                            <input type="number" name="quantity" min="1" required placeholder="Enter quantity"
+                            <input type="number" name="quantity" min="1" max="9999" maxlength="4" oninput="if(this.value.length > 4) this.value = this.value.slice(0, 4);" required placeholder="Enter quantity"
                                 class="w-full border border-slate-200 rounded-lg px-3 py-2 text-slate-700 focus:outline-none focus:ring-0 focus:border-slate-300 placeholder:text-[13px] [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none">
                         </div>
 
@@ -373,7 +373,7 @@
                         <!-- Quantity (Edit) -->
                         <div>
                             <label class="block text-xs font-semibold text-slate-700 mb-1">Quantity</label>
-                            <input type="number" name="quantity" min="1" x-model="selectedLog.quantity" required placeholder="Enter quantity"
+                            <input type="number" name="quantity" min="1" max="9999" maxlength="4" oninput="if(this.value.length > 4) this.value = this.value.slice(0, 4);" x-model="selectedLog.quantity" required placeholder="Enter quantity"
                                 class="w-full border border-slate-200 rounded-lg px-3 py-2 text-slate-700 focus:outline-none focus:ring-0 focus:border-slate-300 placeholder:text-[13px] [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none">
                         </div>
 

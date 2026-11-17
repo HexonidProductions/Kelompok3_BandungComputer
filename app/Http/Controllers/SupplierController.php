@@ -45,7 +45,7 @@ class SupplierController extends Controller
         $request->validate([
             'entry_code'         => 'required|string|unique:tb_stock_entries,entry_code',
             'supplier_name'      => 'required|string|max:255',
-            'phone_number'       => 'required|string|max:20',
+            'phone_number'       => 'required|string|max:15',
             'address'            => 'required|string',
             'status'             => 'required|in:Active,Not Active',
         ]);
@@ -69,7 +69,7 @@ class SupplierController extends Controller
         $request->validate([
             'entry_code'         => 'required|string|unique:tb_stock_entries,entry_code,' . $supplier->id,
             'supplier_name'      => 'required|string|max:255',
-            'phone_number'       => 'required|string|max:20',
+            'phone_number'       => 'required|string|max:15',
             'address'            => 'required|string',
             'status'             => 'required|in:Active,Not Active',
         ]);

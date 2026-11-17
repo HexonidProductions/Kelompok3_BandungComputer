@@ -41,7 +41,7 @@ class InventoryLogController extends Controller
             'supplier_id'   => 'nullable|exists:tb_stock_entries,id',
             'type'          => 'required|in:in,out,return',
             'customer_name' => 'nullable|string|max:255',
-            'quantity'      => 'required|integer|min:1',
+            'quantity'      => 'required|integer|min:1|max:9999',
             'notes'         => 'nullable|string|max:255',
         ]);
 
@@ -87,7 +87,7 @@ class InventoryLogController extends Controller
             'supplier_id'   => 'nullable|exists:tb_stock_entries,id',
             'type'          => 'required|in:in,out,return',
             'customer_name' => 'nullable|string|max:255',
-            'quantity'      => 'required|integer|min:1',
+            'quantity'      => 'required|integer|min:1|max:9999',
             'notes'         => 'nullable|string|max:255',
         ]);
 

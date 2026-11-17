@@ -303,21 +303,21 @@
                         <!-- Stock Amount -->
                         <div>
                             <label class="block text-xs font-semibold text-slate-700 mb-1">Stock Amount</label>
-                            <input type="number" name="stock" min="0" required value="0" 
+                            <input type="number" name="stock" min="0" max="999999" oninput="if(this.value.length > 6) this.value = this.value.slice(0, 6);" required value="0" 
                                 class="w-full h-10 border border-slate-200 rounded-lg px-3.5 text-xs text-slate-700 focus:outline-none focus:ring-0 focus:border-slate-300 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none">
                         </div>
 
                         <!-- Buy Price -->
                         <div>
                             <label class="block text-xs font-semibold text-slate-700 mb-1">Buy Price</label>
-                            <input type="number" name="buy_price" min="0" required placeholder="Rp 0" 
+                            <input type="number" name="buy_price" min="0" max="9999999999" oninput="if(this.value.length > 10) this.value = this.value.slice(0, 10);" required placeholder="Rp 0" 
                                 class="w-full h-10 border border-slate-200 rounded-lg px-3.5 text-xs text-slate-700 focus:outline-none focus:ring-0 focus:border-slate-300 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none">
                         </div>
 
                         <!-- Sell Price -->
                         <div>
                             <label class="block text-xs font-semibold text-slate-700 mb-1">Sell Price</label>
-                            <input type="number" name="sell_price" min="0" required placeholder="Rp 0" 
+                            <input type="number" name="sell_price" min="0" max="9999999999" oninput="if(this.value.length > 10) this.value = this.value.slice(0, 10);" required placeholder="Rp 0" 
                                 class="w-full h-10 border border-slate-200 rounded-lg px-3.5 text-xs text-slate-700 focus:outline-none focus:ring-0 focus:border-slate-300 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none">
                         </div>
                     </div>
@@ -370,7 +370,7 @@
                         <div>
                             <label class="block text-xs font-semibold text-slate-700 mb-1">Product Image</label>
                             <label class="flex flex-col items-center justify-center border border-slate-200 rounded-xl h-[200px] cursor-pointer transition-all relative overflow-hidden">
-                                <input type="file" name="image" class="hidden" accept="image/*" @change="const file = $event.target.files[0]; if(file){ $refs.previewAdd.src = URL.createObjectURL(file); $refs.previewAdd.classList.remove('hidden'); }">
+                                <input type="file" name="image" class="hidden" accept=".jpg, .jpeg, .png, .webp" @change="const file = $event.target.files[0]; if(file){ $refs.previewAdd.src = URL.createObjectURL(file); $refs.previewAdd.classList.remove('hidden'); }">
                                 <img x-ref="previewAdd" class="hidden absolute inset-0 w-full h-full object-cover">
                                 <div class="flex flex-col items-center space-y-1">
                                     <img src="{{ asset('icons/Upload_pict_icon.png') }}" alt="Product Image" class="w-[91px] h-[76px] object-contain">
@@ -487,21 +487,21 @@
                         <!-- Stock Amount -->
                         <div>
                             <label class="block text-xs font-semibold text-slate-700 mb-1">Stock Amount</label>
-                            <input type="number" name="stock" x-model="selectedProduct.stock" min="0" required 
+                            <input type="number" name="stock" x-model="selectedProduct.stock" min="0" max="999999" oninput="if(this.value.length > 6) this.value = this.value.slice(0, 6);" required 
                                 class="w-full h-10 px-3.5 border border-slate-200 rounded-lg text-xs text-slate-700 focus:outline-none focus:ring-0 focus:border-slate-300 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none">
                         </div>
 
                         <!-- Buy Price -->
                         <div>
                             <label class="block text-xs font-semibold text-slate-700 mb-1">Buy Price</label>
-                            <input type="number" name="buy_price" x-model="selectedProduct.buy_price" min="0" required 
+                            <input type="number" name="buy_price" x-model="selectedProduct.buy_price" min="0" max="9999999999" oninput="if(this.value.length > 10) this.value = this.value.slice(0, 10);" required 
                                 class="w-full h-10 px-3.5 border border-slate-200 rounded-lg text-xs text-slate-700 focus:outline-none focus:ring-0 focus:border-slate-300 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none">
                         </div>
 
                         <!-- Sell Price -->
                         <div>
                             <label class="block text-xs font-semibold text-slate-700 mb-1">Sell Price</label>
-                            <input type="number" name="sell_price" x-model="selectedProduct.sell_price" min="0" required 
+                            <input type="number" name="sell_price" x-model="selectedProduct.sell_price" min="0" max="9999999999" oninput="if(this.value.length > 10) this.value = this.value.slice(0, 10);" required 
                                 class="w-full h-10 px-3.5 border border-slate-200 rounded-lg text-xs text-slate-700 focus:outline-none focus:ring-0 focus:border-slate-300 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none">
                         </div>
                     </div>
@@ -554,7 +554,7 @@
                         <div>
                             <label class="block text-xs font-semibold text-slate-700 mb-1">Product Image</label>
                             <label class="flex flex-col items-center justify-center border border-slate-200 rounded-xl h-[200px] cursor-pointer transition-all relative overflow-hidden bg-slate-50">
-                                <input type="file" name="image" class="hidden" accept="image/*" @change="const file = $event.target.files[0]; if(file){ $refs.previewEdit.src = URL.createObjectURL(file); $refs.previewEdit.classList.remove('hidden'); $refs.defaultImage.style.display = 'none'; }">
+                                <input type="file" name="image" class="hidden" accept=".jpg, .jpeg, .png, .webp" @change="const file = $event.target.files[0]; if(file){ $refs.previewEdit.src = URL.createObjectURL(file); $refs.previewEdit.classList.remove('hidden'); $refs.defaultImage.style.display = 'none'; }">
                                 
                                 <!-- Preview jika user upload gambar baru -->
                                 <img x-ref="previewEdit" class="hidden absolute inset-0 w-full h-full object-cover z-20">

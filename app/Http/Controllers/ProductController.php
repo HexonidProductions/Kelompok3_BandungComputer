@@ -46,11 +46,11 @@ class ProductController extends Controller
             'product_name' => 'required|string|max:255',
             'category_id'  => 'required|exists:tb_categories,id',
             'description'  => 'nullable|string',
-            'buy_price'    => 'required|numeric',
-            'sell_price'   => 'required|numeric',
-            'stock'        => 'required|integer',
+            'buy_price'    => 'required|numeric|min:0|max:9999999999',
+            'sell_price'   => 'required|numeric|min:0|max:9999999999',
+            'stock'        => 'required|integer|min:0|max:999999',
             'status'       => 'nullable|in:Available,Low stock,Out of stock,Inden',
-            'image'        => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
+            'image'        => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048', // Validasi ekstensi eksklusif dan batas ukuran 2MB
         ]);
 
         $imagePath = null;
@@ -91,11 +91,11 @@ class ProductController extends Controller
             'product_name' => 'required|string|max:255',
             'category_id'  => 'required|exists:tb_categories,id',
             'description'  => 'nullable|string',
-            'buy_price'    => 'required|numeric',
-            'sell_price'   => 'required|numeric',
-            'stock'        => 'required|integer',
+            'buy_price'    => 'required|numeric|min:0|max:9999999999',
+            'sell_price'   => 'required|numeric|min:0|max:9999999999',
+            'stock'        => 'required|integer|min:0|max:999999',
             'status'       => 'nullable|in:Available,Low stock,Out of stock,Inden',
-            'image'        => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
+            'image'        => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048', // Validasi ekstensi eksklusif dan batas ukuran 2MB
         ]);
 
         $imagePath = $product->image;

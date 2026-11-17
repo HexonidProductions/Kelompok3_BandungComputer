@@ -136,12 +136,14 @@
                             <!-- Total Income -->
                             <div>
                                 <label class="block text-xs font-semibold text-slate-700 mb-1.5">Total Income</label>
-                                <input type="number" 
-                                    name="total_income" 
-                                    required 
-                                    min="0"
-                                    class="w-full border border-slate-200 rounded-lg px-3 py-2 text-xs focus:outline-none focus:ring-0 focus:border-slate-300 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none" 
-                                    placeholder="Rp 0">
+                                    <input type="number" 
+                                            name="total_income" 
+                                            required 
+                                            min="0"
+                                            max="9999999999"
+                                            oninput="if(this.value.length > 12) this.value = this.value.slice(0, 12);"
+                                            class="w-full border border-slate-200 rounded-lg px-3 py-2 text-xs focus:outline-none focus:ring-0 focus:border-slate-300 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none" 
+                                            placeholder="Rp 0">
                             </div>
                         </div>
 
@@ -202,17 +204,19 @@
                                     placeholder="Enter admin name">
                             </div>
 
-                            <!-- Total Income -->
+                    <!-- Total Income -->
                             <div>
                                 <label class="block text-xs font-semibold text-slate-700 mb-1.5">Total Income</label>
-                                <input type="number" 
-                                    name="total_income" 
-                                    x-model="totalIncome" 
-                                    required 
-                                    min="0"
-                                    class="w-full border border-slate-200 rounded-lg px-3 py-2 text-xs focus:outline-none focus:ring-0 focus:border-slate-300 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none" 
-                                    placeholder="Rp 0">
-                            </div>
+                                    <input type="number" 
+                                            name="total_income" 
+                                            x-model="totalIncome" 
+                                            required 
+                                            min="0"
+                                            max="9999999999"
+                                            oninput="if(this.value.length > 12) this.value = this.value.slice(0, 12);"
+                                            class="w-full border border-slate-200 rounded-lg px-3 py-2 text-xs focus:outline-none focus:ring-0 focus:border-slate-300 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none" 
+                                            placeholder="Rp 0">
+                                </div>
                         </div>
 
                         <!-- Note -->
