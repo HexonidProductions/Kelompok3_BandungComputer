@@ -57,40 +57,23 @@
                 <tbody class="text-xs text-slate-700 font-medium divide-y divide-slate-100">
                     @forelse($categories as $index => $category)
                         <tr>
-                            <td class="py-3.5 px-4 font-normal text-slate-600">
+                            <td class="py-4 px-4 font-normal text-slate-600 whitespace-nowrap">
                                 {{ $categories->firstItem() + $index }}
                             </td>
-                            <td class="py-3.5 px-4 font-semibold text-slate-900">
+                            <td class="py-4 px-4 font-semibold text-slate-900 whitespace-nowrap">
                                 {{ $category->category_name }}
                             </td>
-                            <td class="py-3.5 px-4 text-center">
-                                <div class="flex items-center justify-center gap-2">
-                                    <!-- Edit Button -->
-                                    <button type="button" 
-                                        @click="
-                                            editUrl = '{{ route('categories.update', $category->id) }}';
-                                            categoryName = '{{ addslashes($category->category_name) }}';
-                                            editOpen = true;
-                                        "
-                                        class="p-1 text-slate-500 hover:text-slate-800 transition-colors"
-                                        title="Edit Category">
-                                        <img src="{{ asset('icons/pencil.png')}}" alt="Edit Icon" class="w-4 h-4 object-contain">
-                                    </button>
-
-                                    <!-- Delete Button -->
-                                    <button type="button" 
-                                        @click="
-                                            deleteUrl = '{{ route('categories.destroy', $category->id) }}';
-                                            if (confirm('Are you sure you want to delete category {{ addslashes($category->category_name) }}?')) {
-                                                $refs.globalDeleteForm.action = deleteUrl;
-                                                $refs.globalDeleteForm.submit();
-                                            }
-                                        "
-                                        class="p-1 text-red-400 hover:text-red-600 transition-colors"
-                                        title="Delete Category">
-                                        <img src="{{ asset('icons/trash.png')}}" alt="Delete Icon" class="w-4 h-4 object-contain">
-                                    </button>
-                                </div>
+                            <td class="py-4 px-4 text-center whitespace-nowrap">
+                                <button type="button" 
+                                    @click="
+                                        editUrl = '{{ route('categories.update', $category->id) }}';
+                                        deleteUrl = '{{ route('categories.destroy', $category->id) }}';
+                                        categoryName = '{{ addslashes($category->category_name) }}';
+                                        editOpen = true;
+                                    "
+                                    class="text-slate-600 hover:text-slate-900 font-bold px-2 py-1 transition-colors">
+                                    •••
+                                </button>
                             </td>
                         </tr>
                     @empty
@@ -117,17 +100,12 @@
         @endif
     </div>
 
-    <!-- Hidden Form Global Delete -->
-    <form x-ref="globalDeleteForm" method="POST" class="hidden">
-        @csrf
-        @method('DELETE')
-    </form>
-
     <!-- Modal Teleport ke Body -->
     <template x-teleport="body">
-        <div x-show="createOpen || editOpen" x-cloak>
+        <div>
             <!-- Modal Add Category -->
             <div x-show="createOpen" 
+                x-cloak 
                 class="fixed inset-0 z-50 flex items-center justify-center bg-white/10 backdrop-blur-[1px] p-4 transition-all"
                 @keydown.escape.window="createOpen = false">
 
@@ -152,6 +130,7 @@
                                 Cancel
                             </button>
                             <button type="submit" 
+                                @click="if (!confirm('Are you sure you want to add this category?')) $event.preventDefault()" 
                                 class="w-20 h-8 flex items-center justify-center bg-blue-600 hover:bg-blue-700 text-white rounded-[5px] text-xs font-medium transition-colors shadow-sm">
                                 Save
                             </button>
@@ -162,11 +141,18 @@
 
             <!-- Modal Edit Category -->
             <div x-show="editOpen" 
+                x-cloak 
                 class="fixed inset-0 z-50 flex items-center justify-center bg-white/10 backdrop-blur-[1px] p-4 transition-all"
                 @keydown.escape.window="editOpen = false">
 
                 <div class="bg-white rounded-xl shadow-2xl w-full max-w-md p-6 relative" @click.away="editOpen = false">
                     <h3 class="text-base font-bold text-slate-900 mb-5">Edit Category</h3>
+
+                    <!-- Hidden Form for Delete Action -->
+                    <form x-ref="deleteForm" :action="deleteUrl" method="POST" class="hidden">
+                        @csrf
+                        @method('DELETE')
+                    </form>
 
                     <form :action="editUrl" method="POST">
                         @csrf
@@ -183,12 +169,23 @@
                         </div>
 
                         <div class="flex items-center justify-end gap-2.5">
+                            <!-- Cancel Button -->
                             <button type="button" 
                                 @click="editOpen = false" 
                                 class="w-20 h-8 flex items-center justify-center border border-slate-800 rounded-[5px] text-xs font-medium text-slate-800 hover:bg-slate-100 transition-colors">
                                 Cancel
                             </button>
+
+                            <!-- Delete Button -->
+                            <button type="button" 
+                                @click="if (confirm('Are you sure you want to delete this category?')) $refs.deleteForm.submit()" 
+                                class="w-20 h-8 flex items-center justify-center border border-[#DC2626] text-[#DC2626] hover:bg-[#DC2626]/5 rounded-[5px] text-xs font-medium transition-colors">
+                                Delete
+                            </button>
+
+                            <!-- Save Button -->
                             <button type="submit" 
+                                @click="if (!confirm('Are you sure you want to save these changes?')) $event.preventDefault()" 
                                 class="w-20 h-8 flex items-center justify-center bg-blue-600 hover:bg-blue-700 text-white rounded-[5px] text-xs font-medium transition-colors shadow-sm">
                                 Save
                             </button>

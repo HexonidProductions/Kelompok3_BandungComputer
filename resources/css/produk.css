@@ -384,15 +384,11 @@ input:checked + .slider:before {
     transition: background 0.15s ease;
 }
 
-.sort-menu-item:hover {
-    background-color: #f1f5f9;
-}
 
 /* Opsi Aktif / Terpilih */
 .sort-menu-item.active {
     font-weight: 700;
     color: #0f172a;
-    background-color: #f8fafc;
 }
 
 /* Grid Produk 4 Kolom Desktop */
