@@ -68,7 +68,7 @@
                             </span>
                             <img src="{{ asset('icons/Vector_option_arrow.png') }}" 
                                 alt="Arrow" 
-                                class="w-2.5 h-2.5 object-contain"
+                                class="w-2.5 h-2.5 object-contain" 
                                 :class="open ? 'rotate-180' : 'rotate-0'">
                         </div>
                         <div class="py-1 border-slate-100">
@@ -97,6 +97,46 @@
             </button>
         </div>
     </div>
+
+    <!-- 3 Statistic Cards (Sesuai Desain UI/UX Transactions) -->
+    <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem;">
+        <!-- Card 1: Total Sales This Month -->
+        <div class="bg-white rounded-xl p-5 shadow-sm border border-slate-200/80 flex justify-between items-start">
+            <div>
+                <p class="text-xs text-slate-500 font-medium mb-1">Total Sales This Month</p>
+                <h3 class="text-xl font-bold text-slate-900">Rp {{ number_format($totalSalesThisMonth ?? 0, 0, ',', '.') }}</h3>
+            </div>
+            <!-- Icon Placeholder -->
+            <div class="w-8 h-8 flex items-center justify-center rounded-lg bg-slate-100 shrink-0">
+                <img src="{{ asset('icons/ant-design_user-outlined.png') }}" alt="Total Products Icon" class="w-6 h-6 object-contain">
+            </div>
+        </div>
+
+        <!-- Card 2: Transaction Amount -->
+        <div class="bg-white rounded-xl p-5 shadow-sm border border-slate-200/80 flex justify-between items-start">
+            <div>
+                <p class="text-xs text-slate-500 font-medium mb-1">Transaction Amount</p>
+                <h3 class="text-xl font-bold text-slate-900">{{ $transactionAmount ?? 0 }} Transaction</h3>
+            </div>
+            <!-- Icon Placeholder -->
+            <div class="w-8 h-8 flex items-center justify-center rounded-lg bg-slate-100 shrink-0">
+                <img src="{{ asset('icons/fa7-solid_exchange-alt (3).png') }}" alt="Total Products Icon" class="w-6 h-6 object-contain">
+            </div>
+        </div>
+
+        <!-- Card 3: Average Transaction -->
+        <div class="bg-white rounded-xl p-5 shadow-sm border border-slate-200/80 flex justify-between items-start">
+            <div>
+                <p class="text-xs text-slate-500 font-medium mb-1">Average Transaction</p>
+                <h3 class="text-xl font-bold text-slate-900">Rp {{ number_format($averageTransaction ?? 0, 0, ',', '.') }}</h3>
+            </div>
+            <!-- Icon Placeholder -->
+            <div class="w-8 h-8 flex items-center justify-center rounded-lg bg-slate-100 shrink-0">
+                <img src="{{ asset('icons/average.png') }}" alt="Total Products Icon" class="w-6 h-6 object-contain">
+            </div>
+        </div>
+    </div>
+
 
     <!-- Table Card -->
     <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-100">
@@ -608,35 +648,35 @@
                             </button>
 
                             <button type="button" @click.stop.prevent="
-                                isSwalOpen = true;
-                                Swal.mixin({
-                                    customClass: {
-                                        confirmButton: 'bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-lg mx-1',
-                                        cancelButton: 'bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded-lg mx-1'
-                                    },
-                                    buttonsStyling: false
-                                }).fire({
-                                    title: 'Are you sure?',
-                                    text: 'You won\'t be able to revert this!',
-                                    icon: 'warning',
-                                    showCancelButton: true,
-                                    confirmButtonText: 'Yes, delete it!',
-                                    cancelButtonText: 'No, cancel!',
-                                    reverseButtons: true,
-                                    returnFocus: false,
-                                    didClose: () => {
-                                        setTimeout(() => { isSwalOpen = false; }, 100);
-                                    }
-                                }).then((result) => {
-                                    if (result.isConfirmed) {
-                                        const form = document.getElementById('globalDeleteForm');
-                                        form.action = deleteUrl;
-                                        form.submit();
-                                    }
-                                });
-                            " class="w-20 h-8 flex items-center justify-center border border-[#DC2626] text-[#DC2626] hover:bg-[#DC2626]/5 rounded-[5px] text-xs font-medium transition-colors cursor-pointer">
-                                Delete
-                            </button>
+                            isSwalOpen = true;
+                            Swal.mixin({
+                                customClass: {
+                                    confirmButton: 'bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-lg mx-1',
+                                    cancelButton: 'bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded-lg mx-1'
+                                },
+                                buttonsStyling: false
+                            }).fire({
+                                title: 'Are you sure?',
+                                text: 'You won\'t be able to revert this!',
+                                icon: 'warning',
+                                showCancelButton: true,
+                                confirmButtonText: 'Yes, delete it!',
+                                cancelButtonText: 'No, cancel!',
+                                reverseButtons: true,
+                                returnFocus: false,
+                                didClose: () => {
+                                    setTimeout(() => { isSwalOpen = false; }, 100);
+                                }
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    const form = document.getElementById('globalDeleteForm');
+                                    form.action = deleteUrl;
+                                    form.submit();
+                                }
+                            });
+                        " class="w-20 h-8 flex items-center justify-center border border-[#DC2626] text-[#DC2626] hover:bg-[#DC2626]/5 rounded-[5px] text-xs font-medium transition-colors cursor-pointer">
+                            Delete
+                        </button>
 
                             <button type="submit" 
                                 @click="if (!confirm('Are you sure you want to save these changes?')) $event.preventDefault()" 

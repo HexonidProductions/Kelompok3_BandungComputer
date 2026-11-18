@@ -18,11 +18,12 @@
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
     <body class="font-sans antialiased bg-[#F8FAFC]">
-        <div class="min-h-screen">
+        <!-- Menggunakan flex container agar sidebar dan main content berdampingan dengan benar -->
+        <div class="min-h-screen flex">
             <x-sidebar />
 
-            <!-- Main Content Area: Padding atas dikurangi (py-5) agar konten naik ke atas -->
-            <main class="ml-56 px-8 py-5">
+            <!-- Main Content Area: Menggunakan flex-1 dan min-w-0 agar lebarnya menyesuaikan sisa layar secara fleksibel -->
+            <main class="flex-1 min-w-0 ml-56 px-8 py-5">
                 @yield('content')
             </main>
         </div>

@@ -18,6 +18,11 @@ class ProductController extends Controller
         $status = $request->input('status');
         $categories = Category::all();
 
+        // Data untuk 3 Card Statistik Real-Time
+        $totalProducts = Product::count(); // Total seluruh produk terdaftar
+        $productsLowStock = Product::where('status', 'Low stock')->orWhere('stock', '<=', 5)->count(); // Produk stok menipis
+        $activeCategory = Category::has('products')->count(); // Kategori yang memiliki relasi produk aktif
+
         // Query Produk dengan Filter
         $products = Product::with('category')
             ->when($search, function ($query, $search) {
@@ -33,7 +38,13 @@ class ProductController extends Controller
             ->paginate(10)
             ->withQueryString();
 
-        return view('dashboard.products.index', compact('products', 'categories'));
+        return view('dashboard.products.index', compact(
+            'products', 
+            'categories', 
+            'totalProducts', 
+            'productsLowStock', 
+            'activeCategory'
+        ));
     }
 
     /**

@@ -22,6 +22,15 @@ class TransactionController extends Controller
         $search = trim($request->input('search'));
         $status = $request->input('status'); 
 
+        // Data untuk 3 Card Statistik Real-Time Transactions
+        $totalSalesThisMonth = Sale::whereMonth('created_at', now()->month)
+            ->whereYear('created_at', now()->year)
+            ->sum('total_amount');
+
+        $transactionAmount = Sale::count();
+
+        $averageTransaction = Sale::avg('total_amount') ?? 0;
+
         $transactions = Sale::with(['admin', 'items.product'])
             ->when($search, function ($query) use ($search) {
                 return $query->where(function ($q) use ($search) {
@@ -43,7 +52,14 @@ class TransactionController extends Controller
         $admins = User::whereIn('role', ['admin', 'cashier'])->get();
         $products = Product::all();
 
-        return view('dashboard.transactions.index', compact('transactions', 'admins', 'products'));
+        return view('dashboard.transactions.index', compact(
+            'transactions', 
+            'admins', 
+            'products', 
+            'totalSalesThisMonth', 
+            'transactionAmount', 
+            'averageTransaction'
+        ));
     }
 
     /**
