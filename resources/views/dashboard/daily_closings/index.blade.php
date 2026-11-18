@@ -9,102 +9,146 @@
     adminName: '', 
     totalIncome: '', 
     note: '' 
-}">
-    <!-- Konten Utama Halaman -->
-    <div class="space-y-6">
-        <!-- Header Utama -->
-        <div class="space-y-4">
-            <!-- Judul Halaman -->
-            <h1 class="text-2xl font-medium">Daily Closing</h1>
+}" class="space-y-6">
 
-            <!-- Baris Sub-Header: Today's Shift & Tombol Add History -->
-            <div class="flex justify-between items-center">
-                <!-- Teks Today's Shift -->
-                <p class="text-slate-600 text-xs font-medium">
-                    Today's Shift: <span class="text-slate-900 font-semibold">{{ $currentAdminName ?? auth()->user()->name }}</span>
-                </p>
+    <!-- Header Utama -->
+    <div class="space-y-4">
+        <!-- Judul Halaman -->
+        <h1 class="text-2xl font-medium">Income Report</h1>
 
-                <!-- Tombol Add History -->
-                <button type="button" 
-                    @click="createOpen = true" 
-                    class="inline-flex items-center gap-1.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold px-3 py-1.5 rounded-lg shadow-sm transition-all cursor-pointer">
-                    <img src="{{ asset('icons/plus_icon.png') }}" alt="Add Icon" class="w-3.5 h-3.5">
-                    Add History
-                </button>
+        <!-- Baris Sub-Header: Today's Shift & Tombol Add History -->
+        <div class="flex justify-between items-center">
+            <!-- Teks Today's Shift -->
+            <p class="text-slate-600 text-xs font-medium">
+                Today's Shift: <span class="text-slate-900 font-semibold">{{ $currentAdminName ?? auth()->user()->name }}</span>
+            </p>
+
+            <!-- Tombol Add History -->
+            <button type="button" 
+                @click="createOpen = true" 
+                class="inline-flex items-center gap-1.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold px-3 py-1.5 rounded-lg shadow-sm transition-all cursor-pointer">
+                <img src="{{ asset('icons/plus_icon.png') }}" alt="Add Icon" class="w-3.5 h-3.5">
+                Add History
+            </button>
+        </div>
+    </div>
+
+    <!-- 2 Statistik / Ringkasan Cards di Bagian Atas (Sesuai Desain) -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <!-- Card 1: Total Income -->
+        <div class=" w-auto h-[200px] bg-white rounded-xl p-5 shadow-sm border border-slate-200/80 flex justify-between items-start">
+            <div>
+                <p class="text-xs text-slate-500 font-medium mb-1">Total Income</p>
+                <h3 class="text-2xl font-bold text-slate-900 mb-1">Rp {{ number_format($totalIncome ?? 0, 0, ',', '.') }}</h3>
+                <p class="text-[11px] text-slate-800">Akumulasi penjualan cash & digital</p>
+            </div>
+            <div class="w-8 h-8 flex items-center justify-center rounded-lg bg-slate-100 shrink-0">
+                <img src="{{ asset('icons/ant-design_user-outlined.png') }}" alt="Total Income Icon" class="w-6 h-6 object-contain">
             </div>
         </div>
 
-        <!-- Table Card -->
-        <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-100">
-            <!-- Table Title -->
-            <div class="mb-4">
-                <h3 class="text-lg font-bold text-slate-800">Last Closing Shift History</h3>
-            </div>
-
-            <!-- Responsive Table -->
-            <div class="overflow-x-auto">
-                <table class="w-full text-left border-collapse">
-                    <thead>
-                        <tr class="bg-slate-100 text-slate-700 text-xs font-semibold">
-                            <th class="py-3 px-4 rounded-l-lg">Date</th>
-                            <th class="py-3 px-4">Shift</th>
-                            <th class="py-3 px-4">Cashier</th>
-                            <th class="py-3 px-4">Note</th>
-                            <th class="py-3 px-4">Income</th>
-                            <th class="py-3 px-4 rounded-r-lg text-center">Action</th>
-                        </tr>
-                    </thead>
-                    <tbody class="text-xs text-slate-700 font-medium divide-y divide-slate-100">
-                        @forelse($closings as $item)
-                            <tr>
-                                <td class="py-4 px-4 whitespace-nowrap">
-                                    {{ \Carbon\Carbon::parse($item->created_at)->format('d M Y') }}
-                                </td>
-                                <td class="py-4 px-4 whitespace-nowrap">{{ $item->shift }}</td>
-                                <td class="py-4 px-4 whitespace-nowrap">{{ $item->admin->name ?? '-' }}</td>
-                                <td class="py-4 px-4 max-w-xs truncate">{{ $item->notes ?? '-' }}</td>
-                                <td class="py-4 px-4 font-bold text-slate-900 whitespace-nowrap">
-                                    Rp {{ number_format($item->total_income, 0, ',', '.') }}
-                                </td>
-                                <td class="py-4 px-4 text-center">
-                                    <button 
-                                        type="button"
-                                        @click="
-                                            editUrl = '{{ route('daily-closings.update', $item->id) }}';
-                                            deleteUrl = '{{ route('daily-closings.destroy', $item->id) }}';
-                                            adminName = '{{ $item->admin->name ?? '' }}';
-                                            totalIncome = '{{ $item->total_income }}';
-                                            note = '{{ addslashes($item->notes ?? '') }}';
-                                            editOpen = true;
-                                        "
-                                        class="text-slate-600 hover:text-slate-900 font-bold px-2 py-1 transition-colors cursor-pointer">
-                                        •••
-                                    </button>
-                                </td>
-                            </tr>
-                        @empty
-                            <tr>
-                                <td colspan="6" class="py-8 text-center text-slate-400">
-                                    No shift closing history available.
-                                </td>
-                            </tr>
-                        @endforelse
-                    </tbody>
-                </table>
-            </div>
-
-            <!-- Footer & Pagination -->
-            @if($closings->count() > 0)
-                <div class="flex items-center justify-between mt-6 text-xs text-slate-800">
-                    <div>
-                        Showing {{ $closings->firstItem() }}-{{ $closings->lastItem() }} out of {{ $closings->total() }} last closing shift history
+        <!-- Card 2: Details per Payment Method -->
+        <div class="bg-white rounded-xl p-5 shadow-sm border border-slate-200/80">
+            <p class="text-xs font-bold text-slate-800 mb-3">Details per Payment Method</p>
+            <div class="space-y-3 text-xs">
+                <!-- Cash -->
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                        <img src="{{ asset('icons/method-badge.png') }}" alt="Cash Icon" class="w-[50px] h-[27px] object-contain">
+                        <span class="text-[11px] text-slate-400">{{ $countCash ?? 0 }} Transaction</span>
                     </div>
-                    <div>
-                        {{ $closings->links('components.pagination') }}
-                    </div>
+                    <span class="font-bold text-slate-900">Rp {{ number_format($incomeCash ?? 0, 0, ',', '.') }}</span>
                 </div>
-            @endif
+                <!-- Debit / Bank Transfer -->
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                        <img src="{{ asset('icons/method-badge (1).png') }}" alt="Debit Icon" class="w-[50px] h-[27px] object-contain">
+                        <span class="text-[11px] text-slate-400">{{ $countDebit ?? 0 }} Transaction</span>
+                    </div>
+                    <span class="font-bold text-slate-900">Rp {{ number_format($incomeDebit ?? 0, 0, ',', '.') }}</span>
+                </div>
+                <!-- QRIS -->
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                        <img src="{{ asset('icons/method-badge (2).png') }}" alt="QRIS Icon" class="w-[50px] h-[27px] object-contain">
+                        <span class="text-[11px] text-slate-400">{{ $countQris ?? 0 }} Transaction</span>
+                    </div>
+                    <span class="font-bold text-slate-900">Rp {{ number_format($incomeQris ?? 0, 0, ',', '.') }}</span>
+                </div>
+            </div>
         </div>
+    </div>
+
+    <!-- Table Card -->
+    <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-100">
+        <!-- Table Title -->
+        <div class="mb-4">
+            <h3 class="text-base font-bold text-slate-800">Last Closing Shift History</h3>
+        </div>
+
+        <!-- Responsive Table -->
+        <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+                <thead>
+                    <tr class="bg-slate-100 text-slate-700 text-xs font-semibold">
+                        <th class="py-3 px-4 rounded-l-lg">Date</th>
+                        <th class="py-3 px-4">Shift</th>
+                        <th class="py-3 px-4">Cashier</th>
+                        <th class="py-3 px-4">Note</th>
+                        <th class="py-3 px-4">Income</th>
+                        <th class="py-3 px-4 rounded-r-lg text-center">Action</th>
+                    </tr>
+                </thead>
+                <tbody class="text-xs text-slate-700 font-medium divide-y divide-slate-100">
+                    @forelse($closings as $item)
+                        <tr>
+                            <td class="py-4 px-4 whitespace-nowrap">
+                                {{ \Carbon\Carbon::parse($item->created_at)->format('d M Y') }}
+                            </td>
+                            <td class="py-4 px-4 whitespace-nowrap">{{ $item->shift }}</td>
+                            <td class="py-4 px-4 whitespace-nowrap">{{ $item->admin->name ?? '-' }}</td>
+                            <td class="py-4 px-4 max-w-xs truncate" title="{{ $item->notes }}">{{ $item->notes ?? '-' }}</td>
+                            <td class="py-4 px-4 font-bold text-slate-900 whitespace-nowrap">
+                                Rp {{ number_format($item->total_income, 0, ',', '.') }}
+                            </td>
+                            <td class="py-4 px-4 text-center">
+                                <button 
+                                    type="button"
+                                    @click="
+                                        editUrl = '{{ route('daily-closings.update', $item->id) }}';
+                                        deleteUrl = '{{ route('daily-closings.destroy', $item->id) }}';
+                                        adminName = '{{ $item->admin->name ?? '' }}';
+                                        totalIncome = '{{ $item->total_income }}';
+                                        note = '{{ addslashes($item->notes ?? '') }}';
+                                        editOpen = true;
+                                    "
+                                    class="text-slate-600 hover:text-slate-900 font-bold px-2 py-1 transition-colors cursor-pointer">
+                                    •••
+                                </button>
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="6" class="py-8 text-center text-slate-400">
+                                No shift closing history available.
+                            </td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Footer & Pagination -->
+        @if($closings->count() > 0)
+            <div class="flex items-center justify-between mt-6 text-xs text-slate-800">
+                <div>
+                    Showing {{ $closings->firstItem() }}-{{ $closings->lastItem() }} out of {{ $closings->total() }} last closing shift history
+                </div>
+                <div>
+                    {{ $closings->links('components.pagination') }}
+                </div>
+            </div>
+        @endif
     </div>
 
     <!-- Modal Teleport ke Body agar Fullscreen -->
@@ -232,13 +276,13 @@
                                 Cancel
                             </button>
 
-                            <!-- Delete Button -->
+                            <!-- Delete Button (SweetAlert Fix) -->
                             <button type="button" @click.stop.prevent="
                                 isSwalOpen = true;
                                 Swal.mixin({
                                     customClass: {
-                                        confirmButton: 'bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-lg mx-1',
-                                        cancelButton: 'bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded-lg mx-1'
+                                        confirmButton: 'font-semibold py-2 px-4 rounded-lg mx-2 cursor-pointer text-white',
+                                        cancelButton: 'font-semibold py-2 px-4 rounded-lg mx-2 cursor-pointer text-slate-800'
                                     },
                                     buttonsStyling: false
                                 }).fire({
@@ -248,8 +292,14 @@
                                     showCancelButton: true,
                                     confirmButtonText: 'Yes, delete it!',
                                     cancelButtonText: 'No, cancel!',
-                                    reverseButtons: true,
+                                    reverseButtons: false,
                                     returnFocus: false,
+                                    didOpen: () => {
+                                        const confirmBtn = Swal.getConfirmButton();
+                                        const cancelBtn = Swal.getCancelButton();
+                                        if (confirmBtn) confirmBtn.style.backgroundColor = '#DC2626';
+                                        if (cancelBtn) cancelBtn.style.backgroundColor = '#CBD5E1';
+                                    },
                                     didClose: () => {
                                         setTimeout(() => { isSwalOpen = false; }, 100);
                                     }
