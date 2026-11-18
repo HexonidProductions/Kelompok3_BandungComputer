@@ -81,6 +81,42 @@
         </div>
     </div>
 
+    <!-- 3 Statistic Cards (Sesuai Desain UI/UX Inventory Logs) -->
+    <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem;">
+        <!-- Card 1: Total Stock In -->
+        <div class="bg-white rounded-xl p-5 shadow-sm border border-slate-200/80 flex justify-between items-start">
+            <div>
+                <p class="text-xs text-slate-500 font-medium mb-1">Total Stock In</p>
+                <h3 class="text-xl font-bold text-slate-900">{{ number_format($totalStockIn ?? 0, 0, ',', '.') }} Units</h3>
+            </div>
+            <div class="w-8 h-8 flex items-center justify-center rounded-lg bg-slate-100 shrink-0">
+                <img src="{{ asset('icons/fa7-solid_exchange-alt (7).png') }}" alt="Total Stock In Icon" class="w-6 h-6 object-contain">
+            </div>
+        </div>
+
+        <!-- Card 2: Supplier Active -->
+        <div class="bg-white rounded-xl p-5 shadow-sm border border-slate-200/80 flex justify-between items-start">
+            <div>
+                <p class="text-xs text-slate-500 font-medium mb-1">Supplier Active</p>
+                <h3 class="text-xl font-bold text-slate-900">{{ $supplierActive ?? 0 }} Supplier</h3>
+            </div>
+            <div class="w-8 h-8 flex items-center justify-center rounded-lg bg-slate-100 shrink-0">
+                <img src="{{ asset('icons\fa7-solid_exchange-alt (8).png') }}" alt="Supplier Active Icon" class="w-6 h-6 object-contain">
+            </div>
+        </div>
+
+        <!-- Card 3: Total Log Activity -->
+        <div class="bg-white rounded-xl p-5 shadow-sm border border-slate-200/80 flex justify-between items-start">
+            <div>
+                <p class="text-xs text-slate-500 font-medium mb-1">Total Log Activity</p>
+                <h3 class="text-xl font-bold text-slate-900">{{ $totalLogActivity ?? 0 }} Total Logs</h3>
+            </div>
+            <div class="w-8 h-8 flex items-center justify-center rounded-lg bg-slate-100 shrink-0">
+                <img src="{{ asset('icons\fa7-solid_exchange-alt (9).png') }}" alt="Total Log Activity Icon" class="w-6 h-6 object-contain">
+            </div>
+        </div>
+    </div>
+
     <!-- Table Card -->
     <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-100">
         <div class="mb-4">
@@ -428,12 +464,14 @@
 
                     <div class="flex justify-end items-center gap-3 pt-4 border-slate-100 mt-6">
                         <button type="button" @click="editOpen = false" class="w-20 h-8 flex items-center justify-center border border-slate-800 rounded-[5px] text-xs font-medium text-slate-800 hover:bg-slate-100 transition-colors cursor-pointer">Cancel</button>
+                        
+                        <!-- Tombol Delete dengan SweetAlert Fix -->
                         <button type="button" @click.stop.prevent="
                             isSwalOpen = true;
                             Swal.mixin({
                                 customClass: {
-                                    confirmButton: 'bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-lg mx-1',
-                                    cancelButton: 'bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded-lg mx-1'
+                                    confirmButton: 'font-semibold py-2 px-4 rounded-lg mx-2 cursor-pointer text-white',
+                                    cancelButton: 'font-semibold py-2 px-4 rounded-lg mx-2 cursor-pointer text-slate-800'
                                 },
                                 buttonsStyling: false
                             }).fire({
@@ -443,8 +481,14 @@
                                 showCancelButton: true,
                                 confirmButtonText: 'Yes, delete it!',
                                 cancelButtonText: 'No, cancel!',
-                                reverseButtons: true,
+                                reverseButtons: false,
                                 returnFocus: false,
+                                didOpen: () => {
+                                    const confirmBtn = Swal.getConfirmButton();
+                                    const cancelBtn = Swal.getCancelButton();
+                                    if (confirmBtn) confirmBtn.style.backgroundColor = '#DC2626';
+                                    if (cancelBtn) cancelBtn.style.backgroundColor = '#CBD5E1';
+                                },
                                 didClose: () => {
                                     setTimeout(() => { isSwalOpen = false; }, 100);
                                 }
@@ -456,6 +500,7 @@
                                 }
                             });
                         " class="w-20 h-8 flex items-center justify-center border border-[#DC2626] text-[#DC2626] hover:bg-[#DC2626]/5 rounded-[5px] text-xs font-medium transition-colors cursor-pointer">Delete</button>
+
                         <button type="submit" class="w-20 h-8 flex items-center justify-center bg-[#2563EB] hover:bg-blue-700 border border-transparent text-white rounded-[5px] text-xs font-medium transition-colors shadow-sm cursor-pointer">Save</button>
                     </div>
                 </form>

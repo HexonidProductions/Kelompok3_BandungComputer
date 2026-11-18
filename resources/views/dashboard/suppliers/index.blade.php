@@ -95,7 +95,7 @@
                 </div>
             </div>
 
-            <!-- Add Supplier Button (Tinggi h-9 agar sejajar sempurna) -->
+            <!-- Add Supplier Button -->
             <button type="button" 
                 @click="createOpen = true" 
                 class="inline-flex items-center gap-1.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold px-4 py-2 rounded-lg shadow-sm transition-all cursor-pointer">
@@ -104,10 +104,46 @@
         </div>
     </div>
 
+    <!-- 3 Statistic Cards (Sesuai Desain UI/UX Suppliers) -->
+    <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem;">
+        <!-- Card 1: Total Supplier Registered -->
+        <div class="bg-white rounded-xl p-5 shadow-sm border border-slate-200/80 flex justify-between items-start">
+            <div>
+                <p class="text-xs text-slate-500 font-medium mb-1">Total Supplier Registered</p>
+                <h3 class="text-xl font-bold text-slate-900">{{ $totalSuppliers ?? 0 }} Supplier</h3>
+            </div>
+            <div class="w-8 h-8 flex items-center justify-center rounded-lg bg-slate-100 shrink-0 ">
+                <img src="{{ asset('icons/fa7-solid_exchange-alt (4).png') }}" alt="Total Supplier Icon" class="w-6 h-6 object-contain">
+            </div>
+        </div>
+
+        <!-- Card 2: Supplier Active -->
+        <div class="bg-white rounded-xl p-5 shadow-sm border border-slate-200/80 flex justify-between items-start">
+            <div>
+                <p class="text-xs text-slate-500 font-medium mb-1">Supplier Active</p>
+                <h3 class="text-xl font-bold text-slate-900">{{ $supplierActive ?? 0 }} Supplier</h3>
+            </div>
+            <div class="w-8 h-8 flex items-center justify-center rounded-lg bg-slate-100 shrink-0 ">
+                <img src="{{ asset('icons/fa7-solid_exchange-alt (5).png') }}" alt="Supplier Active Icon" class="w-6 h-6 object-contain">
+            </div>
+        </div>
+
+        <!-- Card 3: Supplier Inactive -->
+        <div class="bg-white rounded-xl p-5 shadow-sm border border-slate-200/80 flex justify-between items-start">
+            <div>
+                <p class="text-xs text-slate-500 font-medium mb-1">Supplier Inactive</p>
+                <h3 class="text-xl font-bold text-slate-900">{{ $supplierInactive ?? 0 }} Supplier</h3>
+            </div>
+            <div class="w-8 h-8 flex items-center justify-center rounded-lg bg-slate-100 shrink-0 ">
+                <img src="{{ asset('icons/fa7-solid_exchange-alt (6).png') }}" alt="Supplier Inactive Icon" class="w-6 h-6 object-contain">
+            </div>
+        </div>
+    </div>
+
     <!-- Table Card -->
     <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-100">
         <div class="mb-4">
-            <h3 class="text-base font-bold text-slate-800">Supplier List</h3>
+            <h3 class="text-base font-bold text-slate-800">Database Supplier Resmi</h3>
         </div>
 
         <div class="overflow-x-auto">
@@ -202,7 +238,7 @@
                                 class="w-full h-10 border border-slate-200 rounded-lg px-3.5 text-xs text-slate-700 focus:outline-none focus:ring-0 focus:border-slate-300">
                         </div>
 
-                        <!-- Status Dropdown Add Modal (Posisi Ditukar ke Atas Address) -->
+                        <!-- Status Dropdown Add Modal -->
                         <div x-data="{ createStatusOpen: false, createStatusValue: '', createStatusName: 'Select status' }" class="relative">
                             <label class="block text-xs font-semibold text-slate-700 mb-1">Status</label>
                             <input type="hidden" name="status" x-model="createStatusValue" required>
@@ -228,11 +264,10 @@
                             </div>
                         </div>
 
-                        <!-- Address (Posisi Ditukar Menjadi di Bawah Status, Dibuat Span Full md:col-span-2 atau Sejajar Sesuai Kebutuhan) -->
-                        <!-- Address (Dibuat lebih panjang ke bawah menggunakan textarea dan rows) -->
+                        <!-- Address -->
                         <div class="relative md:col-span-2">
                             <label class="block text-xs font-semibold text-slate-700 mb-1">Address</label>
-                                <textarea name="address" rows="3" required placeholder="Enter address"
+                            <textarea name="address" rows="3" required placeholder="Enter address"
                                 class="w-full border border-slate-200 rounded-lg p-3 text-xs text-slate-700 focus:outline-none focus:ring-0 focus:border-slate-300 resize-none">{{ old('address') }}</textarea>
                         </div>
                     </div>
@@ -282,7 +317,7 @@
                                 class="w-full h-10 px-3.5 border border-slate-200 rounded-lg text-xs text-slate-700 bg-white focus:outline-none focus:ring-0 focus:border-slate-300">
                         </div>
 
-                        <!-- Status Dropdown Edit Modal (Posisi Ditukar ke Atas Address) -->
+                        <!-- Status Dropdown Edit Modal -->
                         <div x-data="{ editStatusOpen: false }" class="relative">
                             <label class="block text-xs font-semibold text-slate-700 mb-1">Status</label>
                             <input type="hidden" name="status" x-model="selectedSupplier.status" required>
@@ -308,22 +343,24 @@
                             </div>
                         </div>
 
-                        <!-- Address (Posisi Ditukar Menjadi di Bawah Status) -->
+                        <!-- Address -->
                         <div class="relative md:col-span-2">
                             <label class="block text-xs font-semibold text-slate-700 mb-1">Address</label>
-                            <textarea type="text" name="address" rows="3" x-model="selectedSupplier.address" required 
-                            class="w-full border border-slate-200 rounded-lg p-3 text-xs text-slate-700 focus:outline-none focus:ring-0 focus:border-slate-300 resize-none"></textarea>
+                            <textarea name="address" rows="3" x-model="selectedSupplier.address" required 
+                                class="w-full border border-slate-200 rounded-lg p-3 text-xs text-slate-700 focus:outline-none focus:ring-0 focus:border-slate-300 resize-none"></textarea>
                         </div>
                     </div>
 
                     <div class="flex justify-end items-center gap-3 pt-4 border-slate-100 mt-6">
                         <button type="button" @click="editOpen = false" class="w-20 h-8 flex items-center justify-center border border-slate-800 rounded-[5px] text-xs font-medium text-slate-800 hover:bg-slate-100 transition-colors cursor-pointer">Cancel</button>
+                        
+                        <!-- Tombol Delete dengan SweetAlert Fix (Warna Tombol Jelas) -->
                         <button type="button" @click.stop.prevent="
                             isSwalOpen = true;
                             Swal.mixin({
                                 customClass: {
-                                    confirmButton: 'bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-lg mx-1',
-                                    cancelButton: 'bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded-lg mx-1'
+                                    confirmButton: 'font-semibold py-2 px-4 rounded-lg mx-2 cursor-pointer text-white',
+                                    cancelButton: 'font-semibold py-2 px-4 rounded-lg mx-2 cursor-pointer text-slate-800'
                                 },
                                 buttonsStyling: false
                             }).fire({
@@ -333,8 +370,14 @@
                                 showCancelButton: true,
                                 confirmButtonText: 'Yes, delete it!',
                                 cancelButtonText: 'No, cancel!',
-                                reverseButtons: true,
+                                reverseButtons: false,
                                 returnFocus: false,
+                                didOpen: () => {
+                                    const confirmBtn = Swal.getConfirmButton();
+                                    const cancelBtn = Swal.getCancelButton();
+                                    if (confirmBtn) confirmBtn.style.backgroundColor = '#DC2626';
+                                    if (cancelBtn) cancelBtn.style.backgroundColor = '#CBD5E1';
+                                },
                                 didClose: () => {
                                     setTimeout(() => { isSwalOpen = false; }, 100);
                                 }
@@ -346,6 +389,7 @@
                                 }
                             });
                         " class="w-20 h-8 flex items-center justify-center border border-[#DC2626] text-[#DC2626] hover:bg-[#DC2626]/5 rounded-[5px] text-xs font-medium transition-colors cursor-pointer">Delete</button>
+
                         <button type="submit" class="w-20 h-8 flex items-center justify-center bg-[#2563EB] hover:bg-blue-700 border border-transparent text-white rounded-[5px] text-xs font-medium transition-colors shadow-sm cursor-pointer">Save</button>
                     </div>
                 </form>

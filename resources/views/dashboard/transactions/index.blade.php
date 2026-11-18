@@ -120,7 +120,7 @@
             </div>
             <!-- Icon Placeholder -->
             <div class="w-8 h-8 flex items-center justify-center rounded-lg bg-slate-100 shrink-0">
-                <img src="{{ asset('icons/fa7-solid_exchange-alt (3).png') }}" alt="Total Products Icon" class="w-6 h-6 object-contain">
+                <img src="{{ asset('icons/fa7-solid_exchange-alt (3).png') }}" alt="Transaction Amount Icon" class="w-6 h-6 object-contain">
             </div>
         </div>
 
@@ -132,7 +132,7 @@
             </div>
             <!-- Icon Placeholder -->
             <div class="w-8 h-8 flex items-center justify-center rounded-lg bg-slate-100 shrink-0">
-                <img src="{{ asset('icons/average.png') }}" alt="Total Products Icon" class="w-6 h-6 object-contain">
+                <img src="{{ asset('icons/average.png') }}" alt="Average Transaction Icon" class="w-6 h-6 object-contain">
             </div>
         </div>
     </div>

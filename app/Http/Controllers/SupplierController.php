@@ -15,6 +15,11 @@ class SupplierController extends Controller
         $search = $request->input('search');
         $status = $request->input('status'); // Menerima filter status dari dropdown UI
 
+        // Data untuk 3 Card Statistik Real-Time Suppliers
+        $totalSuppliers = StockEntry::count();
+        $supplierActive = StockEntry::where('status', 'Active')->count();
+        $supplierInactive = StockEntry::where('status', 'Not Active')->count();
+
         // Variabel diubah dari $stockentry menjadi $suppliers
         $suppliers = StockEntry::when($search, function ($query, $search) {
                 return $query->where(function ($q) use ($search) {
@@ -33,8 +38,13 @@ class SupplierController extends Controller
             ->paginate(10)
             ->withQueryString();
 
-        // Mengirim variabel ke view (pastikan view menyesuaikan, atau gunakan compact('suppliers'))
-        return view('dashboard.suppliers.index', compact('suppliers'));
+        // Mengirim variabel beserta data statistik ke view
+        return view('dashboard.suppliers.index', compact(
+            'suppliers', 
+            'totalSuppliers', 
+            'supplierActive', 
+            'supplierInactive'
+        ));
     }
 
     /**

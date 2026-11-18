@@ -15,6 +15,11 @@ class InventoryLogController extends Controller
         $search = $request->input('search');
         $type   = $request->input('type'); // Menangkap parameter filter type (in / out / return)
 
+        // Data untuk 3 Card Statistik Real-Time Inventory Logs
+        $totalStockIn = InventoryLog::where('type', 'in')->sum('quantity');
+        $supplierActive = StockEntry::where('status', 'Active')->count();
+        $totalLogActivity = InventoryLog::count();
+
         $logs = InventoryLog::with(['product', 'supplier'])
             ->when($search, function ($query, $search) {
                 $query->whereHas('product', function ($q) use ($search) {
@@ -31,7 +36,14 @@ class InventoryLogController extends Controller
         $products = Product::all();
         $suppliers = StockEntry::all();
 
-        return view('dashboard.inventory_logs.index', compact('logs', 'products', 'suppliers'));
+        return view('dashboard.inventory_logs.index', compact(
+            'logs', 
+            'products', 
+            'suppliers', 
+            'totalStockIn', 
+            'supplierActive', 
+            'totalLogActivity'
+        ));
     }
 
     public function store(Request $request)
