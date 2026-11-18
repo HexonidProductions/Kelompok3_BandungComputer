@@ -27,7 +27,7 @@
                 <!-- Tombol Add History -->
                 <button type="button" 
                     @click="createOpen = true" 
-                    class="inline-flex items-center gap-1.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold px-3 py-1.5 rounded-lg shadow-sm transition-all">
+                    class="inline-flex items-center gap-1.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold px-3 py-1.5 rounded-lg shadow-sm transition-all cursor-pointer">
                     <img src="{{ asset('icons/plus_icon.png') }}" alt="Add Icon" class="w-3.5 h-3.5">
                     Add History
                 </button>
@@ -77,7 +77,7 @@
                                             note = '{{ addslashes($item->notes ?? '') }}';
                                             editOpen = true;
                                         "
-                                        class="text-slate-600 hover:text-slate-900 font-bold px-2 py-1 transition-colors">
+                                        class="text-slate-600 hover:text-slate-900 font-bold px-2 py-1 transition-colors cursor-pointer">
                                         •••
                                     </button>
                                 </td>
@@ -136,14 +136,14 @@
                             <!-- Total Income -->
                             <div>
                                 <label class="block text-xs font-semibold text-slate-700 mb-1.5">Total Income</label>
-                                    <input type="number" 
-                                            name="total_income" 
-                                            required 
-                                            min="0"
-                                            max="9999999999"
-                                            oninput="if(this.value.length > 12) this.value = this.value.slice(0, 12);"
-                                            class="w-full border border-slate-200 rounded-lg px-3 py-2 text-xs focus:outline-none focus:ring-0 focus:border-slate-300 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none" 
-                                            placeholder="Rp 0">
+                                <input type="number" 
+                                    name="total_income" 
+                                    required 
+                                    min="0"
+                                    max="9999999999"
+                                    oninput="if(this.value.length > 12) this.value = this.value.slice(0, 12);"
+                                    class="w-full border border-slate-200 rounded-lg px-3 py-2 text-xs focus:outline-none focus:ring-0 focus:border-slate-300 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none" 
+                                    placeholder="Rp 0">
                             </div>
                         </div>
 
@@ -159,13 +159,13 @@
                         <div class="flex items-center justify-end gap-2.5">
                             <button type="button" 
                                 @click="createOpen = false" 
-                                class="w-20 h-8 flex items-center justify-center border border-slate-800 rounded-[5px] text-xs font-medium text-slate-800 hover:bg-slate-100 transition-colors">
+                                class="w-20 h-8 flex items-center justify-center border border-slate-800 rounded-[5px] text-xs font-medium text-slate-800 hover:bg-slate-100 transition-colors cursor-pointer">
                                 Cancel
                             </button>
 
                             <button type="submit" 
                                 @click="if (!confirm('Are you sure you want to add this history?')) $event.preventDefault()" 
-                                class="w-20 h-8 flex items-center justify-center bg-[#2563EB] hover:bg-blue-700 border border-transparent text-white rounded-[5px] text-xs font-medium transition-colors shadow-sm">
+                                class="w-20 h-8 flex items-center justify-center bg-[#2563EB] hover:bg-blue-700 border border-transparent text-white rounded-[5px] text-xs font-medium transition-colors shadow-sm cursor-pointer">
                                 Save
                             </button>
                         </div>
@@ -176,17 +176,12 @@
             <!-- Modal Edit Data -->
             <div x-show="editOpen" 
                 x-cloak 
+                x-data="{ isSwalOpen: false }"
                 class="fixed inset-0 z-50 flex items-center justify-center bg-white/10 backdrop-blur-[1px] p-4 transition-all"
-                @keydown.escape.window="editOpen = false">
+                @keydown.escape.window="if (!isSwalOpen) editOpen = false">
 
-                <div class="bg-white rounded-xl shadow-2xl w-full max-w-lg p-6 relative" @click.away="editOpen = false">
+                <div class="bg-white rounded-xl shadow-2xl w-full max-w-lg p-6 relative" @click.away="if (!isSwalOpen) editOpen = false">
                     <h3 class="text-base font-bold text-slate-900 mb-5">Edit Data</h3>
-
-                    <!-- Hidden Form for Delete Action -->
-                    <form x-ref="deleteForm" :action="deleteUrl" method="POST" class="hidden">
-                        @csrf
-                        @method('DELETE')
-                    </form>
 
                     <!-- Main Update Form -->
                     <form :action="editUrl" method="POST">
@@ -204,19 +199,19 @@
                                     placeholder="Enter admin name">
                             </div>
 
-                    <!-- Total Income -->
+                            <!-- Total Income -->
                             <div>
                                 <label class="block text-xs font-semibold text-slate-700 mb-1.5">Total Income</label>
-                                    <input type="number" 
-                                            name="total_income" 
-                                            x-model="totalIncome" 
-                                            required 
-                                            min="0"
-                                            max="9999999999"
-                                            oninput="if(this.value.length > 12) this.value = this.value.slice(0, 12);"
-                                            class="w-full border border-slate-200 rounded-lg px-3 py-2 text-xs focus:outline-none focus:ring-0 focus:border-slate-300 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none" 
-                                            placeholder="Rp 0">
-                                </div>
+                                <input type="number" 
+                                    name="total_income" 
+                                    x-model="totalIncome" 
+                                    required 
+                                    min="0"
+                                    max="9999999999"
+                                    oninput="if(this.value.length > 12) this.value = this.value.slice(0, 12);"
+                                    class="w-full border border-slate-200 rounded-lg px-3 py-2 text-xs focus:outline-none focus:ring-0 focus:border-slate-300 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none" 
+                                    placeholder="Rp 0">
+                            </div>
                         </div>
 
                         <!-- Note -->
@@ -233,21 +228,46 @@
                             <!-- Cancel -->
                             <button type="button" 
                                 @click="editOpen = false" 
-                                class="w-20 h-8 flex items-center justify-center border border-slate-800 rounded-[5px] text-xs font-medium text-slate-800 hover:bg-slate-100 transition-colors">
+                                class="w-20 h-8 flex items-center justify-center border border-slate-800 rounded-[5px] text-xs font-medium text-slate-800 hover:bg-slate-100 transition-colors cursor-pointer">
                                 Cancel
                             </button>
 
                             <!-- Delete Button -->
-                            <button type="button" 
-                                @click="if (confirm('Are you sure you want to delete this data?')) $refs.deleteForm.submit()" 
-                                class="w-20 h-8 flex items-center justify-center border border-[#DC2626] text-[#DC2626] hover:bg-[#DC2626]/5 rounded-[5px] text-xs font-medium transition-colors">
+                            <button type="button" @click.stop.prevent="
+                                isSwalOpen = true;
+                                Swal.mixin({
+                                    customClass: {
+                                        confirmButton: 'bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-lg mx-1',
+                                        cancelButton: 'bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded-lg mx-1'
+                                    },
+                                    buttonsStyling: false
+                                }).fire({
+                                    title: 'Are you sure?',
+                                    text: 'You won\'t be able to revert this!',
+                                    icon: 'warning',
+                                    showCancelButton: true,
+                                    confirmButtonText: 'Yes, delete it!',
+                                    cancelButtonText: 'No, cancel!',
+                                    reverseButtons: true,
+                                    returnFocus: false,
+                                    didClose: () => {
+                                        setTimeout(() => { isSwalOpen = false; }, 100);
+                                    }
+                                }).then((result) => {
+                                    if (result.isConfirmed) {
+                                        const form = document.getElementById('globalDeleteForm');
+                                        form.action = deleteUrl;
+                                        form.submit();
+                                    }
+                                });
+                            " class="w-20 h-8 flex items-center justify-center border border-[#DC2626] text-[#DC2626] hover:bg-[#DC2626]/5 rounded-[5px] text-xs font-medium transition-colors cursor-pointer">
                                 Delete
                             </button>
 
                             <!-- Save Button -->
                             <button type="submit" 
                                 @click="if (!confirm('Are you sure you want to save these changes?')) $event.preventDefault()" 
-                                class="w-20 h-8 flex items-center justify-center bg-[#2563EB] hover:bg-blue-700 border border-transparent text-white rounded-[5px] text-xs font-medium transition-colors shadow-sm">
+                                class="w-20 h-8 flex items-center justify-center bg-[#2563EB] hover:bg-blue-700 border border-transparent text-white rounded-[5px] text-xs font-medium transition-colors shadow-sm cursor-pointer">
                                 Save
                             </button>
                         </div>
@@ -256,5 +276,11 @@
             </div>
         </div>
     </template>
+
+    <!-- Hidden Form Global Delete -->
+    <form id="globalDeleteForm" method="POST" class="hidden">
+        @csrf
+        @method('DELETE')
+    </form>
 </div>
 @endsection

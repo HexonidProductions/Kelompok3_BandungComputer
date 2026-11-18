@@ -31,7 +31,7 @@
             <!-- Add Category Button -->
             <button type="button" 
                 @click="createOpen = true" 
-                class="inline-flex items-center gap-1.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold px-4 py-2 rounded-lg shadow-sm transition-all">
+                class="inline-flex items-center gap-1.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold px-4 py-2 rounded-lg shadow-sm transition-all cursor-pointer">
                 <span>+</span> Add Category
             </button>
         </div>
@@ -71,7 +71,7 @@
                                         categoryName = '{{ addslashes($category->category_name) }}';
                                         editOpen = true;
                                     "
-                                    class="text-slate-600 hover:text-slate-900 font-bold px-2 py-1 transition-colors">
+                                    class="text-slate-600 hover:text-slate-900 font-bold px-2 py-1 transition-colors cursor-pointer">
                                     •••
                                 </button>
                             </td>
@@ -126,12 +126,12 @@
                         <div class="flex items-center justify-end gap-2.5">
                             <button type="button" 
                                 @click="createOpen = false" 
-                                class="w-20 h-8 flex items-center justify-center border border-slate-800 rounded-[5px] text-xs font-medium text-slate-800 hover:bg-slate-100 transition-colors">
+                                class="w-20 h-8 flex items-center justify-center border border-slate-800 rounded-[5px] text-xs font-medium text-slate-800 hover:bg-slate-100 transition-colors cursor-pointer">
                                 Cancel
                             </button>
                             <button type="submit" 
                                 @click="if (!confirm('Are you sure you want to add this category?')) $event.preventDefault()" 
-                                class="w-20 h-8 flex items-center justify-center bg-blue-600 hover:bg-blue-700 text-white rounded-[5px] text-xs font-medium transition-colors shadow-sm">
+                                class="w-20 h-8 flex items-center justify-center bg-blue-600 hover:bg-blue-700 text-white rounded-[5px] text-xs font-medium transition-colors shadow-sm cursor-pointer">
                                 Save
                             </button>
                         </div>
@@ -142,17 +142,12 @@
             <!-- Modal Edit Category -->
             <div x-show="editOpen" 
                 x-cloak 
+                x-data="{ isSwalOpen: false }"
                 class="fixed inset-0 z-50 flex items-center justify-center bg-white/10 backdrop-blur-[1px] p-4 transition-all"
-                @keydown.escape.window="editOpen = false">
+                @keydown.escape.window="if (!isSwalOpen) editOpen = false">
 
-                <div class="bg-white rounded-xl shadow-2xl w-full max-w-md p-6 relative" @click.away="editOpen = false">
+                <div class="bg-white rounded-xl shadow-2xl w-full max-w-md p-6 relative" @click.away="if (!isSwalOpen) editOpen = false">
                     <h3 class="text-base font-bold text-slate-900 mb-5">Edit Category</h3>
-
-                    <!-- Hidden Form for Delete Action -->
-                    <form x-ref="deleteForm" :action="deleteUrl" method="POST" class="hidden">
-                        @csrf
-                        @method('DELETE')
-                    </form>
 
                     <form :action="editUrl" method="POST">
                         @csrf
@@ -172,21 +167,46 @@
                             <!-- Cancel Button -->
                             <button type="button" 
                                 @click="editOpen = false" 
-                                class="w-20 h-8 flex items-center justify-center border border-slate-800 rounded-[5px] text-xs font-medium text-slate-800 hover:bg-slate-100 transition-colors">
+                                class="w-20 h-8 flex items-center justify-center border border-slate-800 rounded-[5px] text-xs font-medium text-slate-800 hover:bg-slate-100 transition-colors cursor-pointer">
                                 Cancel
                             </button>
 
                             <!-- Delete Button -->
-                            <button type="button" 
-                                @click="if (confirm('Are you sure you want to delete this category?')) $refs.deleteForm.submit()" 
-                                class="w-20 h-8 flex items-center justify-center border border-[#DC2626] text-[#DC2626] hover:bg-[#DC2626]/5 rounded-[5px] text-xs font-medium transition-colors">
+                            <button type="button" @click.stop.prevent="
+                                isSwalOpen = true;
+                                Swal.mixin({
+                                    customClass: {
+                                        confirmButton: 'bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-lg mx-1',
+                                        cancelButton: 'bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded-lg mx-1'
+                                    },
+                                    buttonsStyling: false
+                                }).fire({
+                                    title: 'Are you sure?',
+                                    text: 'You won\'t be able to revert this!',
+                                    icon: 'warning',
+                                    showCancelButton: true,
+                                    confirmButtonText: 'Yes, delete it!',
+                                    cancelButtonText: 'No, cancel!',
+                                    reverseButtons: true,
+                                    returnFocus: false,
+                                    didClose: () => {
+                                        setTimeout(() => { isSwalOpen = false; }, 100);
+                                    }
+                                }).then((result) => {
+                                    if (result.isConfirmed) {
+                                        const form = document.getElementById('globalDeleteForm');
+                                        form.action = deleteUrl;
+                                        form.submit();
+                                    }
+                                });
+                            " class="w-20 h-8 flex items-center justify-center border border-[#DC2626] text-[#DC2626] hover:bg-[#DC2626]/5 rounded-[5px] text-xs font-medium transition-colors cursor-pointer">
                                 Delete
                             </button>
 
                             <!-- Save Button -->
                             <button type="submit" 
                                 @click="if (!confirm('Are you sure you want to save these changes?')) $event.preventDefault()" 
-                                class="w-20 h-8 flex items-center justify-center bg-blue-600 hover:bg-blue-700 text-white rounded-[5px] text-xs font-medium transition-colors shadow-sm">
+                                class="w-20 h-8 flex items-center justify-center bg-blue-600 hover:bg-blue-700 text-white rounded-[5px] text-xs font-medium transition-colors shadow-sm cursor-pointer">
                                 Save
                             </button>
                         </div>
@@ -195,5 +215,12 @@
             </div>
         </div>
     </template>
+
+    <!-- Hidden Form Global Delete -->
+    <form id="globalDeleteForm" method="POST" class="hidden">
+        @csrf
+        @method('DELETE')
+    </form>
+
 </div>
 @endsection

@@ -249,8 +249,11 @@
 
     <!-- ================= MODAL EDIT SUPPLIER ================= -->
     <template x-teleport="body">
-        <div x-show="editOpen" x-cloak class="fixed inset-0 z-50 flex items-center justify-center bg-white/10 backdrop-blur-[1px] p-4 transition-all">
-            <div class="bg-white rounded-2xl shadow-2xl w-full max-w-xl p-6 relative max-h-[90vh] overflow-y-auto" @click.away="editOpen = false">
+        <div x-show="editOpen" x-cloak 
+            x-data="{ isSwalOpen: false }"
+            @keydown.escape.window="if (!isSwalOpen) editOpen = false"
+            class="fixed inset-0 z-50 flex items-center justify-center bg-white/10 backdrop-blur-[1px] p-4 transition-all">
+            <div class="bg-white rounded-2xl shadow-2xl w-full max-w-xl p-6 relative max-h-[90vh] overflow-y-auto" @click.away="if (!isSwalOpen) editOpen = false">
                 <div class="flex justify-between items-center mb-6">
                     <h3 class="text-lg font-bold text-slate-900">Edit Supplier</h3>
                 </div>
@@ -315,11 +318,33 @@
 
                     <div class="flex justify-end items-center gap-3 pt-4 border-slate-100 mt-6">
                         <button type="button" @click="editOpen = false" class="w-20 h-8 flex items-center justify-center border border-slate-800 rounded-[5px] text-xs font-medium text-slate-800 hover:bg-slate-100 transition-colors cursor-pointer">Cancel</button>
-                        <button type="button" @click="
-                            if(confirm('Are you sure you want to delete this supplier?')) {
-                                $refs.globalDeleteForm.action = deleteUrl;
-                                $refs.globalDeleteForm.submit();
-                            }
+                        <button type="button" @click.stop.prevent="
+                            isSwalOpen = true;
+                            Swal.mixin({
+                                customClass: {
+                                    confirmButton: 'bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-lg mx-1',
+                                    cancelButton: 'bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded-lg mx-1'
+                                },
+                                buttonsStyling: false
+                            }).fire({
+                                title: 'Are you sure?',
+                                text: 'You won\'t be able to revert this!',
+                                icon: 'warning',
+                                showCancelButton: true,
+                                confirmButtonText: 'Yes, delete it!',
+                                cancelButtonText: 'No, cancel!',
+                                reverseButtons: true,
+                                returnFocus: false,
+                                didClose: () => {
+                                    setTimeout(() => { isSwalOpen = false; }, 100);
+                                }
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    const form = document.getElementById('globalDeleteForm');
+                                    form.action = deleteUrl;
+                                    form.submit();
+                                }
+                            });
                         " class="w-20 h-8 flex items-center justify-center border border-[#DC2626] text-[#DC2626] hover:bg-[#DC2626]/5 rounded-[5px] text-xs font-medium transition-colors cursor-pointer">Delete</button>
                         <button type="submit" class="w-20 h-8 flex items-center justify-center bg-[#2563EB] hover:bg-blue-700 border border-transparent text-white rounded-[5px] text-xs font-medium transition-colors shadow-sm cursor-pointer">Save</button>
                     </div>
@@ -328,7 +353,7 @@
         </div>
     </template>
 
-    <form x-ref="globalDeleteForm" method="POST" class="hidden">
+    <form id="globalDeleteForm" x-ref="globalDeleteForm" method="POST" class="hidden">
         @csrf
         @method('DELETE')
     </form>

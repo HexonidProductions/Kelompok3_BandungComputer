@@ -193,7 +193,7 @@
     </div>
 
     <!-- Hidden Form Global Delete -->
-    <form x-ref="globalDeleteForm" method="POST" class="hidden">
+    <form id="globalDeleteForm" x-ref="globalDeleteForm" method="POST" class="hidden">
         @csrf
         @method('DELETE')
     </form>
@@ -204,10 +204,11 @@
             
             <!-- Modal Edit Transaction Details -->
             <div x-show="editOpen" 
+                x-data="{ isSwalOpen: false }"
                 class="fixed inset-0 z-50 flex items-center justify-center bg-white/10 backdrop-blur-[1px] p-4 transition-all"
-                @keydown.escape.window="editOpen = false">
+                @keydown.escape.window="if (!isSwalOpen) editOpen = false">
 
-                <div class="bg-white rounded-xl shadow-2xl w-full max-w-xl p-6 relative max-h-[90vh] overflow-y-auto" @click.away="editOpen = false">
+                <div class="bg-white rounded-xl shadow-2xl w-full max-w-xl p-6 relative max-h-[90vh] overflow-y-auto" @click.away="if (!isSwalOpen) editOpen = false">
                     <h3 class="text-base font-bold text-slate-900 mb-5">Edit Transaction Details</h3>
 
                     <form :action="editUrl" method="POST"
@@ -606,9 +607,34 @@
                                 Cancel
                             </button>
 
-                            <button type="button" 
-                                @click="if (confirm('Are you sure you want to delete this transaction?')) { $refs.globalDeleteForm.action = deleteUrl; $refs.globalDeleteForm.submit(); }" 
-                                class="w-20 h-8 flex items-center justify-center border border-[#DC2626] text-[#DC2626] hover:bg-[#DC2626]/5 rounded-[5px] text-xs font-medium transition-colors cursor-pointer">
+                            <button type="button" @click.stop.prevent="
+                                isSwalOpen = true;
+                                Swal.mixin({
+                                    customClass: {
+                                        confirmButton: 'bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-lg mx-1',
+                                        cancelButton: 'bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded-lg mx-1'
+                                    },
+                                    buttonsStyling: false
+                                }).fire({
+                                    title: 'Are you sure?',
+                                    text: 'You won\'t be able to revert this!',
+                                    icon: 'warning',
+                                    showCancelButton: true,
+                                    confirmButtonText: 'Yes, delete it!',
+                                    cancelButtonText: 'No, cancel!',
+                                    reverseButtons: true,
+                                    returnFocus: false,
+                                    didClose: () => {
+                                        setTimeout(() => { isSwalOpen = false; }, 100);
+                                    }
+                                }).then((result) => {
+                                    if (result.isConfirmed) {
+                                        const form = document.getElementById('globalDeleteForm');
+                                        form.action = deleteUrl;
+                                        form.submit();
+                                    }
+                                });
+                            " class="w-20 h-8 flex items-center justify-center border border-[#DC2626] text-[#DC2626] hover:bg-[#DC2626]/5 rounded-[5px] text-xs font-medium transition-colors cursor-pointer">
                                 Delete
                             </button>
 
