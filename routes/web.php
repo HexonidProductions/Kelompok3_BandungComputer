@@ -87,6 +87,7 @@ Route::get('/produk', function (Request $request) {
 
     return view('produk', compact('products', 'categories', 'search', 'category', 'priceMin', 'priceMax', 'inStock', 'sort'));
 })->name('produk');
+
 Route::get('/tentang', fn() => view('about'))->name('about');
 Route::get('/kontak', fn() => view('contact'))->name('contact');
 
@@ -105,10 +106,15 @@ Route::get('/login', function () {
 Route::get('/auth/google', [GoogleController::class, 'redirectToGoogle'])->name('google.login');
 Route::get('/auth/google/callback', [GoogleController::class, 'handleGoogleCallback'])->name('google.callback');
 
+// Grup Route Khusus Admin
 Route::middleware(['auth', 'prevent-back-history', 'admin'])->group(function () {
+    // Halaman Overview / Dashboard Utama
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    
     Route::get('/dashboard/users', [UserController::class, 'index'])->name('dashboard.users.index');
     Route::get('/homepage', [UserController::class, 'index'])->name('home');
+    
+    // Resource Routes untuk fitur-fitur dashboard
     Route::resource('/daily-closings', DailyClosingController::class);
     Route::resource('/categories', CategoryController::class)->except(['create', 'edit', 'show']);
     Route::resource('/products', ProductController::class);      
