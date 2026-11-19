@@ -35,15 +35,16 @@
                 <span>Users</span>
             </a>
 
+            <a href="{{ route('contact-messages.index') }}" class="w-full flex items-center gap-3 px-4 py-2.5 rounded-none text-xs font-normal text-white transition-all duration-150 {{ request()->routeIs('contact-messages.*') ? 'bg-[#2563EB]' : null }}">
+                <img src="{{ asset('icons/Vector (2).png')}}" alt="Feedbacks Icon" class="w-4 h-4 object-contain">
+                <span>Feedbacks</span>
+            </a>
+
             <a href="{{ route('suppliers.index') }}" class="w-full flex items-center gap-3 px-4 py-2.5 rounded-none text-xs font-normal text-white transition-all duration-150 {{ request()->routeIs('suppliers.*') ? 'bg-[#2563EB]' : null }}">
                 <img src="{{ asset('icons/Suppliers_icon.png')}}" alt="Suppliers Icon" class="w-4 h-4 object-contain">
                 <span>Suppliers</span>
             </a>
 
-            <a href="{{ route('contact-messages.index') }}" class="w-full flex items-center gap-3 px-4 py-2.5 rounded-none text-xs font-normal text-white transition-all duration-150 {{ request()->routeIs('contact-messages.*') ? 'bg-[#2563EB]' : null }}">
-                <img src="{{ asset('icons/Vector (2).png')}}" alt="Feedbacks Icon" class="w-4 h-4 object-contain">
-                <span>Feedbacks</span>
-            </a>
 
             <a href="{{ route('inventory-logs.index') }}" class="w-full flex items-center gap-3 px-4 py-2.5 rounded-none text-xs font-normal text-white transition-all duration-150 {{ request()->routeIs('inventory-logs.*') ? 'bg-[#2563EB]' : null }}">
                 <img src="{{ asset('icons/Vector.png')}}" alt="Inventory Logs Icon" class="w-4 h-4 object-contain">
