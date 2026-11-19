@@ -278,41 +278,35 @@
 
                             <!-- Delete Button (SweetAlert Fix) -->
                             <button type="button" @click.stop.prevent="
-                                isSwalOpen = true;
-                                Swal.mixin({
-                                    customClass: {
-                                        confirmButton: 'font-semibold py-2 px-4 rounded-lg mx-2 cursor-pointer text-white',
-                                        cancelButton: 'font-semibold py-2 px-4 rounded-lg mx-2 cursor-pointer text-slate-800'
-                                    },
-                                    buttonsStyling: false
-                                }).fire({
-                                    title: 'Are you sure?',
-                                    text: 'You won\'t be able to revert this!',
-                                    icon: 'warning',
-                                    showCancelButton: true,
-                                    confirmButtonText: 'Yes, delete it!',
-                                    cancelButtonText: 'No, cancel!',
-                                    reverseButtons: false,
-                                    returnFocus: false,
-                                    didOpen: () => {
-                                        const confirmBtn = Swal.getConfirmButton();
-                                        const cancelBtn = Swal.getCancelButton();
-                                        if (confirmBtn) confirmBtn.style.backgroundColor = '#DC2626';
-                                        if (cancelBtn) cancelBtn.style.backgroundColor = '#CBD5E1';
-                                    },
-                                    didClose: () => {
-                                        setTimeout(() => { isSwalOpen = false; }, 100);
-                                    }
-                                }).then((result) => {
-                                    if (result.isConfirmed) {
-                                        const form = document.getElementById('globalDeleteForm');
-                                        form.action = deleteUrl;
-                                        form.submit();
-                                    }
-                                });
-                            " class="w-20 h-8 flex items-center justify-center border border-[#DC2626] text-[#DC2626] hover:bg-[#DC2626]/5 rounded-[5px] text-xs font-medium transition-colors cursor-pointer">
-                                Delete
-                            </button>
+                            isSwalOpen = true;
+                            Swal.mixin({
+                                customClass: {
+                                    confirmButton: 'bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-lg mx-1',
+                                    cancelButton: 'bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded-lg mx-1'
+                                },
+                                buttonsStyling: false
+                            }).fire({
+                                title: 'Are you sure?',
+                                text: 'You won\'t be able to revert this!',
+                                icon: 'warning',
+                                showCancelButton: true,
+                                confirmButtonText: 'Yes, delete it!',
+                                cancelButtonText: 'No, cancel!',
+                                reverseButtons: true,
+                                returnFocus: false,
+                                didClose: () => {
+                                    setTimeout(() => { isSwalOpen = false; }, 100);
+                                }
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    const form = document.getElementById('globalDeleteForm');
+                                    form.action = deleteUrl;
+                                    form.submit();
+                                }
+                            });
+                        " class="w-20 h-8 flex items-center justify-center border border-[#DC2626] text-[#DC2626] hover:bg-[#DC2626]/5 rounded-[5px] text-xs font-medium transition-colors cursor-pointer">
+                            Delete
+                        </button>
 
                             <!-- Save Button -->
                             <button type="submit" 

@@ -36,6 +36,7 @@ class TransactionController extends Controller
                 return $query->where(function ($q) use ($search) {
                     $q->where('receipt_number', 'LIKE', '%' . $search . '%')
                         ->orWhere('customer_name', 'LIKE', '%' . $search . '%')
+                        ->orWhere('note', 'LIKE', '%' . $search . '%')
                         ->orWhereHas('admin', function ($adminQuery) use ($search) {
                             $adminQuery->where('name', 'LIKE', '%' . $search . '%');
                         });
@@ -76,23 +77,28 @@ class TransactionController extends Controller
             'sale_type'        => 'required|in:Offline,Online',
             'admin_id'         => 'nullable|exists:tb_users,id',
             'customer_name'    => 'nullable|string|max:255',
+            'note'             => 'nullable|required_if:payment_status,inden|string|max:2000',
             'shipping_address' => 'nullable|string',
             'payment_method'   => 'required|in:Cash,Bank Transfer,QRIS',
             'total_amount'     => 'required|numeric|min:0|max:9999999999',
             'shipping_fee'     => 'required|numeric|min:0|max:9999999999',
-            'payment_status'   => 'required|in:paid,not paid',
+            'payment_status'   => 'required|in:paid,not paid,inden',
             'items'            => 'nullable|array',
+        ], [
+            'note.required_if' => 'Keterangan identitas pembeli dan rincian DP wajib diisi jika status transaksi adalah Inden.',
         ]);
 
         try {
             DB::transaction(function () use ($request) {
                 $customerNameInput = $request->customer_name ?: 'Guest / Umum';
+                $isPaid = strtolower(trim($request->payment_status)) === 'paid';
 
                 $sale = Sale::create([
                     'receipt_number'   => $request->receipt_number,
                     'sale_type'        => $request->sale_type,
                     'admin_id'         => $request->admin_id ?? Auth::id(),
                     'customer_name'    => $customerNameInput,
+                    'note'             => $request->note,
                     'shipping_address' => $request->shipping_address,
                     'payment_method'   => $request->payment_method,
                     'total_amount'     => $request->total_amount,
@@ -113,18 +119,24 @@ class TransactionController extends Controller
                             $product = Product::where('product_name', $productName)->first();
                         }
 
-                        // Validasi stok pada level server
                         if ($product) {
-                            if ($product->stock < $quantity) {
-                                throw new Exception("Stok untuk produk '{$product->product_name}' tidak mencukupi (Sisa stok: {$product->stock}).");
-                            }
-
-                            // Potong stok produk
-                            $product->decrement('stock', $quantity);
-                            if ($product->stock <= 0) {
-                                $product->update(['status' => 'Out of stock']);
-                            }
                             $productId = $product->id;
+
+                            // Validasi & potong stok HANYA jika status pembayaran sudah 'paid'
+                            if ($isPaid) {
+                                if ($product->stock < $quantity) {
+                                    throw new Exception("Stok untuk produk '{$product->product_name}' tidak mencukupi (Sisa stok: {$product->stock}).");
+                                }
+
+                                $product->stock -= $quantity;
+                                if ($product->stock <= 0) {
+                                    $product->stock = 0;
+                                    $product->status = 'Out of stock';
+                                } elseif ($product->stock <= 5) {
+                                    $product->status = 'Low stock';
+                                }
+                                $product->save();
+                            }
                         }
 
                         SaleItem::create([
@@ -134,10 +146,8 @@ class TransactionController extends Controller
                             'unit_price' => $item['price'] ?? $item['unit_price'] ?? 0,
                         ]);
 
-                        // ==========================================
-                        // CATAT KE INVENTORY LOGS (TIPE OUT)
-                        // ==========================================
-                        if ($productId) {
+                        // Catat ke Inventory Logs (tipe out) HANYA jika status transaksi sudah 'paid'
+                        if ($productId && $isPaid) {
                             InventoryLog::create([
                                 'product_id'    => $productId,
                                 'supplier_id'   => null,
@@ -179,24 +189,39 @@ class TransactionController extends Controller
             'sale_type'        => 'required|in:Offline,Online',
             'admin_id'         => 'nullable|exists:tb_users,id',
             'customer_name'    => 'nullable|string|max:255',
+            'note'             => 'nullable|required_if:payment_status,inden|string|max:2000',
             'shipping_address' => 'nullable|string',
             'payment_method'   => 'required|in:Cash,Bank Transfer,QRIS',
             'total_amount'     => 'required|numeric|min:0|max:9999999999',
             'shipping_fee'     => 'required|numeric|min:0|max:9999999999',
-            'payment_status'   => 'required|in:paid,not paid',
+            'payment_status'   => 'required|in:paid,not paid,inden',
             'items'            => 'nullable|array',
+        ], [
+            'note.required_if' => 'Keterangan identitas pembeli dan rincian DP wajib diisi jika status transaksi adalah Inden.',
         ]);
 
         try {
             DB::transaction(function () use ($request, $transaction) {
-                // 1. Restore stok item transaksi lama sebelum diperbarui
-                foreach ($transaction->items as $oldItem) {
-                    if ($oldItem->product_id) {
-                        $product = Product::find($oldItem->product_id);
-                        if ($product) {
-                            $product->increment('stock', $oldItem->quantity);
-                            if ($product->stock > 0 && $product->status === 'Out of stock') {
-                                $product->update(['status' => 'Available']);
+                $wasPaid = strtolower(trim($transaction->payment_status)) === 'paid';
+                $isNowPaid = strtolower(trim($request->payment_status)) === 'paid';
+
+                // 1. Restore stok item transaksi lama HANYA jika transaksi sebelumnya berstatus 'paid'
+                if ($wasPaid) {
+                    foreach ($transaction->items as $oldItem) {
+                        if ($oldItem->product_id) {
+                            $product = Product::find($oldItem->product_id);
+                            if ($product) {
+                                $product->stock += $oldItem->quantity;
+                                if ($product->stock <= 0) {
+                                    $product->status = 'Out of stock';
+                                } elseif ($product->stock <= 5) {
+                                    $product->status = 'Low stock';
+                                } else {
+                                    if ($product->status !== 'Inden') {
+                                        $product->status = 'Available';
+                                    }
+                                }
+                                $product->save();
                             }
                         }
                     }
@@ -205,7 +230,7 @@ class TransactionController extends Controller
                 // Hapus item lama dari database sale_items
                 $transaction->items()->delete();
 
-                // 2. Hapus Inventory Log lama yang mencatat nomor resi ini 
+                // 2. Hapus Inventory Log lama yang mencatat nomor resi ini
                 InventoryLog::where('notes', 'LIKE', '%' . $transaction->receipt_number . '%')->delete();
 
                 $customerNameInput = $request->customer_name ?: 'Guest / Umum';
@@ -215,6 +240,7 @@ class TransactionController extends Controller
                     'sale_type'        => $request->sale_type,
                     'admin_id'         => $request->admin_id ?? $transaction->admin_id,
                     'customer_name'    => $customerNameInput,
+                    'note'             => $request->note,
                     'shipping_address' => $request->shipping_address,
                     'payment_method'   => $request->payment_method,
                     'total_amount'     => $request->total_amount,
@@ -222,7 +248,7 @@ class TransactionController extends Controller
                     'payment_status'   => $request->payment_status,
                 ]);
 
-                // 3. Simpan item baru, potong stok kembali, dan buat inventory log baru yang bersih
+                // 3. Simpan item baru, potong stok & buat inventory log HANYA jika status baru adalah 'paid'
                 if (!empty($request->items)) {
                     foreach ($request->items as $item) {
                         $productId = $item['product_id'] ?? null;
@@ -237,15 +263,22 @@ class TransactionController extends Controller
                         }
 
                         if ($product) {
-                            if ($product->stock < $quantity) {
-                                throw new Exception("Stok untuk produk '{$product->product_name}' tidak mencukupi (Sisa stok: {$product->stock}).");
-                            }
-
-                            $product->decrement('stock', $quantity);
-                            if ($product->stock <= 0) {
-                                $product->update(['status' => 'Out of stock']);
-                            }
                             $productId = $product->id;
+
+                            if ($isNowPaid) {
+                                if ($product->stock < $quantity) {
+                                    throw new Exception("Stok untuk produk '{$product->product_name}' tidak mencukupi (Sisa stok: {$product->stock}).");
+                                }
+
+                                $product->stock -= $quantity;
+                                if ($product->stock <= 0) {
+                                    $product->stock = 0;
+                                    $product->status = 'Out of stock';
+                                } elseif ($product->stock <= 5) {
+                                    $product->status = 'Low stock';
+                                }
+                                $product->save();
+                            }
                         }
 
                         SaleItem::create([
@@ -255,8 +288,7 @@ class TransactionController extends Controller
                             'unit_price' => $item['price'] ?? $item['unit_price'] ?? 0,
                         ]);
 
-                        // Catat log inventory baru yang sudah disesuaikan dengan item hasil edit
-                        if ($productId) {
+                        if ($productId && $isNowPaid) {
                             InventoryLog::create([
                                 'product_id'    => $productId,
                                 'supplier_id'   => null,
@@ -277,33 +309,12 @@ class TransactionController extends Controller
     }
 
     /**
-     * Menghapus Data Transaksi.
+     * Menghapus Data Transaksi tanpa mengembalikan stok produk.
      */
     public function destroy(Sale $transaction)
     {
         DB::transaction(function () use ($transaction) {
-            // Restore stok produk saat transaksi dihapus
-            foreach ($transaction->items as $item) {
-                if ($item->product_id) {
-                    $product = Product::find($item->product_id);
-                    if ($product) {
-                        $product->increment('stock', $item->quantity);
-                        if ($product->stock > 0 && $product->status === 'Out of stock') {
-                            $product->update(['status' => 'Available']);
-                        }
-
-                        // Catat log tipe 'in' karena transaksi dibatalkan/dihapus
-                        InventoryLog::create([
-                            'product_id'    => $product->id,
-                            'supplier_id'   => null,
-                            'type'          => 'in',
-                            'quantity'      => $item->quantity,
-                            'customer_name' => $transaction->customer_name,
-                            'notes'         => 'Pengembalian stok dari penghapusan Transaksi No. Resi: ' . $transaction->receipt_number,
-                        ]);
-                    }
-                }
-            }
+            $transaction->items()->delete();
             $transaction->delete();
         });
 

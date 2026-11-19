@@ -13,6 +13,7 @@ class Sale extends Model
         'sale_type',
         'admin_id',
         'customer_name',
+        'note',
         'shipping_address',
         'payment_method',
         'total_amount',

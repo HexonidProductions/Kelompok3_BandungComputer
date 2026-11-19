@@ -16,6 +16,21 @@
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
         @vite(['resources/css/app.css', 'resources/js/app.js'])
+
+        <style>
+            /* Sembunyikan scrollbar bawaan browser (Chrome, Brave, Edge, Safari) */
+            html::-webkit-scrollbar,
+            body::-webkit-scrollbar {
+                display: none;
+            }
+
+            /* Sembunyikan scrollbar bawaan browser (Firefox & Edge lama) */
+            html,
+            body {
+                -ms-overflow-style: none;
+                scrollbar-width: none;
+            }
+        </style>
     </head>
     <body class="font-sans antialiased bg-[#F8FAFC]">
         <!-- Menggunakan flex container agar sidebar dan main content berdampingan dengan benar -->

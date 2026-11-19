@@ -359,8 +359,8 @@
                             isSwalOpen = true;
                             Swal.mixin({
                                 customClass: {
-                                    confirmButton: 'font-semibold py-2 px-4 rounded-lg mx-2 cursor-pointer text-white',
-                                    cancelButton: 'font-semibold py-2 px-4 rounded-lg mx-2 cursor-pointer text-slate-800'
+                                    confirmButton: 'bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-lg mx-1',
+                                    cancelButton: 'bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded-lg mx-1'
                                 },
                                 buttonsStyling: false
                             }).fire({
@@ -370,14 +370,8 @@
                                 showCancelButton: true,
                                 confirmButtonText: 'Yes, delete it!',
                                 cancelButtonText: 'No, cancel!',
-                                reverseButtons: false,
+                                reverseButtons: true,
                                 returnFocus: false,
-                                didOpen: () => {
-                                    const confirmBtn = Swal.getConfirmButton();
-                                    const cancelBtn = Swal.getCancelButton();
-                                    if (confirmBtn) confirmBtn.style.backgroundColor = '#DC2626';
-                                    if (cancelBtn) cancelBtn.style.backgroundColor = '#CBD5E1';
-                                },
                                 didClose: () => {
                                     setTimeout(() => { isSwalOpen = false; }, 100);
                                 }
@@ -388,7 +382,9 @@
                                     form.submit();
                                 }
                             });
-                        " class="w-20 h-8 flex items-center justify-center border border-[#DC2626] text-[#DC2626] hover:bg-[#DC2626]/5 rounded-[5px] text-xs font-medium transition-colors cursor-pointer">Delete</button>
+                        " class="w-20 h-8 flex items-center justify-center border border-[#DC2626] text-[#DC2626] hover:bg-[#DC2626]/5 rounded-[5px] text-xs font-medium transition-colors cursor-pointer">
+                            Delete
+                        </button>
 
                         <button type="submit" class="w-20 h-8 flex items-center justify-center bg-[#2563EB] hover:bg-blue-700 border border-transparent text-white rounded-[5px] text-xs font-medium transition-colors shadow-sm cursor-pointer">Save</button>
                     </div>

@@ -211,24 +211,24 @@
                             </td>
                             <td class="py-3.5 px-3 whitespace-nowrap font-semibold">{{ $product->stock }}</td>
                             <td class="py-3.5 px-3 text-center whitespace-nowrap">
-                                @if($product->status === 'Available')
-                                    <span class="inline-block w-20 px-3 py-1 rounded-md text-[11px] font-semibold border-2 border-[#16A34A] text-[#000000] bg-white">
-                                        Available
-                                    </span>
-                                @elseif($product->status === 'Low stock')
-                                    <span class="inline-block w-20 px-3 py-1 rounded-md text-[11px] font-semibold border-2 border-[#F59E0B] text-[#000000] bg-white">
-                                        Low stock
-                                    </span>
-                                @elseif($product->status === 'Inden')
-                                    <span class="inline-block w-20 px-3 py-1 rounded-md text-[11px] font-semibold border-2 border-[#2563EB] text-[#000000] bg-white">
-                                        Inden
-                                    </span>
-                                @else
-                                    <span class="inline-block w-20 px-3 py-1 rounded-md text-[11px] font-semibold border-2 border-[#DC2626] text-[#000000] bg-white">
-                                        Out of stock
-                                    </span>
-                                @endif
-                            </td>
+    @if($product->status === 'Available')
+        <span class="inline-flex items-center justify-center w-24 py-1 rounded-md text-[11px] font-semibold border-2 border-[#16A34A] text-[#000000] bg-white">
+            Available
+        </span>
+    @elseif($product->status === 'Low stock')
+        <span class="inline-flex items-center justify-center w-24 py-1 rounded-md text-[11px] font-semibold border-2 border-[#F59E0B] text-[#000000] bg-white">
+            Low stock
+        </span>
+    @elseif($product->status === 'Inden')
+        <span class="inline-flex items-center justify-center w-24 py-1 rounded-md text-[11px] font-semibold border-2 border-[#2563EB] text-[#000000] bg-white">
+            Inden
+        </span>
+    @else
+        <span class="inline-flex items-center justify-center w-24 py-1 rounded-md text-[11px] font-semibold border-2 border-[#DC2626] text-[#000000] bg-white">
+            Out of stock
+        </span>
+    @endif
+</td>
                             <td class="py-3.5 px-3 whitespace-nowrap text-slate-500">{{ $product->updated_at->format('Y-m-d H:i:s') }}</td>
                             <td class="py-3.5 px-3 text-center">
                                 <!-- Action Button: Options -->

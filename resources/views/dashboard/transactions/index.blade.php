@@ -29,7 +29,7 @@
                     <input type="text" 
                         name="search" 
                         value="{{ request('search') }}" 
-                        placeholder="Search Invoice code, admin, or customer" 
+                        placeholder="Search Invoice code, admin, customer, or note" 
                         class="w-full pl-9 pr-3 py-2 border border-slate-200 rounded-lg text-xs text-slate-700 bg-white placeholder-slate-600 focus:outline-none focus:ring-0 focus:border-slate-300">
                 </form>
 
@@ -43,6 +43,8 @@
                                 Payment Status: Paid
                             @elseif(request('status') == 'not paid')
                                 Payment Status: Not Paid
+                            @elseif(request('status') == 'inden')
+                                Payment Status: Inden
                             @else
                                 Payment Status: All
                             @endif
@@ -62,6 +64,8 @@
                                     Payment Status: Paid
                                 @elseif(request('status') == 'not paid')
                                     Payment Status: Not Paid
+                                @elseif(request('status') == 'inden')
+                                    Payment Status: Inden
                                 @else
                                     Payment Status: All
                                 @endif
@@ -83,6 +87,10 @@
                             <a href="{{ request()->fullUrlWithQuery(['status' => 'not paid']) }}" 
                                 class="block px-3.5 py-2.5 transition-colors {{ request('status') == 'not paid' ? 'font-semibold' : null }}">
                                 Payment Status: Not Paid
+                            </a>
+                            <a href="{{ request()->fullUrlWithQuery(['status' => 'inden']) }}" 
+                                class="block px-3.5 py-2.5 transition-colors {{ request('status') == 'inden' ? 'font-semibold' : null }}">
+                                Payment Status: Inden
                             </a>
                         </div>
                     </div>
@@ -154,6 +162,7 @@
                         <th class="py-3 px-3">Sale Type</th>
                         <th class="py-3 px-3">Cashier</th>
                         <th class="py-3 px-3">Customer</th>
+                        <th class="py-3 px-3 max-w-xs">Note</th>
                         <th class="py-3 px-3 max-w-xs">Shipping Address</th>
                         <th class="py-3 px-3">Date</th>
                         <th class="py-3 px-3">Total Amount</th>
@@ -172,6 +181,9 @@
                             <td class="py-3.5 px-3 whitespace-nowrap">{{ $tx->sale_type }}</td>
                             <td class="py-3.5 px-3 whitespace-nowrap">{{ $tx->admin->name ?? '-' }}</td>
                             <td class="py-3.5 px-3 whitespace-nowrap font-medium text-slate-900">{{ $tx->customer_name ?? $tx->customer->name ?? '-' }}</td>
+                            <td class="py-3.5 px-3 text-slate-700 max-w-[200px] truncate leading-relaxed text-[11px]" title="{{ $tx->note }}">
+                                {{ $tx->note ?? '-' }}
+                            </td>
                             <td class="py-3.5 px-3 text-slate-700 max-w-[200px] truncate leading-relaxed text-[11px]" title="{{ $tx->shipping_address }}">
                                 {{ $tx->shipping_address ?? '-' }}
                             </td>
@@ -184,15 +196,19 @@
                                 Rp {{ number_format($tx->shipping_fee ?? 0, 0, ',', '.') }}
                             </td>
                             <td class="py-3.5 px-3 text-center whitespace-nowrap">
-                            @if(strtolower($tx->payment_status) === 'paid')
-                            <span class="inline-block w-20 px-3 py-1 rounded-md text-[11px] font-semibold border-2 border-[#16A34A] text-[#000000] bg-white">
-                            Paid
-                            </span>
-                            @elseif(strtolower($tx->payment_status) === 'not paid')
-                            <span class="inline-block w-20 px-3 py-1 rounded-md text-[11px] font-semibold border-2 border-[#DC2626] text-[#000000] bg-white">
-                            Not Paid
-                            </span>
-                            @endif
+                                @if(strtolower($tx->payment_status) === 'paid')
+                                    <span class="inline-block w-20 px-3 py-1 rounded-md text-[11px] font-semibold border-2 border-[#16A34A] text-[#000000] bg-white">
+                                        Paid
+                                    </span>
+                                @elseif(strtolower($tx->payment_status) === 'not paid')
+                                    <span class="inline-block w-20 px-3 py-1 rounded-md text-[11px] font-semibold border-2 border-[#DC2626] text-[#000000] bg-white">
+                                        Not Paid
+                                    </span>
+                                @elseif(strtolower($tx->payment_status) === 'inden')
+                                    <span class="inline-block w-20 px-3 py-1 rounded-md text-[11px] font-semibold border-2 border-[#2563EB] text-[#000000] bg-white">
+                                        Inden
+                                    </span>
+                                @endif
                             </td>
                             <td class="py-3.5 px-3 text-center">
                                 <button type="button" 
@@ -210,7 +226,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="11" class="py-8 text-center text-slate-400">
+                            <td colspan="12" class="py-8 text-center text-slate-400">
                                 No transactions found.
                             </td>
                         </tr>
@@ -324,9 +340,9 @@
                                     return;
                                 }
 
-                                if (this.editingIndex === null) {
+                                if (this.editingIndex === null && selectedTx.payment_status !== 'inden') {
                                     if (this.selectedStock <= 0) {
-                                        alert('Produk ini out of stock dan tidak dapat ditambahkan!');
+                                        alert('Produk ini out of stock! Ubah Payment Status menjadi inden terlebih dahulu untuk memesan produk ini.');
                                         return;
                                     }
                                     if (this.itemQty > this.selectedStock) {
@@ -481,7 +497,7 @@
                                     <button type="button" 
                                         @click="open = !open" 
                                         class="w-full h-[40px] flex items-center justify-between border border-slate-200 rounded-lg px-3 py-2 text-slate-700 bg-white focus:outline-none focus:ring-0 focus:border-slate-300 cursor-pointer shadow-sm">
-                                        <span x-text="selectedTx.payment_status === 'not paid' ? 'not paid' : (selectedTx.payment_status || 'Select Payment Status')"></span>
+                                        <span x-text="selectedTx.payment_status || 'Select Payment Status'"></span>
                                         <img src="{{ asset('icons/Vector_option_arrow.png') }}" 
                                             alt="Arrow" 
                                             class="w-2.5 h-2.5 object-contain"
@@ -490,12 +506,13 @@
 
                                     <div x-show="open" x-cloak class="absolute top-0 left-0 right-0 bg-white border border-slate-200 rounded-lg shadow-lg z-50 text-xs text-slate-700">
                                         <div @click="open = !open" class="h-[40px] flex items-center justify-between px-3 cursor-pointer">
-                                            <span x-text="selectedTx.payment_status === 'not paid' ? 'not paid' : (selectedTx.payment_status || 'Select Payment Status')"></span>
+                                            <span x-text="selectedTx.payment_status || 'Select Payment Status'"></span>
                                             <img src="{{ asset('icons/Vector_option_arrow.png') }}" alt="Arrow" class="w-2.5 h-2.5 object-contain" :class="open ? 'rotate-180' : 'rotate-0'">
                                         </div>
                                         <div class="py-1 border-slate-100">
                                             <div @click="selectedTx.payment_status = 'paid'; open = false" class="px-3 py-2.5 cursor-pointer" :class="selectedTx.payment_status == 'paid' ? 'font-semibold' : null">paid</div>
                                             <div @click="selectedTx.payment_status = 'not paid'; open = false" class="px-3 py-2.5 cursor-pointer" :class="selectedTx.payment_status == 'not paid' ? 'font-semibold' : null">not paid</div>
+                                            <div @click="selectedTx.payment_status = 'inden'; open = false" class="px-3 py-2.5 cursor-pointer" :class="selectedTx.payment_status == 'inden' ? 'font-semibold' : null">inden</div>
                                         </div>
                                     </div>
                                 </div>
@@ -516,6 +533,21 @@
 
                         </div>
 
+                        <!-- Note (Sebelum Shipping Address) -->
+                        <div class="mb-4 text-xs">
+                            <label class="block font-semibold text-slate-700 mb-1">
+                                Note
+                                <span x-show="selectedTx.payment_status === 'inden'" class="text-red-600 font-semibold">*</span>
+                            </label>
+                            <textarea name="note" 
+                                x-model="selectedTx.note" 
+                                rows="2" 
+                                :required="selectedTx.payment_status === 'inden'"
+                                class="w-full border border-slate-200 rounded-lg px-3 py-2 text-slate-700 focus:outline-none focus:ring-0 focus:border-slate-300 placeholder:text-[13px]" 
+                                placeholder="Enter buyer identity & DP details (required for Inden)"></textarea>
+                        </div>
+
+                        <!-- Shipping Address -->
                         <div class="mb-5 text-xs">
                             <label class="block font-semibold text-slate-700 mb-1">Shipping Address</label>
                             <textarea name="shipping_address" x-model="selectedTx.shipping_address" rows="2" class="w-full border border-slate-200 rounded-lg px-3 py-2 text-slate-700 focus:outline-none focus:ring-0 focus:border-slate-300 placeholder:text-[13px]" placeholder="Enter shipping address"></textarea>
@@ -606,8 +638,14 @@
                                                                 {{ $prod->product_name }} (Stock: {{ $prod->stock }})
                                                             </div>
                                                         @else
-                                                            <div class="px-3 py-2.5 text-slate-300 cursor-not-allowed text-xs">
-                                                                {{ $prod->product_name }} (Out of Stock)
+                                                            <div @click="
+                                                                productId = '{{ $prod->id }}';
+                                                                productName = '{{ $prod->product_name }}';
+                                                                itemPrice = Number('{{ $prod->price }}');
+                                                                selectedStock = 0;
+                                                                productOpen = false;
+                                                            " class="px-3 py-2.5 cursor-pointer text-xs text-blue-600" :class="productName == '{{ $prod->product_name }}' ? 'font-semibold' : null">
+                                                                {{ $prod->product_name }} (Out of Stock - Inden)
                                                             </div>
                                                         @endif
                                                     @endforeach
@@ -679,7 +717,6 @@
                         </button>
 
                             <button type="submit" 
-                                @click="if (!confirm('Are you sure you want to save these changes?')) $event.preventDefault()" 
                                 class="w-20 h-8 flex items-center justify-center bg-[#2563EB] hover:bg-blue-700 border border-transparent text-white rounded-[5px] text-xs font-medium transition-colors shadow-sm cursor-pointer">
                                 Save
                             </button>
@@ -738,9 +775,9 @@
                                     return;
                                 }
 
-                                if (this.editingIndex === null) {
+                                if (this.editingIndex === null && this.paymentStatus !== 'inden') {
                                     if (this.selectedStock <= 0) {
-                                        alert('Produk ini out of stock dan tidak dapat ditambahkan!');
+                                        alert('Produk ini out of stock! Ubah Payment Status menjadi inden terlebih dahulu untuk memesan produk ini.');
                                         return;
                                     }
                                     if (this.itemQty > this.selectedStock) {
@@ -886,7 +923,7 @@
                                     <button type="button" 
                                         @click="open = !open" 
                                         class="w-full h-[40px] flex items-center justify-between border border-slate-200 rounded-lg px-3 py-2 text-slate-700 bg-white focus:outline-none focus:ring-0 focus:border-slate-300 cursor-pointer shadow-sm">
-                                        <span x-text="paymentStatus === 'not paid' ? 'not paid' : (paymentStatus || 'Select Payment Status')"></span>
+                                        <span x-text="paymentStatus || 'Select Payment Status'"></span>
                                         <img src="{{ asset('icons/Vector_option_arrow.png') }}" 
                                             alt="Arrow" 
                                             class="w-2.5 h-2.5 object-contain"
@@ -895,12 +932,13 @@
 
                                     <div x-show="open" x-cloak class="absolute top-0 left-0 right-0 bg-white border border-slate-200 rounded-lg shadow-lg z-50 text-xs text-slate-700">
                                         <div @click="open = !open" class="h-[40px] flex items-center justify-between px-3 cursor-pointer">
-                                            <span x-text="paymentStatus === 'not paid' ? 'not paid' : (paymentStatus || 'Select Payment Status')"></span>
+                                            <span x-text="paymentStatus || 'Select Payment Status'"></span>
                                             <img src="{{ asset('icons/Vector_option_arrow.png') }}" alt="Arrow" class="w-2.5 h-2.5 object-contain" :class="open ? 'rotate-180' : 'rotate-0'">
                                         </div>
                                         <div class="py-1 border-slate-100">
                                             <div @click="paymentStatus = 'paid'; open = false" class="px-3 py-2.5 cursor-pointer" :class="paymentStatus == 'paid' ? 'font-semibold' : null">paid</div>
                                             <div @click="paymentStatus = 'not paid'; open = false" class="px-3 py-2.5 cursor-pointer" :class="paymentStatus == 'not paid' ? 'font-semibold' : null">not paid</div>
+                                            <div @click="paymentStatus = 'inden'; open = false" class="px-3 py-2.5 cursor-pointer" :class="paymentStatus == 'inden' ? 'font-semibold' : null">inden</div>
                                         </div>
                                     </div>
                                 </div>
@@ -917,6 +955,20 @@
                             </div>
                         </div>
 
+                        <!-- Note (Sebelum Shipping Address) -->
+                        <div class="mb-4 text-xs">
+                            <label class="block font-semibold text-slate-700 mb-1">
+                                Note
+                                <span x-show="paymentStatus === 'inden'" class="text-red-600 font-semibold">*</span>
+                            </label>
+                            <textarea name="note" 
+                                rows="2" 
+                                :required="paymentStatus === 'inden'"
+                                class="w-full border border-slate-200 rounded-lg px-3 py-2 text-slate-700 focus:outline-none focus:ring-0 focus:border-slate-300 placeholder:text-[13px]" 
+                                placeholder="Enter buyer identity & DP details (required for Inden)"></textarea>
+                        </div>
+
+                        <!-- Shipping Address -->
                         <div class="mb-5 text-xs">
                             <label class="block font-semibold text-slate-700 mb-1">Shipping Address</label>
                             <textarea name="shipping_address" rows="2" class="w-full border border-slate-200 rounded-lg px-3 py-2 text-slate-700 focus:outline-none focus:ring-0 focus:border-slate-300 placeholder:text-[13px]" placeholder="Enter shipping address"></textarea>
@@ -1007,8 +1059,14 @@
                                                                 {{ $prod->product_name }} (Stock: {{ $prod->stock }})
                                                             </div>
                                                         @else
-                                                            <div class="px-3 py-2.5 text-slate-300 cursor-not-allowed text-xs">
-                                                                {{ $prod->product_name }} (Out of Stock)
+                                                            <div @click="
+                                                                productId = '{{ $prod->id }}';
+                                                                productName = '{{ $prod->product_name }}';
+                                                                itemPrice = Number('{{ $prod->price }}');
+                                                                selectedStock = 0;
+                                                                productOpen = false;
+                                                            " class="px-3 py-2.5 cursor-pointer text-xs text-blue-600" :class="productName == '{{ $prod->product_name }}' ? 'font-semibold' : null">
+                                                                {{ $prod->product_name }} (Out of Stock - Inden)
                                                             </div>
                                                         @endif
                                                     @endforeach
@@ -1049,7 +1107,6 @@
                             </button>
 
                             <button type="submit" 
-                                @click="if (!confirm('Are you sure you want to add this transaction?')) $event.preventDefault()" 
                                 class="w-20 h-8 flex items-center justify-center bg-[#2563EB] hover:bg-blue-700 border border-transparent text-white rounded-[5px] text-xs font-medium transition-colors shadow-sm">
                                 Save
                             </button>

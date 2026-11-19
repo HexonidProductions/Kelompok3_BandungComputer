@@ -167,31 +167,8 @@ class InventoryLogController extends Controller
 
     public function destroy(InventoryLog $inventoryLog)
     {
-        DB::transaction(function () use ($inventoryLog) {
-            // Jika log yang dihapus bertipe 'in', kembalikan efek stoknya ke produk
-            if ($inventoryLog->type === 'in') {
-                $product = Product::lockForUpdate()->findOrFail($inventoryLog->product_id);
-                $product->stock -= $inventoryLog->quantity;
-                if ($product->stock < 0) {
-                    $product->stock = 0;
-                }
-
-                if ($product->stock == 0) {
-                    $product->status = 'Out of stock';
-                } elseif ($product->stock <= 5) {
-                    $product->status = 'Low stock';
-                } else {
-                    if ($product->status !== 'Inden') {
-                        $product->status = 'Available';
-                    }
-                }
-
-                $product->save();
-            }
-            // Jika log yang dihapus bertipe 'out' atau 'return', stok tidak diubah/dikembalikan
-
-            $inventoryLog->delete();
-        });
+        // Menghapus data log tanpa mengembalikan atau mengubah stok produk
+        $inventoryLog->delete();
 
         return redirect()->back()->with('success', 'Inventory log deleted successfully!');
     }
