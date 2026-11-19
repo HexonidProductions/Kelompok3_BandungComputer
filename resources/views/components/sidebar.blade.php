@@ -24,7 +24,6 @@
                 <span>Transactions</span>
             </a>
 
-
             <a href="{{ route('categories.index') }}" class="w-full flex items-center gap-3 px-4 py-2.5 rounded-none text-xs font-normal text-white transition-all duration-150 {{ request()->routeIs('categories.*') ? 'bg-[#2563EB]' : null }}">
                 <img src="{{ asset('icons/Categories_icon.png')}}" alt="Categories Icon" class="w-4 h-4 object-contain">
                 <span>Categories</span>
@@ -54,14 +53,32 @@
 
     <!-- Bagian Bawah: Profile Info & Logout -->
     <div class="p-4">
-        <p class="text-[10px] font-normal tracking-wider mb-0.5">Admin</p>
-        <h4 class="text-xs font-bold text-white truncate mb-6">{{ Auth::user()?->name ?? 'Guest' }}</h4>
+    <p class="text-[10px] font-normal tracking-wider mb-0.5">Admin</p>
+    <h4 class="text-xs font-bold text-white truncate mb-6">{{ Auth::user()?->name ?? 'Guest' }}</h4>
 
-        <form method="POST" action="{{ route('logout') }}" onsubmit="return confirm('Are you sure you want to logout?')">
-            @csrf
-            <button type="submit" class="w-full h-10 bg-[#0D47A1] text-white font-semibold py-2 px-3 rounded-lg text-xs transition-colors flex items-center justify-center gap-2 shadow-sm">
-                <span>Logout</span>
-            </button>
-        </form>
-    </div>
+    <form method="POST" action="{{ route('logout') }}" x-data @submit.prevent="
+        Swal.fire({
+            title: 'Are you sure?',
+            text: 'You will be logged out of your account.',
+            icon: 'warning',
+            iconColor: '#2563EB',
+            showCancelButton: true,
+            confirmButtonColor: '#dc2626',
+            cancelButtonColor: '#64748b',
+            confirmButtonText: 'Yes, logout!',
+            cancelButtonText: 'Cancel',
+            reverseButtons: true,
+            returnFocus: false
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $el.submit();
+            }
+        });
+    ">
+        @csrf
+        <button type="submit" class="w-full h-10 bg-[#0D47A1] hover:bg-[#0b3c8a] text-white font-semibold py-2 px-3 rounded-lg text-xs transition-colors flex items-center justify-center gap-2 shadow-sm cursor-pointer">
+            <span>Logout</span>
+        </button>
+    </form>
+</div>
 </aside>
