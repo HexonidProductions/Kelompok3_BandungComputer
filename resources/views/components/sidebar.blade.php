@@ -19,6 +19,7 @@
                 <img src="{{ asset('icons/Products_icon.png')}}" alt="Products Icon" class="w-4 h-4 object-contain">
                 <span>Products</span>
             </a>
+
             <a href="{{ route('transactions.index') }}" class="w-full flex items-center gap-3 px-4 py-2.5 rounded-none text-xs font-normal text-white transition-all duration-150 {{ request()->routeIs('transactions.*') ? 'bg-[#2563EB]' : null }}">
                 <img src="{{ asset('icons/Transactions_icon.png')}}" alt="Transactions Icon" class="w-4 h-4 object-contain">
                 <span>Transactions</span>
@@ -39,46 +40,51 @@
                 <span>Suppliers</span>
             </a>
 
+            <a href="{{ route('contact-messages.index') }}" class="w-full flex items-center gap-3 px-4 py-2.5 rounded-none text-xs font-normal text-white transition-all duration-150 {{ request()->routeIs('contact-messages.*') ? 'bg-[#2563EB]' : null }}">
+                <img src="{{ asset('icons/Vector (2).png')}}" alt="Feedbacks Icon" class="w-4 h-4 object-contain">
+                <span>Feedbacks</span>
+            </a>
+
             <a href="{{ route('inventory-logs.index') }}" class="w-full flex items-center gap-3 px-4 py-2.5 rounded-none text-xs font-normal text-white transition-all duration-150 {{ request()->routeIs('inventory-logs.*') ? 'bg-[#2563EB]' : null }}">
-                <img src="{{ asset('icons/ic_outline-inventory.png')}}" alt="Inventory Log Icon" class="w-4 h-4 object-contain">
+                <img src="{{ asset('icons/Vector.png')}}" alt="Inventory Logs Icon" class="w-4 h-4 object-contain">
                 <span>Inventory Logs</span>
             </a>
 
             <a href="{{ route('daily-closings.index') }}" class="w-full flex items-center gap-3 px-4 py-2.5 rounded-none text-xs font-normal text-white transition-all duration-150 {{ request()->routeIs('daily-closings.*') ? 'bg-[#2563EB]' : null }}">
-                <img src="{{ asset('icons/DailyClosings_icon.png')}}" alt="Daily Closings Icon" class="w-4 h-4 object-contain">
-                <span>Daily Closings</span>
+                <img src="{{ asset('icons/Vector (1).png')}}" alt="Income Reports Icon" class="w-4 h-4 object-contain">
+                <span>Income Reports</span>
             </a>
         </nav>
     </div>
 
     <!-- Bagian Bawah: Profile Info & Logout -->
     <div class="p-4">
-    <p class="text-[10px] font-normal tracking-wider mb-0.5">Admin</p>
-    <h4 class="text-xs font-bold text-white truncate mb-6">{{ Auth::user()?->name ?? 'Guest' }}</h4>
+        <p class="text-[10px] font-normal tracking-wider mb-0.5">Admin</p>
+        <h4 class="text-xs font-bold text-white truncate mb-6">{{ Auth::user()?->name ?? 'Guest' }}</h4>
 
-    <form method="POST" action="{{ route('logout') }}" x-data @submit.prevent="
-        Swal.fire({
-            title: 'Are you sure?',
-            text: 'You will be logged out of your account.',
-            icon: 'warning',
-            iconColor: '#2563EB',
-            showCancelButton: true,
-            confirmButtonColor: '#dc2626',
-            cancelButtonColor: '#64748b',
-            confirmButtonText: 'Yes, logout!',
-            cancelButtonText: 'Cancel',
-            reverseButtons: true,
-            returnFocus: false
-        }).then((result) => {
-            if (result.isConfirmed) {
-                $el.submit();
-            }
-        });
-    ">
-        @csrf
-        <button type="submit" class="w-full h-10 bg-[#0D47A1] hover:bg-[#0b3c8a] text-white font-semibold py-2 px-3 rounded-lg text-xs transition-colors flex items-center justify-center gap-2 shadow-sm cursor-pointer">
-            <span>Logout</span>
-        </button>
-    </form>
-</div>
+        <form method="POST" action="{{ route('logout') }}" x-data @submit.prevent="
+            Swal.fire({
+                title: 'Are you sure?',
+                text: 'You will be logged out of your account.',
+                icon: 'warning',
+                iconColor: '#2563EB',
+                showCancelButton: true,
+                confirmButtonColor: '#dc2626',
+                cancelButtonColor: '#64748b',
+                confirmButtonText: 'Yes, logout!',
+                cancelButtonText: 'Cancel',
+                reverseButtons: true,
+                returnFocus: false
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $el.submit();
+                }
+            });
+        ">
+            @csrf
+            <button type="submit" class="w-full h-10 bg-[#0D47A1] hover:bg-[#0b3c8a] text-white font-semibold py-2 px-3 rounded-lg text-xs transition-colors flex items-center justify-center gap-2 shadow-sm cursor-pointer">
+                <span>Logout</span>
+            </button>
+        </form>
+    </div>
 </aside>

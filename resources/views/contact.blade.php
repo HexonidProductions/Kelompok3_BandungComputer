@@ -15,28 +15,28 @@
 <body>
 
     <nav class="navbar">
-    <div class="nav-logo">
-        <img src="{{ asset('images/logo_bc.png') }}" alt="Bandung Computer Logo" onerror="this.src='{{ asset('images/logo_bc_hitam.png') }}'">
-    </div>
-    <ul class="nav-links">
-        <li><a href="{{ route('homepage') }}">Beranda</a></li>
-        <li><a href="{{ route('produk') }}">Produk</a></li>
-        <li><a href="{{ route('about') }}">Tentang Kami</a></li>
-        <li><a href="{{ route('contact') }}" class="active">Kontak</a></li>
-    </ul>
-    @guest
-        <a href="{{ route('login') }}" class="btn-masuk">Masuk</a>
-    @else
-        @if (Auth::user()->role === 'customer')
-            <form action="{{ route('logout') }}" method="POST" class="d-inline">
-                @csrf
-                <button type="submit" class="btn-masuk">Logout</button>
-            </form>
+        <div class="nav-logo">
+            <img src="{{ asset('images/logo_bc.png') }}" alt="Bandung Computer Logo" onerror="this.src='{{ asset('images/logo_bc_hitam.png') }}'">
+        </div>
+        <ul class="nav-links">
+            <li><a href="{{ route('homepage') }}">Beranda</a></li>
+            <li><a href="{{ route('produk') }}">Produk</a></li>
+            <li><a href="{{ route('about') }}">Tentang Kami</a></li>
+            <li><a href="{{ route('contact') }}" class="active">Kontak</a></li>
+        </ul>
+        @guest
+            <a href="{{ route('login') }}" class="btn-masuk">Masuk</a>
         @else
-            <a href="{{ route('dashboard') }}" class="btn-masuk">Dashboard</a>
-        @endif
-    @endguest
-</nav>
+            @if (Auth::user()->role === 'customer')
+                <form action="{{ route('logout') }}" method="POST" class="d-inline">
+                    @csrf
+                    <button type="submit" class="btn-masuk">Logout</button>
+                </form>
+            @else
+                <a href="{{ route('dashboard') }}" class="btn-masuk">Dashboard</a>
+            @endif
+        @endguest
+    </nav>
 
     <!-- Section Ada Pertanyaan -->
     <section class="contact-hero-section">
@@ -62,21 +62,46 @@
 
         <!-- Form Kirim Pesan -->
         <div class="contact-form-card">
-            <form action="#" method="POST">
+            @if(session('success'))
+                <div style="background-color: #ecfdf5; border: 1px solid #a7f3d0; color: #065f46; padding: 12px 14px; border-radius: 8px; font-size: 13px; margin-bottom: 16px;">
+                    {{ session('success') }}
+                </div>
+            @endif
+
+            @if($errors->any())
+                <div style="background-color: #fef2f2; border: 1px solid #fecaca; color: #991b1b; padding: 12px 14px; border-radius: 8px; font-size: 13px; margin-bottom: 16px;">
+                    <ul style="margin: 0; padding-left: 18px;">
+                        @foreach($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
+            <form action="{{ route('contact.store') }}" method="POST">
                 @csrf
                 <div class="form-group">
-                    <label>Nama <span>*</span></label>
-                    <input type="text" class="form-input" placeholder="Silakan masukkan nama" required>
+                    <label for="subject">Subjek <span>*</span></label>
+                    <input 
+                        type="text" 
+                        id="subject" 
+                        name="subject" 
+                        value="{{ old('subject') }}" 
+                        class="form-input" 
+                        placeholder="Silakan masukkan subjek pesan" 
+                        required
+                    >
                 </div>
 
                 <div class="form-group">
-                    <label>Email <span>*</span></label>
-                    <input type="email" class="form-input" placeholder="Silakan masukkan email" required>
-                </div>
-
-                <div class="form-group">
-                    <label>Pesan <span>*</span></label>
-                    <textarea class="form-textarea" placeholder="Silakan masukkan pertanyaan, ulasan, atau saran" required></textarea>
+                    <label for="message">Pesan <span>*</span></label>
+                    <textarea 
+                        id="message" 
+                        name="message" 
+                        class="form-textarea" 
+                        placeholder="Silakan masukkan pertanyaan, ulasan, atau saran" 
+                        required
+                    >{{ old('message') }}</textarea>
                 </div>
 
                 <button type="submit" class="btn-kirim">Kirim</button>

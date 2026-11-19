@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DailyClosingController;
+use App\Http\Controllers\ContactMessageController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductController;
@@ -90,6 +91,7 @@ Route::get('/produk', function (Request $request) {
 
 Route::get('/tentang', fn() => view('about'))->name('about');
 Route::get('/kontak', fn() => view('contact'))->name('contact');
+Route::post('/kontak', [ContactMessageController::class, 'store'])->name('contact.store');
 
 // Halaman login (otomatis redirect jika sudah login sesuai role)
 Route::get('/login', function () {
@@ -116,6 +118,7 @@ Route::middleware(['auth', 'prevent-back-history', 'admin'])->group(function () 
     
     // Resource Routes untuk fitur-fitur dashboard
     Route::resource('/daily-closings', DailyClosingController::class);
+    Route::resource('/contact-messages', ContactMessageController::class)->only(['index', 'destroy']);
     Route::resource('/categories', CategoryController::class)->except(['create', 'edit', 'show']);
     Route::resource('/products', ProductController::class);      
     Route::resource('/suppliers', SupplierController::class);
