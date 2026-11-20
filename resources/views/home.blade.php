@@ -29,7 +29,7 @@
             <a href="{{ route('login') }}" class="btn-masuk">Masuk</a>
         @else
             @if (Auth::user()->role === 'customer')
-                <form action="{{ route('logout') }}" method="POST" class="d-inline">
+                <form action="{{ route('logout') }}" method="POST" class="d-inline customer-logout-form">
                     @csrf
                     <button type="submit" class="btn-masuk">Logout</button>
                 </form>
@@ -38,7 +38,8 @@
             @endif
         @endguest
     </nav>
-    <!-- Hero Section (Ganti gambar di bagian url asset 'images/tentang_kami.png' jika ingin ganti banner) -->
+
+    <!-- Hero Section -->
     <section class="hero" id="beranda" style="background: linear-gradient(rgba(15, 23, 42, 0.75), rgba(15, 23, 42, 0.85)), url('{{ asset('images/banner_users (1).png') }}') center/cover no-repeat;">
         <div class="hero-content">
             <h1 class="hero-title">Solusi Lengkap untuk Kebutuhan Komputer Anda</h1>
@@ -61,15 +62,15 @@
                 ];
             @endphp
             @foreach ($collections as $item)
-            <div class="category-card">
-                <div class="category-img-wrapper">
-                    <img src="{{ asset($item['image']) }}"
-                            alt="{{ $item['name'] }}"
-                            class="category-img">
+                <div class="category-card">
+                    <div class="category-img-wrapper">
+                        <img src="{{ asset($item['image']) }}"
+                             alt="{{ $item['name'] }}"
+                             class="category-img">
+                    </div>
+                    <span class="category-label">{{ $item['name'] }}</span>
                 </div>
-                <span class="category-label">{{ $item['name'] }}</span>
-            </div>
-        @endforeach
+            @endforeach
         </div>
     </section>
 
@@ -123,7 +124,6 @@
             </div>
         </div>
 
-        <!-- Google Maps Embed Card (Titik Bandung Computer Banjarbaru) -->
         <!-- Google Maps Embed Card (Presisi Bandung Computer Banjarbaru) -->
         <div class="map-card">
             <iframe 
@@ -137,102 +137,69 @@
                 <div class="map-overlay-title">Kunjungi Toko Kami</div>
                 <div class="map-overlay-desc">Jl. Panglima Batur No. 1, Loktabat Utara, Kec. Banjarbaru Utara, Kota Banjarbaru, Kalimantan Selatan 70711</div>
                 <a href="https://www.google.com/maps/search/?api=1&query=Bandung+Computer+Banjarbaru" target="_blank" class="btn-gmaps">
-    Lihat di Gmaps <i class="fa-solid fa-arrow-right"></i>
-</a>
+                    Lihat di Gmaps <i class="fa-solid fa-arrow-right"></i>
+                </a>
+            </div>
         </div>
     </section>
 
     <!-- Section FAQ -->
-<section class="faq-section">
-    <div class="faq-title">FAQ</div>
-    <div class="faq-accordion">
-        
-        <div class="faq-item active">
-            <div class="faq-question">
-                <span>Apakah saya bisa datang langsung ke toko untuk melihat dan mencoba produk?</span>
-                <i class="fa-solid fa-minus faq-icon"></i>
+    <section class="faq-section">
+        <div class="faq-title">FAQ</div>
+        <div class="faq-accordion">
+            
+            <div class="faq-item active">
+                <div class="faq-question">
+                    <span>Apakah saya bisa datang langsung ke toko untuk melihat dan mencoba produk?</span>
+                    <i class="fa-solid fa-minus faq-icon"></i>
+                </div>
+                <div class="faq-answer">
+                    Sangat bisa! Anda dapat mengunjungi toko fisik kami untuk melihat unit, melakukan konsultasi spesifikasi, serta mencoba langsung produk yang ingin dibeli.
+                </div>
             </div>
-            <div class="faq-answer">
-                Sangat bisa! Anda dapat mengunjungi toko fisik kami untuk melihat unit, melakukan konsultasi spesifikasi, serta mencoba langsung produk yang ingin dibeli.
+
+            <div class="faq-item">
+                <div class="faq-question">
+                    <span>Apakah produk bisa dites terlebih dahulu sebelum dibawa pulang?</span>
+                    <i class="fa-solid fa-plus faq-icon"></i>
+                </div>
+                <div class="faq-answer">
+                    Tentu saja. Semua perangkat yang dibeli di toko kami akan diuji fungsi dan performanya bersama tim teknisi kami sebelum Anda membawanya pulang.
+                </div>
             </div>
+
+            <div class="faq-item">
+                <div class="faq-question">
+                    <span>Metode pembayaran apa saja yang bisa digunakan?</span>
+                    <i class="fa-solid fa-plus faq-icon"></i>
+                </div>
+                <div class="faq-answer">
+                    Kami menerima pembayaran secara tunai, transfer bank, debit/kredit, serta pembayaran digital via QRIS dan e-wallet.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">
+                    <span>Apakah Bandung Computer melayani pesan antar (delivery)? Berapa ongkirnya?</span>
+                    <i class="fa-solid fa-plus faq-icon"></i>
+                </div>
+                <div class="faq-answer">
+                    Ya, kami melayani pengiriman area lokal maupun luar kota. Biaya ongkir akan disesuaikan dengan jarak lokasi pengiriman dan ekspedisi yang dipilih.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">
+                    <span>Bagaimana prosedur klaim garansi jika barang yang dibeli mengalami kerusakan pabrik?</span>
+                    <i class="fa-solid fa-plus faq-icon"></i>
+                </div>
+                <div class="faq-answer">
+                    Anda cukup membawa unit beserta nota pembelian dan kartu garansi ke toko kami. Tim kami akan membantu proses klaim garansi resmi hingga selesai.
+                </div>
+            </div>
+
         </div>
-
-        <div class="faq-item">
-            <div class="faq-question">
-                <span>Apakah produk bisa dites terlebih dahulu sebelum dibawa pulang?</span>
-                <i class="fa-solid fa-plus faq-icon"></i>
-            </div>
-            <div class="faq-answer">
-                Tentu saja. Semua perangkat yang dibeli di toko kami akan diuji fungsi dan performanya bersama tim teknisi kami sebelum Anda membawanya pulang.
-            </div>
-        </div>
-
-        <div class="faq-item">
-            <div class="faq-question">
-                <span>Metode pembayaran apa saja yang bisa digunakan?</span>
-                <i class="fa-solid fa-plus faq-icon"></i>
-            </div>
-            <div class="faq-answer">
-                Kami menerima pembayaran secara tunai, transfer bank, debit/kredit, serta pembayaran digital via QRIS dan e-wallet.
-            </div>
-        </div>
-
-        <div class="faq-item">
-            <div class="faq-question">
-                <span>Apakah Bandung Computer melayani pesan antar (delivery)? Berapa ongkirnya?</span>
-                <i class="fa-solid fa-plus faq-icon"></i>
-            </div>
-            <div class="faq-answer">
-                Ya, kami melayani pengiriman area lokal maupun luar kota. Biaya ongkir akan disesuaikan dengan jarak lokasi pengiriman dan ekspedisi yang dipilih.
-            </div>
-        </div>
-
-        <div class="faq-item">
-            <div class="faq-question">
-                <span>Bagaimana prosedur klaim garansi jika barang yang dibeli mengalami kerusakan pabrik?</span>
-                <i class="fa-solid fa-plus faq-icon"></i>
-            </div>
-            <div class="faq-answer">
-                Anda cukup membawa unit beserta nota pembelian dan kartu garansi ke toko kami. Tim kami akan membantu proses klaim garansi resmi hingga selesai.
-            </div>
-        </div>
-
-    </div>
-</section>
-
-<!-- Script Interaktif FAQ Accordion -->
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const faqItems = document.querySelectorAll('.faq-item');
-
-        faqItems.forEach(item => {
-            const question = item.querySelector('.faq-question');
-            question.addEventListener('click', () => {
-                const isOpen = item.classList.contains('active');
-
-                // Tutup item lain yang sedang terbuka
-                faqItems.forEach(otherItem => {
-                    otherItem.classList.remove('active');
-                    const icon = otherItem.querySelector('.faq-icon');
-                    if (icon) {
-                        icon.classList.remove('fa-minus');
-                        icon.classList.add('fa-plus');
-                    }
-                });
-
-                // Toggle item yang diklik
-                if (!isOpen) {
-                    item.classList.add('active');
-                    const icon = item.querySelector('.faq-icon');
-                    if (icon) {
-                        icon.classList.remove('fa-plus');
-                        icon.classList.add('fa-minus');
-                    }
-                }
-            });
-        });
-    });
-</script>
+    </section>
 
     <!-- Footer Navigasi -->
     <footer class="footer-main">
@@ -266,3 +233,74 @@
             &copy; 2026 Copyright Bandung Computer. All rights reserved
         </div>
     </footer>
+
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <!-- Script Interaktif FAQ Accordion & Validasi Logout -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // FAQ Accordion
+            const faqItems = document.querySelectorAll('.faq-item');
+
+            faqItems.forEach(item => {
+                const question = item.querySelector('.faq-question');
+                question.addEventListener('click', () => {
+                    const isOpen = item.classList.contains('active');
+
+                    faqItems.forEach(otherItem => {
+                        otherItem.classList.remove('active');
+                        const icon = otherItem.querySelector('.faq-icon');
+                        if (icon) {
+                            icon.classList.remove('fa-minus');
+                            icon.classList.add('fa-plus');
+                        }
+                    });
+
+                    if (!isOpen) {
+                        item.classList.add('active');
+                        const icon = item.querySelector('.faq-icon');
+                        if (icon) {
+                            icon.classList.remove('fa-plus');
+                            icon.classList.add('fa-minus');
+                        }
+                    }
+                });
+            });
+
+            // Konfirmasi Logout Customer dengan SweetAlert2
+            document.querySelectorAll('.customer-logout-form').forEach(function (form) {
+                form.addEventListener('submit', function (e) {
+                    e.preventDefault();
+
+                    if (typeof Swal === 'undefined') {
+                        if (confirm('Are you sure? You will be logged out of your account.')) {
+                            form.submit();
+                        }
+                        return;
+                    }
+
+                    Swal.fire({
+                        title: 'Are you sure?',
+                        text: 'You will be logged out of your account.',
+                        icon: 'warning',
+                        iconColor: '#2563EB',
+                        showCancelButton: true,
+                        confirmButtonColor: '#dc2626',
+                        cancelButtonColor: '#64748b',
+                        confirmButtonText: 'Yes, logout!',
+                        cancelButtonText: 'Cancel',
+                        reverseButtons: true,
+                        returnFocus: false
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            form.submit();
+                        }
+                    });
+                });
+            });
+        });
+    </script>
+
+</body>
+</html>

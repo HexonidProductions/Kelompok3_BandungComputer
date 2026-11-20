@@ -17,81 +17,83 @@ use Illuminate\Http\Request;
 
 use App\Models\Product;
 
-Route::get('/', function () {
-    $latestProducts = Product::with('category')
-        ->where('status', 'Available')
-        ->latest()
-        ->take(4)
-        ->get();
+Route::middleware(['prevent-back-history'])->group(function () {
+    Route::get('/', function () {
+        $latestProducts = Product::with('category')
+            ->where('status', 'Available')
+            ->latest()
+            ->take(4)
+            ->get();
 
-    $categories = \App\Models\Category::with(['products' => function ($q) {
-        $q->where('status', 'Available')->latest()->take(1);
-    }])->get()->map(function ($cat) {
-        $sampleProduct = $cat->products->first();
-        $cat->sample_image = $sampleProduct?->image;
-        return $cat;
-    });
-
-    return view('home', compact('latestProducts', 'categories'));
-})->name('homepage');
-
-Route::get('/produk', function (Request $request) {
-    $search = $request->input('search');
-    $category = $request->input('category');
-    $priceMin = $request->input('price_min');
-    $priceMax = $request->input('price_max');
-    $inStock = $request->boolean('in_stock');
-    $sort = $request->input('sort', 'terbaru');
-
-    $query = Product::with('category')->where('status', 'Available');
-
-    if ($search) {
-        $query->where(function ($q) use ($search) {
-            $q->where('product_name', 'like', "%{$search}%")
-              ->orWhere('product_code', 'like', "%{$search}%");
+        $categories = \App\Models\Category::with(['products' => function ($q) {
+            $q->where('status', 'Available')->latest()->take(1);
+        }])->get()->map(function ($cat) {
+            $sampleProduct = $cat->products->first();
+            $cat->sample_image = $sampleProduct?->image;
+            return $cat;
         });
-    }
 
-    if ($category) {
-        $query->where('category_id', $category);
-    }
+        return view('home', compact('latestProducts', 'categories'));
+    })->name('homepage');
 
-    if ($priceMin) {
-        $query->where('sell_price', '>=', $priceMin);
-    }
+    Route::get('/produk', function (Request $request) {
+        $search = $request->input('search');
+        $category = $request->input('category');
+        $priceMin = $request->input('price_min');
+        $priceMax = $request->input('price_max');
+        $inStock = $request->boolean('in_stock');
+        $sort = $request->input('sort', 'terbaru');
 
-    if ($priceMax) {
-        $query->where('sell_price', '<=', $priceMax);
-    }
+        $query = Product::with('category')->where('status', 'Available');
 
-    if ($inStock) {
-        $query->where('stock', '>', 0);
-    }
+        if ($search) {
+            $query->where(function ($q) use ($search) {
+                $q->where('product_name', 'like', "%{$search}%")
+                  ->orWhere('product_code', 'like', "%{$search}%");
+            });
+        }
 
-    switch ($sort) {
-        case 'harga_terendah':
-            $query->orderBy('sell_price', 'asc');
-            break;
-        case 'harga_tertinggi':
-            $query->orderBy('sell_price', 'desc');
-            break;
-        case 'terbaru':
-        default:
-            $query->latest();
-            break;
-    }
+        if ($category) {
+            $query->where('category_id', $category);
+        }
 
-    $products = $query->paginate(12)->withQueryString();
-    $categories = \App\Models\Category::withCount(['products' => function ($q) {
-        $q->where('status', 'Available');
-    }])->get();
+        if ($priceMin) {
+            $query->where('sell_price', '>=', $priceMin);
+        }
 
-    return view('produk', compact('products', 'categories', 'search', 'category', 'priceMin', 'priceMax', 'inStock', 'sort'));
-})->name('produk');
+        if ($priceMax) {
+            $query->where('sell_price', '<=', $priceMax);
+        }
 
-Route::get('/tentang', fn() => view('about'))->name('about');
-Route::get('/kontak', fn() => view('contact'))->name('contact');
-Route::post('/kontak', [ContactMessageController::class, 'store'])->name('contact.store');
+        if ($inStock) {
+            $query->where('stock', '>', 0);
+        }
+
+        switch ($sort) {
+            case 'harga_terendah':
+                $query->orderBy('sell_price', 'asc');
+                break;
+            case 'harga_tertinggi':
+                $query->orderBy('sell_price', 'desc');
+                break;
+            case 'terbaru':
+            default:
+                $query->latest();
+                break;
+        }
+
+        $products = $query->paginate(12)->withQueryString();
+        $categories = \App\Models\Category::withCount(['products' => function ($q) {
+            $q->where('status', 'Available');
+        }])->get();
+
+        return view('produk', compact('products', 'categories', 'search', 'category', 'priceMin', 'priceMax', 'inStock', 'sort'));
+    })->name('produk');
+
+    Route::get('/tentang', fn() => view('about'))->name('about');
+    Route::get('/kontak', fn() => view('contact'))->name('contact');
+    Route::post('/kontak', [ContactMessageController::class, 'store'])->name('contact.store');
+});
 
 // Halaman login (otomatis redirect jika sudah login sesuai role)
 Route::get('/login', function () {
@@ -135,7 +137,7 @@ Route::middleware(['auth', 'prevent-back-history'])->group(function () {
 });
 
 // Complete profile routes for Google login customers
-Route::middleware(['auth'])->group(function () {
+Route::middleware(['auth', 'prevent-back-history'])->group(function () {
     Route::get('/complete-profile', [GoogleController::class, 'showCompleteProfile'])->name('complete.profile');
     Route::post('/complete-profile', [GoogleController::class, 'storeCompleteProfile'])->name('complete.profile.store');
 });

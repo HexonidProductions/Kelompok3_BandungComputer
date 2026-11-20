@@ -40,7 +40,7 @@
             <a href="{{ route('login') }}" class="btn-masuk">Masuk</a>
         @else
             @if (Auth::user()->role === 'customer')
-                <form action="{{ route('logout') }}" method="POST" class="d-inline">
+                <form action="{{ route('logout') }}" method="POST" class="d-inline customer-logout-form">
                     @csrf
                     <button type="submit" class="btn-masuk">Logout</button>
                 </form>
@@ -275,6 +275,9 @@
         </div>
     </footer>
 
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <script>
         // Fungsi untuk dropdown Kategori dengan menyimpan state ke localStorage
         function toggleCategoryDropdown() {
@@ -344,6 +347,38 @@
                 } else {
                     item.classList.remove('active');
                 }
+            });
+
+            // Konfirmasi Logout Customer dengan SweetAlert2
+            document.querySelectorAll('.customer-logout-form').forEach(function (form) {
+                form.addEventListener('submit', function (e) {
+                    e.preventDefault();
+
+                    if (typeof Swal === 'undefined') {
+                        if (confirm('Are you sure? You will be logged out of your account.')) {
+                            form.submit();
+                        }
+                        return;
+                    }
+
+                    Swal.fire({
+                        title: 'Are you sure?',
+                        text: 'You will be logged out of your account.',
+                        icon: 'warning',
+                        iconColor: '#2563EB',
+                        showCancelButton: true,
+                        confirmButtonColor: '#dc2626',
+                        cancelButtonColor: '#64748b',
+                        confirmButtonText: 'Yes, logout!',
+                        cancelButtonText: 'Cancel',
+                        reverseButtons: true,
+                        returnFocus: false
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            form.submit();
+                        }
+                    });
+                });
             });
         });
 
