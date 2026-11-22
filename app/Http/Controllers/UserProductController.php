@@ -17,17 +17,19 @@ class UserProductController extends Controller
         $categoryId = $request->input('category');
         $priceMin = $request->input('price_min');
         $priceMax = $request->input('price_max');
-        $inStock = $request->input('in_stock');
+        $inStock = $request->boolean('in_stock');
         $sort = $request->input('sort', 'terbaru');
 
-        // Mengambil semua kategori beserta jumlah produknya (menggunakan relasi 'products' dari model Category)
+        // Mengambil semua kategori beserta total seluruh produknya
         $categories = Category::withCount('products')->get();
 
-        // Query produk dari model Product (yang sudah terhubung ke tabel tb_products)
+        // Query seluruh produk dari model Product agar jumlahnya selaras dengan data produk
         $products = Product::with('category')
             ->when($search, function ($query, $search) {
-                return $query->where('product_name', 'like', "%{$search}%")
-                             ->orWhere('product_code', 'like', "%{$search}%");
+                return $query->where(function ($q) use ($search) {
+                    $q->where('product_name', 'like', "%{$search}%")
+                        ->orWhere('product_code', 'like', "%{$search}%");
+                });
             })
             ->when($categoryId, function ($query, $categoryId) {
                 return $query->where('category_id', $categoryId);
@@ -39,8 +41,8 @@ class UserProductController extends Controller
                 return $query->where('sell_price', '<=', $priceMax);
             })
             ->when($inStock, function ($query) {
-                // Sesuai migration, produk tersedia jika stok > 0 atau status Available
-                return $query->where('stock', '>', 0);
+                return $query->where('stock', '>', 0)
+                                ->where('status', '!=', 'Out of Stock');
             })
             ->when($sort, function ($query, $sort) {
                 if ($sort === 'harga_terendah') {
@@ -53,10 +55,10 @@ class UserProductController extends Controller
             }, function ($query) {
                 return $query->latest();
             })
-            ->paginate(8) // Menampilkan 8 produk per halaman (sesuai grid 4x2)
+            ->paginate(8)
             ->withQueryString();
 
-        return view('produk.index', compact(
+        return view('produk', compact(
             'products', 
             'categories', 
             'search', 

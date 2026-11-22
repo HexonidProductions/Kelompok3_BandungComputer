@@ -214,10 +214,29 @@
                         <div class="card-title">{{ $product->product_name }}</div>
                         <div class="card-price">Rp {{ number_format($product->sell_price, 0, ',', '.') }}</div>
                         
+                        @php
+                            $stock = (int) ($product->stock ?? 0);
+                            $status = $product->status ?? '';
+
+                            if ($status === 'Out of Stock' || $stock <= 0) {
+                                $badgeClass = 'out';
+                                $badgeIcon  = 'fa-circle-xmark';
+                                $badgeText  = 'Stok Habis';
+                            } elseif ($status === 'Low of Stock') {
+                                $badgeClass = 'low-stock';
+                                $badgeIcon  = 'fa-circle-exclamation';
+                                $badgeText  = 'Stok Menipis • ' . $stock . ' Unit';
+                            } else {
+                                $badgeClass = 'available';
+                                $badgeIcon  = 'fa-circle-check';
+                                $badgeText  = 'Tersedia • ' . $stock . ' Unit';
+                            }
+                        @endphp
+
                         <!-- Menyesuaikan status badge dengan kolom ENUM database -->
-                        <div class="status-badge {{ $product->stock > 0 && $product->status === 'Available' ? 'available' : 'out' }}">
-                            <i class="fa-regular fa-circle-{{ $product->stock > 0 && $product->status === 'Available' ? 'check' : 'xmark' }}"></i>
-                            {{ $product->stock > 0 && $product->status === 'Available' ? 'Tersedia • ' . $product->stock . ' Unit' : ($product->status ?? 'Stok habis') }}
+                        <div class="status-badge {{ $badgeClass }}">
+                            <i class="fa-regular {{ $badgeIcon }}"></i>
+                            <span>{{ $badgeText }}</span>
                         </div>
                     </div>
                 @empty
@@ -310,6 +329,14 @@
             document.getElementById('sortSelectedLabel').innerText = label;
             document.getElementById('sortForm').submit();
         }
+
+        // Mencegah tampilan halaman lama dari bfcache saat tombol Back browser diklik
+        window.addEventListener('pageshow', function (event) {
+            const navEntry = performance.getEntriesByType('navigation')[0];
+            if (event.persisted || (navEntry && navEntry.type === 'back_forward')) {
+                window.location.reload();
+            }
+        });
 
         // Mengembalikan posisi scroll dan status dropdown setelah halaman dimuat ulang
         document.addEventListener("DOMContentLoaded", function () {

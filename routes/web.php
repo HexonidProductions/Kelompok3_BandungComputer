@@ -6,6 +6,7 @@ use App\Http\Controllers\ContactMessageController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\UserProductController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\InventoryLogController;
 use App\Http\Controllers\TransactionController;
@@ -13,7 +14,6 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\GoogleController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Http\Request;
 
 use App\Models\Product;
 
@@ -36,59 +36,7 @@ Route::middleware(['prevent-back-history'])->group(function () {
         return view('home', compact('latestProducts', 'categories'));
     })->name('homepage');
 
-    Route::get('/produk', function (Request $request) {
-        $search = $request->input('search');
-        $category = $request->input('category');
-        $priceMin = $request->input('price_min');
-        $priceMax = $request->input('price_max');
-        $inStock = $request->boolean('in_stock');
-        $sort = $request->input('sort', 'terbaru');
-
-        $query = Product::with('category')->where('status', 'Available');
-
-        if ($search) {
-            $query->where(function ($q) use ($search) {
-                $q->where('product_name', 'like', "%{$search}%")
-                  ->orWhere('product_code', 'like', "%{$search}%");
-            });
-        }
-
-        if ($category) {
-            $query->where('category_id', $category);
-        }
-
-        if ($priceMin) {
-            $query->where('sell_price', '>=', $priceMin);
-        }
-
-        if ($priceMax) {
-            $query->where('sell_price', '<=', $priceMax);
-        }
-
-        if ($inStock) {
-            $query->where('stock', '>', 0);
-        }
-
-        switch ($sort) {
-            case 'harga_terendah':
-                $query->orderBy('sell_price', 'asc');
-                break;
-            case 'harga_tertinggi':
-                $query->orderBy('sell_price', 'desc');
-                break;
-            case 'terbaru':
-            default:
-                $query->latest();
-                break;
-        }
-
-        $products = $query->paginate(12)->withQueryString();
-        $categories = \App\Models\Category::withCount(['products' => function ($q) {
-            $q->where('status', 'Available');
-        }])->get();
-
-        return view('produk', compact('products', 'categories', 'search', 'category', 'priceMin', 'priceMax', 'inStock', 'sort'));
-    })->name('produk');
+    Route::get('/produk', [UserProductController::class, 'index'])->name('produk');
 
     Route::get('/tentang', fn() => view('about'))->name('about');
     Route::get('/kontak', fn() => view('contact'))->name('contact');
