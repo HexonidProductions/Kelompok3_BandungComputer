@@ -20,11 +20,14 @@ class UserProductController extends Controller
         $inStock = $request->boolean('in_stock');
         $sort = $request->input('sort', 'terbaru');
 
-        // Mengambil semua kategori beserta total seluruh produknya
-        $categories = Category::withCount('products')->get();
+        // Mengambil semua kategori beserta total seluruh produknya (hanya Available dan Out of stock)
+        $categories = Category::withCount(['products' => function ($q) {
+            $q->whereIn('status', ['Available', 'Out of stock']);
+        }])->get();
 
-        // Query seluruh produk dari model Product agar jumlahnya selaras dengan data produk
+        // Query seluruh produk dari model Product: hanya yang Available dan Out of stock
         $products = Product::with('category')
+            ->whereIn('status', ['Available', 'Out of stock'])
             ->when($search, function ($query, $search) {
                 return $query->where(function ($q) use ($search) {
                     $q->where('product_name', 'like', "%{$search}%")
@@ -42,7 +45,7 @@ class UserProductController extends Controller
             })
             ->when($inStock, function ($query) {
                 return $query->where('stock', '>', 0)
-                                ->where('status', '!=', 'Out of Stock');
+                                ->whereRaw("LOWER(status) = 'available'");
             })
             ->when($sort, function ($query, $sort) {
                 if ($sort === 'harga_terendah') {

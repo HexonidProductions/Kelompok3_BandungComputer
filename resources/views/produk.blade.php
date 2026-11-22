@@ -216,16 +216,12 @@
                         
                         @php
                             $stock = (int) ($product->stock ?? 0);
-                            $status = $product->status ?? '';
+                            $status = strtolower($product->status ?? '');
 
-                            if ($status === 'Out of Stock' || $stock <= 0) {
+                            if ($status === 'out of stock' || $stock <= 0) {
                                 $badgeClass = 'out';
                                 $badgeIcon  = 'fa-circle-xmark';
                                 $badgeText  = 'Stok Habis';
-                            } elseif ($status === 'Low of Stock') {
-                                $badgeClass = 'low-stock';
-                                $badgeIcon  = 'fa-circle-exclamation';
-                                $badgeText  = 'Stok Menipis • ' . $stock . ' Unit';
                             } else {
                                 $badgeClass = 'available';
                                 $badgeIcon  = 'fa-circle-check';
