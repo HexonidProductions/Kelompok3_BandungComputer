@@ -78,7 +78,7 @@
                 </div>
             @endif
 
-            <form action="{{ route('contact.store') }}" method="POST">
+            <form id="contactForm" action="{{ route('contact.store') }}" method="POST"@guest data-guest="1"@endguest>
                 @csrf
                 <div class="form-group">
                     <label for="subject">Subjek <span>*</span></label>
@@ -217,7 +217,54 @@
             }
         }
 
+        window.addEventListener('pageshow', function (event) {
+            const navEntry = performance.getEntriesByType('navigation')[0];
+            if (event.persisted || (navEntry && navEntry.type === 'back_forward')) {
+                window.location.reload();
+            }
+        });
+
         document.addEventListener('DOMContentLoaded', function () {
+            const loginUrl = "{{ route('login') }}";
+            const registerUrl = "{{ Route::has('register') ? route('register') : route('login') }}";
+
+            const contactForm = document.getElementById('contactForm');
+            if (contactForm && contactForm.dataset.guest === '1') {
+                contactForm.addEventListener('submit', function (e) {
+                    e.preventDefault();
+
+                    if (typeof Swal === 'undefined') {
+                        if (confirm('Silakan login atau daftar akun terlebih dahulu untuk mengirim pesan. Arahkan ke halaman login?')) {
+                            window.location.href = loginUrl;
+                        }
+                        return;
+                    }
+
+                    Swal.fire({
+                        title: 'Login Diperlukan',
+                        text: 'Silakan login atau daftar akun terlebih dahulu untuk mengirim pesan.',
+                        icon: 'info',
+                        iconColor: '#2563EB',
+                        showCancelButton: true,
+                        showDenyButton: true,
+                        confirmButtonText: 'Login',
+                        denyButtonText: 'Register',
+                        cancelButtonText: 'Batal',
+                        confirmButtonColor: '#2563EB',
+                        denyButtonColor: '#0f172a',
+                        cancelButtonColor: '#64748b',
+                        reverseButtons: false,
+                        returnFocus: false
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            window.location.href = loginUrl;
+                        } else if (result.isDenied) {
+                            window.location.href = registerUrl;
+                        }
+                    });
+                });
+            }
+
             document.querySelectorAll('.customer-logout-form').forEach(function (form) {
                 form.addEventListener('submit', function (e) {
                     e.preventDefault();

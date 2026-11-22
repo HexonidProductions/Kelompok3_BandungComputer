@@ -37,6 +37,11 @@ class ContactMessageController extends Controller
      */
     public function store(Request $request)
     {
+        if (!Auth::check()) {
+            return redirect()->route('login')
+                ->with('error', 'Silakan login atau daftar akun terlebih dahulu untuk mengirim pesan.');
+        }
+
         $validated = $request->validate([
             'subject' => 'required|string|max:255',
             'message' => 'required|string|max:5000',
