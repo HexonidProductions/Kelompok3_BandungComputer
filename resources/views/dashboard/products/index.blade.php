@@ -6,7 +6,9 @@
     editOpen: false, 
     editUrl: '', 
     deleteUrl: '',
-    selectedProduct: {} 
+    selectedProduct: {},
+    addPreviewUrl: null,
+    editPreviewUrl: null
 }">
 
     <!-- Header & Action Bar -->
@@ -113,7 +115,7 @@
 
             <!-- Add Product Button -->
             <button type="button" 
-                @click="createOpen = true" 
+                @click="createOpen = true; addPreviewUrl = null;" 
                 class="inline-flex items-center gap-1.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold px-4 py-2 rounded-lg shadow-sm transition-all cursor-pointer">
                 <img src="{{ asset('icons/plus_icon.png') }}" alt="Add Product" class="w-4 h-4 object-contain"> Add Product
             </button>   
@@ -237,6 +239,7 @@
                                         editUrl = '{{ route('products.update', $product->id) }}';
                                         deleteUrl = '{{ route('products.destroy', $product->id) }}';
                                         selectedProduct = {{ json_encode($product) }};
+                                        editPreviewUrl = null;
                                         editOpen = true;
                                     "
                                     class="inline-flex items-center justify-center p-1 rounded-lg transition-all cursor-pointer"
@@ -277,7 +280,7 @@
             class="fixed inset-0 z-50 flex items-center justify-center bg-white/10 backdrop-blur-[1px] p-4 transition-all"
             x-data="{ categoryOpen: false, selectedCategoryName: 'Select Product Category', categoryId: '', statusOpen: false, selectedStatus: 'Available' }">
             
-            <div class="bg-white rounded-2xl shadow-2xl w-full max-w-2xl p-6 relative max-h-[90vh] overflow-y-auto" @click.away="createOpen = false">
+            <div class="bg-white rounded-2xl shadow-2xl w-full max-w-2xl p-6 relative max-h-[90vh] overflow-y-auto" @click.away="createOpen = false; addPreviewUrl = null;">
                 <!-- Header -->
                 <div class="flex justify-between items-center mb-6">
                     <h3 class="text-lg font-bold text-slate-900">Add New Product</h3>
@@ -409,19 +412,33 @@
                         <!-- Product Image Upload Preview -->
                         <div>
                             <label class="block text-xs font-semibold text-slate-700 mb-1">Product Image</label>
-                            <label class="flex flex-col items-center justify-center border border-slate-200 rounded-xl h-[200px] cursor-pointer transition-all relative overflow-hidden">
-                                <input type="file" name="image" class="hidden" accept=".jpg, .jpeg, .png, .webp" @change="const file = $event.target.files[0]; if(file){ $refs.previewAdd.src = URL.createObjectURL(file); $refs.previewAdd.classList.remove('hidden'); }">
-                                <img x-ref="previewAdd" class="hidden absolute inset-0 w-full h-full object-cover">
-                                <div class="flex flex-col items-center space-y-1">
-                                    <img src="{{ asset('icons/Upload_pict_icon.png') }}" alt="Product Image" class="w-[91px] h-[76px] object-contain">
-                                </div>
+                            <label class="group flex flex-col items-center justify-center border border-slate-200 rounded-xl h-[200px] cursor-pointer transition-all relative overflow-hidden bg-slate-50 hover:bg-slate-100">
+                                <input type="file" name="image" class="hidden" accept=".jpg, .jpeg, .png, .webp" 
+                                    @change="const file = $event.target.files[0]; addPreviewUrl = file ? URL.createObjectURL(file) : null;">
+                                
+                                <template x-if="addPreviewUrl">
+                                    <div class="absolute inset-0 w-full h-full">
+                                        <img :src="addPreviewUrl" alt="Product Image Preview" class="w-full h-full object-cover">
+                                        <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center text-white text-xs font-medium space-y-1">
+                                            <img src="{{ asset('icons/pencil.png') }}" alt="Edit" class="w-5 h-5 object-contain invert brightness-0">
+                                            <span>Ganti Foto</span>
+                                        </div>
+                                    </div>
+                                </template>
+
+                                <template x-if="!addPreviewUrl">
+                                    <div class="flex flex-col items-center space-y-1">
+                                        <img src="{{ asset('icons/Upload_pict_icon.png') }}" alt="Upload Icon" class="w-[91px] h-[76px] object-contain">
+                                        <span class="text-[11px] text-slate-400">Click to upload image</span>
+                                    </div>
+                                </template>
                             </label>
                         </div>
                     </div>
 
                     <!-- Footer Buttons -->
                     <div class="flex justify-end items-center gap-3 pt-4 border-slate-100 mt-6">
-                        <button type="button" @click="createOpen = false" 
+                        <button type="button" @click="createOpen = false; addPreviewUrl = null;" 
                             class="w-20 h-8 flex items-center justify-center border border-slate-800 rounded-[5px] text-xs font-medium text-slate-800 hover:bg-slate-100 transition-colors cursor-pointer">
                             Cancel
                         </button>
@@ -443,7 +460,7 @@
             class="fixed inset-0 z-50 flex items-center justify-center bg-white/10 backdrop-blur-[1px] p-4 transition-all"
             x-data="{ editCategoryOpen: false, editStatusOpen: false, isSwalOpen: false }">
             
-            <div class="bg-white rounded-2xl shadow-2xl w-full max-w-2xl p-6 relative max-h-[90vh] overflow-y-auto" @click.away="if (!isSwalOpen) editOpen = false">
+            <div class="bg-white rounded-2xl shadow-2xl w-full max-w-2xl p-6 relative max-h-[90vh] overflow-y-auto" @click.away="if (!isSwalOpen) { editOpen = false; editPreviewUrl = null; }">
                 <!-- Header -->
                 <div class="flex justify-between items-center mb-6">
                     <h3 class="text-lg font-bold text-slate-900">Edit Product</h3>
@@ -593,18 +610,36 @@
                         <!-- Product Image Upload Preview -->
                         <div>
                             <label class="block text-xs font-semibold text-slate-700 mb-1">Product Image</label>
-                            <label class="flex flex-col items-center justify-center border border-slate-200 rounded-xl h-[200px] cursor-pointer transition-all relative overflow-hidden bg-slate-50">
-                                <input type="file" name="image" class="hidden" accept=".jpg, .jpeg, .png, .webp" @change="const file = $event.target.files[0]; if(file){ $refs.previewEdit.src = URL.createObjectURL(file); $refs.previewEdit.classList.remove('hidden'); $refs.defaultImage.style.display = 'none'; }">
+                            <label class="group flex flex-col items-center justify-center border border-slate-200 rounded-xl h-[200px] cursor-pointer transition-all relative overflow-hidden bg-slate-50 hover:bg-slate-100">
+                                <input type="file" name="image" class="hidden" accept=".jpg, .jpeg, .png, .webp" 
+                                    @change="const file = $event.target.files[0]; editPreviewUrl = file ? URL.createObjectURL(file) : null;">
                                 
-                                <img x-ref="previewEdit" class="hidden absolute inset-0 w-full h-full object-cover z-20">
-
-                                <template x-if="selectedProduct.image">
-                                    <img x-ref="defaultImage" :src="selectedProduct.image_url || ('{{ asset('storage') }}/' + selectedProduct.image)" alt="Product Image" class="absolute inset-0 w-full h-full object-cover z-10">
+                                <!-- 1. Preview foto baru jika user memilih file baru -->
+                                <template x-if="editPreviewUrl">
+                                    <div class="absolute inset-0 w-full h-full">
+                                        <img :src="editPreviewUrl" alt="New Image Preview" class="w-full h-full object-cover">
+                                        <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center text-white text-xs font-medium space-y-1">
+                                            <img src="{{ asset('icons/pencil.png') }}" alt="Edit" class="w-5 h-5 object-contain invert brightness-0">
+                                            <span>Ganti Foto</span>
+                                        </div>
+                                    </div>
                                 </template>
 
-                                <template x-if="!selectedProduct.image">
-                                    <div x-ref="defaultImage" class="flex flex-col items-center space-y-1 z-10">
-                                        <img src="{{ asset('icons/Upload_pict_icon.png') }}" alt="Product Image" class="w-[91px] h-[76px] object-contain">
+                                <!-- 2. Foto produk saat ini jika belum memilih file baru dan produk punya foto -->
+                                <template x-if="!editPreviewUrl && selectedProduct.image">
+                                    <div class="absolute inset-0 w-full h-full">
+                                        <img :src="selectedProduct.image_url || ('{{ asset('storage') }}/' + selectedProduct.image)" alt="Current Product Image" class="w-full h-full object-cover">
+                                        <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center text-white text-xs font-medium space-y-1">
+                                            <img src="{{ asset('icons/pencil.png') }}" alt="Edit" class="w-5 h-5 object-contain invert brightness-0">
+                                            <span>Ganti Foto</span>
+                                        </div>
+                                    </div>
+                                </template>
+
+                                <!-- 3. Placeholder upload jika belum ada foto produk dan belum ada file baru -->
+                                <template x-if="!editPreviewUrl && !selectedProduct.image">
+                                    <div class="flex flex-col items-center space-y-1">
+                                        <img src="{{ asset('icons/Upload_pict_icon.png') }}" alt="Upload Icon" class="w-[91px] h-[76px] object-contain">
                                         <span class="text-[11px] text-slate-400">Click to upload image</span>
                                     </div>
                                 </template>
@@ -614,7 +649,7 @@
 
                     <!-- Footer Buttons -->
                     <div class="flex justify-end items-center gap-3 pt-4 border-slate-100 mt-6">
-                        <button type="button" @click="editOpen = false" 
+                        <button type="button" @click="editOpen = false; editPreviewUrl = null;" 
                             class="w-20 h-8 flex items-center justify-center border border-slate-800 rounded-[5px] text-xs font-medium text-slate-800 hover:bg-slate-100 transition-colors cursor-pointer">
                             Cancel
                         </button>
@@ -665,6 +700,32 @@
         @csrf
         @method('DELETE')
     </form>
+
+    @if(session('success'))
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Berhasil',
+                    text: "{{ session('success') }}",
+                    timer: 2500,
+                    showConfirmButton: false
+                });
+            });
+        </script>
+    @endif
+
+    @if(isset($errors) && $errors->any())
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Validasi Gagal',
+                    html: '{!! implode("<br>", $errors->all()) !!}'
+                });
+            });
+        </script>
+    @endif
 
 </div>
 @endsection
