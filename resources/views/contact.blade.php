@@ -189,7 +189,7 @@
                 <div class="social-icons">
                     <a href="https://www.tiktok.com/@bandungcomputerbjm?_r=1&_t=ZS-9BKonxKlv61" target="_blank"><img src="{{ asset('icons/mage_tiktok-circle.png') }}" alt="TikTok" class="social-icon"></a>
                     <a href="https://www.instagram.com/bandungcomputer?dlrf=MWFsdnFtaG1qaXlv" target="_blank"><img src="{{ asset('icons/basil_instagram-solid.png') }}" alt="Instagram" class="social-icon"></a>
-                    <a href="https://www.facebook.com/share/1ECt6qqnQt/" target="_blank"><img src="{{ asset('icons/stash_social-facebook-solid.png') }}" alt="Facebook" class="social-icon"></a>
+                    <a href="https://web.facebook.com/p/Bandung-Computer-Banjarbaru-100054556339598/?_rdc=1&_rdr" target="_blank"><img src="{{ asset('icons/stash_social-facebook-solid.png') }}" alt="Facebook" class="social-icon"></a>
                 </div>
             </div>
         </div>
@@ -226,7 +226,6 @@
 
         document.addEventListener('DOMContentLoaded', function () {
             const loginUrl = "{{ route('login') }}";
-            const registerUrl = "{{ Route::has('register') ? route('register') : route('login') }}";
 
             const contactForm = document.getElementById('contactForm');
             if (contactForm && contactForm.dataset.guest === '1') {
@@ -234,7 +233,7 @@
                     e.preventDefault();
 
                     if (typeof Swal === 'undefined') {
-                        if (confirm('Silakan login atau daftar akun terlebih dahulu untuk mengirim pesan. Arahkan ke halaman login?')) {
+                        if (confirm('Login Diperlukan\nSilakan login atau daftar akun terlebih dahulu untuk mengirim pesan. Arahkan ke halaman login?')) {
                             window.location.href = loginUrl;
                         }
                         return;
@@ -246,20 +245,15 @@
                         icon: 'info',
                         iconColor: '#2563EB',
                         showCancelButton: true,
-                        showDenyButton: true,
                         confirmButtonText: 'Login',
-                        denyButtonText: 'Register',
                         cancelButtonText: 'Batal',
                         confirmButtonColor: '#2563EB',
-                        denyButtonColor: '#0f172a',
                         cancelButtonColor: '#64748b',
                         reverseButtons: false,
                         returnFocus: false
                     }).then((result) => {
                         if (result.isConfirmed) {
                             window.location.href = loginUrl;
-                        } else if (result.isDenied) {
-                            window.location.href = registerUrl;
                         }
                     });
                 });
