@@ -18,35 +18,40 @@ class ProductSeeder extends Seeder
         $catGaming = Category::firstOrCreate(['category_name' => 'Gaming'])->id;
         $catAksesoris = Category::firstOrCreate(['category_name' => 'Aksesoris'])->id;
 
-        Product::firstOrCreate(
+        Product::updateOrCreate(
             ['product_code' => 'LPT-ROG14'],
             [
                 'product_name' => 'ASUS ROG Zephyrus G14 Black Edition',
                 'category_id' => $catLaptop,
-                'image' => 'products/laptop-rog14.jpg',
+                'image' => 'images/produkterbaru/zephyrus-g14-rog-black.png',
                 'description' => 'Laptop gaming 14 inci ultraportable ditenagai AMD Ryzen 9 dan NVIDIA GeForce RTX, dilengkapi layar ROG Nebula Display serta desain Eclipse Gray yang ringkas dan elegan.',
-                'buy_price' => 21000000,
-                'sell_price' => 24500000,
+                'buy_price' => 48000000,
+                'sell_price' => 49000000,
                 'stock' => 12,
-                'status' => 'Available'
+                'status' => 'Available',
+                'created_at' => now()->subMonth(),
             ]
         );
 
-        Product::firstOrCreate(
+        Product::updateOrCreate(
             ['product_code' => 'LPT-ROG13'],
             [
                 'product_name' => 'ASUS ROG Zephyrus G13 Black Edition',
                 'category_id' => $catLaptop,
-                'image' => 'products/laptop-rog14.jpg',
+                'image' => 'images/produkterbaru/zephyrus-g13-rog-black.jpg',
                 'description' => 'Laptop gaming 14 inci ultraportable ditenagai AMD Ryzen 9 dan NVIDIA GeForce RTX, dilengkapi layar ROG Nebula Display serta desain Eclipse Gray yang ringkas dan elegan.',
-                'buy_price' => 21000000,
-                'sell_price' => 24500000,
+                'buy_price' => 39000000,
+                'sell_price' => 42000000,
                 'stock' => 10,
-                'status' => 'Available'
+                'status' => 'Available',
+                'created_at' => now()->subMonth(),
             ]
         );
 
-        // 4 Produk Terbaru Homepage
+        // ==========================================
+        // PRODUK TERBARU HOMEPAGE (urutan insert = urutan waktu = urutan latest())
+        // Glorious → TUF → Macbook → Xbox (terbaru)
+        // ==========================================
         Product::updateOrCreate(
             ['product_code' => 'MOU-GLR-O'],
             [
@@ -58,9 +63,10 @@ class ProductSeeder extends Seeder
                 'sell_price' => 6622160,
                 'stock' => 20,
                 'status' => 'Available',
-                'created_at' => now()->subMinutes(3),
             ]
         );
+
+        sleep(1);
 
         Product::updateOrCreate(
             ['product_code' => 'LPT-ASUS-A15'],
@@ -73,9 +79,10 @@ class ProductSeeder extends Seeder
                 'sell_price' => 16000000,
                 'stock' => 15,
                 'status' => 'Available',
-                'created_at' => now()->subMinutes(2),
             ]
         );
+
+        sleep(1);
 
         Product::updateOrCreate(
             ['product_code' => 'LPT-MBP16'],
@@ -88,9 +95,10 @@ class ProductSeeder extends Seeder
                 'sell_price' => 54072000,
                 'stock' => 8,
                 'status' => 'Available',
-                'created_at' => now()->subMinutes(1),
             ]
         );
+
+        sleep(1);
 
         Product::updateOrCreate(
             ['product_code' => 'CON-XBX-2TB'],
@@ -103,7 +111,6 @@ class ProductSeeder extends Seeder
                 'sell_price' => 14404000,
                 'stock' => 10,
                 'status' => 'Available',
-                'created_at' => now(),
             ]
         );
     }
