@@ -193,7 +193,7 @@
                             </td>
                             <td class="py-3.5 px-3 whitespace-nowrap">
                                 @if($product->image)
-                                    <img src="{{ asset('storage/' . $product->image) }}" alt="Product" class="w-10 h-10 object-cover">
+                                    <img src="{{ $product->image_url }}" alt="{{ $product->product_name }}" class="w-10 h-10 object-cover rounded-md">
                                 @else
                                     <span class="text-slate-400">-</span>
                                 @endif
@@ -599,7 +599,7 @@
                                 <img x-ref="previewEdit" class="hidden absolute inset-0 w-full h-full object-cover z-20">
 
                                 <template x-if="selectedProduct.image">
-                                    <img x-ref="defaultImage" :src="'{{ asset('storage') }}/' + selectedProduct.image" alt="Product Image" class="absolute inset-0 w-full h-full object-cover z-10">
+                                    <img x-ref="defaultImage" :src="selectedProduct.image_url || ('{{ asset('storage') }}/' + selectedProduct.image)" alt="Product Image" class="absolute inset-0 w-full h-full object-cover z-10">
                                 </template>
 
                                 <template x-if="!selectedProduct.image">

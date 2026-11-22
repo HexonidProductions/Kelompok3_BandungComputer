@@ -20,6 +20,10 @@ class Product extends Model
         'status',
     ];
 
+    protected $appends = [
+        'image_url',
+    ];
+
     public function category()
     {
         return $this->belongsTo(Category::class, 'category_id');
