@@ -329,7 +329,7 @@
                         <!-- Product Code -->
                         <div>
                             <label class="block text-xs font-semibold text-slate-700 mb-1">Product Code</label>
-                            <input type="text" name="product_code" required placeholder="Enter product code" 
+                            <input type="text" name="product_code" required placeholder="KATEGORI-BRAND-VARIANT" 
                                 class="w-full h-10 border border-slate-200 rounded-lg px-3.5 text-xs text-slate-700 focus:outline-none focus:ring-0 focus:border-slate-300">
                         </div>
 

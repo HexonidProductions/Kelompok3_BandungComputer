@@ -237,9 +237,9 @@
                                 ];
                             @endphp
                             <div class="catalog-card"
-                                 data-product-id="{{ $product->id }}"
-                                 data-detail='@json($detailPayload)'
-                                 onclick="openProductDetail(this)">
+                                    data-product-id="{{ $product->id }}"
+                                    data-detail='@json($detailPayload)'
+                                    onclick="openProductDetail(this)">
                                 <div class="card-img-wrapper">
                                     <!-- Memanfaatkan Accessor getImageUlrAttribute dari Model Product -->
                                     <img src="{{ $product->image_url }}" alt="{{ $product->product_name }}">
