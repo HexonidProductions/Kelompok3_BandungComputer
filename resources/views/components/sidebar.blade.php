@@ -3,9 +3,9 @@
     <div class="pt-4 pb-2 overflow-y-auto">
         <!-- Logo Header -->
         <div class="flex items-center justify-center -mt-1 mb-3 w-full">
-            <div class="w-[140px] h-auto flex items-center justify-center mr-6">
+            <a href="{{ route('homepage') }}" class="w-[140px] h-auto flex items-center justify-center mr-6">
                 <img src="{{ asset('icons/Logo_bandung_computer_white_(4).png')}}" alt="Bandung Computer Logo" class="w-full h-full object-contain">
-            </div>
+            </a>
         </div>
 
         <!-- Navigation Links (Full-width kotak tanpa lekukan) -->
