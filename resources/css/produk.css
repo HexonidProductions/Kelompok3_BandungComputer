@@ -396,6 +396,22 @@ input:checked + .slider:before {
     color: #0f172a;
 }
 
+/* Row Grid Produk + Panel Detail Produk */
+.catalog-main-row {
+    display: flex;
+    gap: 24px;
+    align-items: flex-start;
+}
+
+.catalog-grid-column {
+    flex: 1;
+    min-width: 0;
+}
+
+.catalog-main-row.has-detail .product-grid {
+    grid-template-columns: repeat(3, 1fr);
+}
+
 /* Grid Produk 4 Kolom Desktop */
 .product-grid {
     display: grid;
@@ -411,12 +427,18 @@ input:checked + .slider:before {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
 }
 
 .catalog-card:hover {
     transform: translateY(-4px);
     box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
+}
+
+.catalog-card.selected {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 1px #2563eb;
 }
 
 .card-img-wrapper {
@@ -471,6 +493,114 @@ input:checked + .slider:before {
 
 .status-badge.out {
     color: #dc2626;
+}
+
+/* Panel Detail Produk Sisi Kanan */
+.detail-panel {
+    display: none;
+    width: 300px;
+    flex-shrink: 0;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 16px;
+    padding: 20px;
+    position: static;
+    top: 112px;
+}
+
+.detail-panel.open {
+    display: block;
+}
+
+.detail-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+}
+
+.detail-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: #0f172a;
+}
+
+.detail-close-btn {
+    background: transparent;
+    border: none;
+    color: #64748b;
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    padding: 2px 4px;
+}
+
+.detail-close-btn:hover {
+    color: #0f172a;
+}
+
+.detail-img-box {
+    width: 100%;
+    height: 170px;
+    border-radius: 12px;
+    background: #ffffff;
+    border: 1px solid #f1f5f9;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    margin-bottom: 16px;
+}
+
+.detail-img-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.detail-code {
+    font-size: 11px;
+    color: #64748b;
+    margin-bottom: 4px;
+}
+
+.detail-name {
+    font-size: 16px;
+    font-weight: 700;
+    color: #0f172a;
+    margin-bottom: 4px;
+    line-height: 1.35;
+}
+
+.detail-price {
+    font-size: 16px;
+    font-weight: 700;
+    color: #0f172a;
+    margin-bottom: 16px;
+}
+
+.detail-meta-group {
+    margin-bottom: 14px;
+}
+
+.detail-meta-label {
+    font-size: 11px;
+    font-weight: 600;
+    color: #000000;
+    margin-bottom: 4px;
+}
+
+.detail-meta-value {
+    font-size: 13px;
+    font-weight: 600;
+    color: #0f172a;
+}
+
+.detail-desc {
+    font-size: 12px;
+    color: #64748b;
+    line-height: 1.55;
+    white-space: pre-line;
 }
 
 /* Footer Front-End */
@@ -553,6 +683,18 @@ input:checked + .slider:before {
 }
 
 /* Media Queries Responsif */
+@media screen and (max-width: 1180px) {
+    .catalog-main-row.has-detail {
+        flex-direction: column;
+    }
+    .detail-panel.open {
+        width: 100%;
+    }
+    .catalog-main-row.has-detail .product-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
 @media screen and (max-width: 1024px) {
     .catalog-container {
         padding: 0 32px 48px 32px;

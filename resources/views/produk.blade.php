@@ -203,57 +203,111 @@
                 </div>
             </div>
 
-            <!-- Product Grid -->
-            <div class="product-grid">
-                @forelse ($products as $product)
-                    <div class="catalog-card">
-                        <div class="card-img-wrapper">
-                            <!-- Memanfaatkan Accessor getImageUlrAttribute dari Model Product -->
-                            <img src="{{ $product->image_url }}" alt="{{ $product->product_name }}">
+            <!-- Row Grid Produk + Panel Detail Produk -->
+            <div class="catalog-main-row" id="catalogMainRow">
+                <div class="catalog-grid-column">
+                    <!-- Product Grid -->
+                    <div class="product-grid">
+                        @forelse ($products as $product)
+                            @php
+                                $stock = (int) ($product->stock ?? 0);
+                                $status = strtolower($product->status ?? '');
+
+                                if ($status === 'out of stock' || $stock <= 0) {
+                                    $badgeClass = 'out';
+                                    $badgeIcon  = 'fa-circle-xmark';
+                                    $badgeText  = 'Stok Habis';
+                                } else {
+                                    $badgeClass = 'available';
+                                    $badgeIcon  = 'fa-circle-check';
+                                    $badgeText  = 'Tersedia • ' . $stock . ' Unit';
+                                }
+
+                                $detailPayload = [
+                                    'id'          => $product->id,
+                                    'code'        => $product->product_code ?? '-',
+                                    'name'        => $product->product_name,
+                                    'price'       => 'Rp ' . number_format($product->sell_price, 0, ',', '.'),
+                                    'category'    => $product->category->category_name ?? ($product->category->name ?? '-'),
+                                    'badgeClass'  => $badgeClass,
+                                    'badgeIcon'   => $badgeIcon,
+                                    'badgeText'   => $badgeText,
+                                    'description' => $product->description ?: 'Tidak ada deskripsi produk.',
+                                    'image'       => $product->image_url,
+                                ];
+                            @endphp
+                            <div class="catalog-card"
+                                 data-product-id="{{ $product->id }}"
+                                 data-detail='@json($detailPayload)'
+                                 onclick="openProductDetail(this)">
+                                <div class="card-img-wrapper">
+                                    <!-- Memanfaatkan Accessor getImageUlrAttribute dari Model Product -->
+                                    <img src="{{ $product->image_url }}" alt="{{ $product->product_name }}">
+                                </div>
+                                <div class="card-title">{{ $product->product_name }}</div>
+                                <div class="card-price">Rp {{ number_format($product->sell_price, 0, ',', '.') }}</div>
+                                
+                                <!-- Menyesuaikan status badge dengan kolom ENUM database -->
+                                <div class="status-badge {{ $badgeClass }}">
+                                    <i class="fa-regular {{ $badgeIcon }}"></i>
+                                    <span>{{ $badgeText }}</span>
+                                </div>
+                            </div>
+                        @empty
+                            <div style="grid-column: span 4; text-align: center; padding: 48px; color: #64748b;">
+                                <i class="fa-solid fa-box-open fa-2x mb-2"></i>
+                                <p>Tidak ada produk yang ditemukan.</p>
+                            </div>
+                        @endforelse
+                    </div>
+
+                    <!-- Pagination (Menggunakan Tailwind & Component Pagination kustom) -->
+                    @if($products->count() > 0)
+                        <div class="flex items-center justify-between mt-6 text-xs text-slate-500">
+                            <div>
+                                Showing {{ $products->firstItem() }}-{{ $products->lastItem() }} out of {{ $products->total() }} Products
+                            </div>
+                            <div>
+                                {{ $products->links('components.pagination') }}
+                            </div>
                         </div>
-                        <div class="card-title">{{ $product->product_name }}</div>
-                        <div class="card-price">Rp {{ number_format($product->sell_price, 0, ',', '.') }}</div>
-                        
-                        @php
-                            $stock = (int) ($product->stock ?? 0);
-                            $status = strtolower($product->status ?? '');
-
-                            if ($status === 'out of stock' || $stock <= 0) {
-                                $badgeClass = 'out';
-                                $badgeIcon  = 'fa-circle-xmark';
-                                $badgeText  = 'Stok Habis';
-                            } else {
-                                $badgeClass = 'available';
-                                $badgeIcon  = 'fa-circle-check';
-                                $badgeText  = 'Tersedia • ' . $stock . ' Unit';
-                            }
-                        @endphp
-
-                        <!-- Menyesuaikan status badge dengan kolom ENUM database -->
-                        <div class="status-badge {{ $badgeClass }}">
-                            <i class="fa-regular {{ $badgeIcon }}"></i>
-                            <span>{{ $badgeText }}</span>
-                        </div>
-                    </div>
-                @empty
-                    <div style="grid-column: span 4; text-align: center; padding: 48px; color: #64748b;">
-                        <i class="fa-solid fa-box-open fa-2x mb-2"></i>
-                        <p>Tidak ada produk yang ditemukan.</p>
-                    </div>
-                @endforelse
-            </div>
-
-            <!-- Pagination (Menggunakan Tailwind & Component Pagination kustom) -->
-            @if($products->count() > 0)
-                <div class="flex items-center justify-between mt-6 text-xs text-slate-500">
-                    <div>
-                        Showing {{ $products->firstItem() }}-{{ $products->lastItem() }} out of {{ $products->total() }} Products
-                    </div>
-                    <div>
-                        {{ $products->links('components.pagination') }}
-                    </div>
+                    @endif
                 </div>
-            @endif
+
+                <!-- Panel Detail Produk Sisi Kanan -->
+                <aside class="detail-panel" id="productDetailPanel" aria-live="polite">
+                    <div class="detail-header">
+                        <h2 class="detail-title">Detail produk</h2>
+                        <button type="button" class="detail-close-btn" onclick="closeProductDetail()">Tutup</button>
+                    </div>
+
+                    <div class="detail-img-box">
+                        <img id="detailImage" src="" alt="">
+                    </div>
+
+                    <div class="detail-code">Kode produk: <span id="detailCode">-</span></div>
+                    <div class="detail-name" id="detailName">-</div>
+                    <div class="detail-price" id="detailPrice">-</div>
+
+                    <div class="detail-meta-group">
+                        <div class="detail-meta-label">Kategori produk</div>
+                        <div class="detail-meta-value" id="detailCategory">-</div>
+                    </div>
+
+                    <div class="detail-meta-group">
+                        <div class="detail-meta-label">Status &amp; stok</div>
+                        <div class="status-badge available" id="detailStatusBadge">
+                            <i class="fa-regular fa-circle-check" id="detailStatusIcon"></i>
+                            <span id="detailStatusText">-</span>
+                        </div>
+                    </div>
+
+                    <div class="detail-meta-group" style="margin-bottom: 0;">
+                        <div class="detail-meta-label">Deskripsi</div>
+                        <div class="detail-desc" id="detailDescription">-</div>
+                    </div>
+                </aside>
+            </div>
         </main>
     </div>
 
@@ -294,6 +348,50 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script>
+        function openProductDetail(cardElement) {
+            const rawData = cardElement.getAttribute('data-detail');
+            if (!rawData) return;
+
+            const data = JSON.parse(rawData);
+            const mainRow = document.getElementById('catalogMainRow');
+            const panel = document.getElementById('productDetailPanel');
+            const badgeEl = document.getElementById('detailStatusBadge');
+            const iconEl = document.getElementById('detailStatusIcon');
+            const imgEl = document.getElementById('detailImage');
+
+            document.querySelectorAll('.catalog-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            cardElement.classList.add('selected');
+
+            imgEl.src = data.image || '';
+            imgEl.alt = data.name || '';
+            document.getElementById('detailCode').textContent = data.code || '-';
+            document.getElementById('detailName').textContent = data.name || '-';
+            document.getElementById('detailPrice').textContent = data.price || '-';
+            document.getElementById('detailCategory').textContent = data.category || '-';
+            document.getElementById('detailStatusText').textContent = data.badgeText || '-';
+            document.getElementById('detailDescription').textContent = data.description || '-';
+
+            badgeEl.className = 'status-badge ' + (data.badgeClass || 'available');
+            iconEl.className = 'fa-regular ' + (data.badgeIcon || 'fa-circle-check');
+
+            mainRow.classList.add('has-detail');
+            panel.classList.add('open');
+        }
+
+        function closeProductDetail() {
+            const mainRow = document.getElementById('catalogMainRow');
+            const panel = document.getElementById('productDetailPanel');
+
+            mainRow.classList.remove('has-detail');
+            panel.classList.remove('open');
+
+            document.querySelectorAll('.catalog-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+        }
+
         // Fungsi untuk dropdown Kategori dengan menyimpan state ke localStorage
         function toggleCategoryDropdown() {
             const dropdown = document.getElementById('categoryDropdownList');
