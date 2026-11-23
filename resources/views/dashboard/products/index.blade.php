@@ -412,7 +412,7 @@
                         <!-- Product Image Upload Preview -->
                         <div>
                             <label class="block text-xs font-semibold text-slate-700 mb-1">Product Image</label>
-                            <label class="group flex flex-col items-center justify-center border border-slate-200 rounded-xl h-[200px] cursor-pointer transition-all relative overflow-hidden bg-slate-50 hover:bg-slate-100">
+                            <label class="group flex flex-col items-center justify-center border border-slate-200 rounded-xl h-[200px] cursor-pointer transition-all relative overflow-hidden">
                                 <input type="file" name="image" class="hidden" accept=".jpg, .jpeg, .png, .webp" 
                                     @change="const file = $event.target.files[0]; addPreviewUrl = file ? URL.createObjectURL(file) : null;">
                                 
@@ -429,7 +429,6 @@
                                 <template x-if="!addPreviewUrl">
                                     <div class="flex flex-col items-center space-y-1">
                                         <img src="{{ asset('icons/Upload_pict_icon.png') }}" alt="Upload Icon" class="w-[91px] h-[76px] object-contain">
-                                        <span class="text-[11px] text-slate-400">Click to upload image</span>
                                     </div>
                                 </template>
                             </label>
@@ -610,7 +609,7 @@
                         <!-- Product Image Upload Preview -->
                         <div>
                             <label class="block text-xs font-semibold text-slate-700 mb-1">Product Image</label>
-                            <label class="group flex flex-col items-center justify-center border border-slate-200 rounded-xl h-[200px] cursor-pointer transition-all relative overflow-hidden bg-slate-50 hover:bg-slate-100">
+                            <label class="group flex flex-col items-center justify-center border border-slate-200 rounded-xl h-[200px] cursor-pointer transition-all relative overflow-hidden">
                                 <input type="file" name="image" class="hidden" accept=".jpg, .jpeg, .png, .webp" 
                                     @change="const file = $event.target.files[0]; editPreviewUrl = file ? URL.createObjectURL(file) : null;">
                                 
@@ -620,7 +619,7 @@
                                         <img :src="editPreviewUrl" alt="New Image Preview" class="w-full h-full object-cover">
                                         <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center text-white text-xs font-medium space-y-1">
                                             <img src="{{ asset('icons/pencil.png') }}" alt="Edit" class="w-5 h-5 object-contain invert brightness-0">
-                                            <span>Ganti Foto</span>
+                                            <span>Change Image</span>
                                         </div>
                                     </div>
                                 </template>
@@ -631,7 +630,7 @@
                                         <img :src="selectedProduct.image_url || ('{{ asset('storage') }}/' + selectedProduct.image)" alt="Current Product Image" class="w-full h-full object-cover">
                                         <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center text-white text-xs font-medium space-y-1">
                                             <img src="{{ asset('icons/pencil.png') }}" alt="Edit" class="w-5 h-5 object-contain invert brightness-0">
-                                            <span>Ganti Foto</span>
+                                            <span>Change Image</span>
                                         </div>
                                     </div>
                                 </template>
@@ -640,7 +639,6 @@
                                 <template x-if="!editPreviewUrl && !selectedProduct.image">
                                     <div class="flex flex-col items-center space-y-1">
                                         <img src="{{ asset('icons/Upload_pict_icon.png') }}" alt="Upload Icon" class="w-[91px] h-[76px] object-contain">
-                                        <span class="text-[11px] text-slate-400">Click to upload image</span>
                                     </div>
                                 </template>
                             </label>
