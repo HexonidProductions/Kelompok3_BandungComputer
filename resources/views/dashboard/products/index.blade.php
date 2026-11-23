@@ -278,7 +278,36 @@
         <div x-show="createOpen" 
             x-cloak
             class="fixed inset-0 z-50 flex items-center justify-center bg-white/10 backdrop-blur-[1px] p-4 transition-all"
-            x-data="{ categoryOpen: false, selectedCategoryName: 'Select Product Category', categoryId: '', statusOpen: false, selectedStatus: 'Available' }">
+            x-data="{ 
+                categoryOpen: false, 
+                selectedCategoryName: 'Select Product Category', 
+                categoryId: '', 
+                statusOpen: false, 
+                selectedStatus: 'Available',
+                addPreviewUrl: null,
+                handleImageChange(e) {
+                    const file = e.target.files[0];
+                    if (!file) {
+                        this.addPreviewUrl = null;
+                        return;
+                    }
+                    if (file.size > 5 * 1024 * 1024) {
+                        Swal.fire({
+                            icon: 'warning',
+                            title: 'File Terlalu Besar',
+                            text: 'Ukuran foto maksimal adalah 5MB. Silakan pilih foto lain.'
+                        });
+                        e.target.value = '';
+                        this.addPreviewUrl = null;
+                        return;
+                    }
+                    const reader = new FileReader();
+                    reader.onload = (event) => {
+                        this.addPreviewUrl = event.target.result;
+                    };
+                    reader.readAsDataURL(file);
+                }
+            }">
             
             <div class="bg-white rounded-2xl shadow-2xl w-full max-w-2xl p-6 relative max-h-[90vh] overflow-y-auto" @click.away="createOpen = false; addPreviewUrl = null;">
                 <!-- Header -->
@@ -414,7 +443,7 @@
                             <label class="block text-xs font-semibold text-slate-700 mb-1">Product Image</label>
                             <label class="group flex flex-col items-center justify-center border border-slate-200 rounded-xl h-[200px] cursor-pointer transition-all relative overflow-hidden bg-slate-50 hover:bg-slate-100">
                                 <input type="file" name="image" class="hidden" accept=".jpg, .jpeg, .png, .webp" 
-                                    @change="const file = $event.target.files[0]; addPreviewUrl = file ? URL.createObjectURL(file) : null;">
+                                    @change="handleImageChange($event)">
                                 
                                 <template x-if="addPreviewUrl">
                                     <div class="absolute inset-0 w-full h-full">
@@ -458,7 +487,34 @@
         <div x-show="editOpen" 
             x-cloak
             class="fixed inset-0 z-50 flex items-center justify-center bg-white/10 backdrop-blur-[1px] p-4 transition-all"
-            x-data="{ editCategoryOpen: false, editStatusOpen: false, isSwalOpen: false }">
+            x-data="{ 
+                editCategoryOpen: false, 
+                editStatusOpen: false, 
+                isSwalOpen: false,
+                editPreviewUrl: null,
+                handleEditImageChange(e) {
+                    const file = e.target.files[0];
+                    if (!file) {
+                        this.editPreviewUrl = null;
+                        return;
+                    }
+                    if (file.size > 5 * 1024 * 1024) {
+                        Swal.fire({
+                            icon: 'warning',
+                            title: 'File Terlalu Besar',
+                            text: 'Ukuran foto maksimal adalah 5MB. Silakan pilih foto lain.'
+                        });
+                        e.target.value = '';
+                        this.editPreviewUrl = null;
+                        return;
+                    }
+                    const reader = new FileReader();
+                    reader.onload = (event) => {
+                        this.editPreviewUrl = event.target.result;
+                    };
+                    reader.readAsDataURL(file);
+                }
+            }">
             
             <div class="bg-white rounded-2xl shadow-2xl w-full max-w-2xl p-6 relative max-h-[90vh] overflow-y-auto" @click.away="if (!isSwalOpen) { editOpen = false; editPreviewUrl = null; }">
                 <!-- Header -->
@@ -612,7 +668,7 @@
                             <label class="block text-xs font-semibold text-slate-700 mb-1">Product Image</label>
                             <label class="group flex flex-col items-center justify-center border border-slate-200 rounded-xl h-[200px] cursor-pointer transition-all relative overflow-hidden bg-slate-50 hover:bg-slate-100">
                                 <input type="file" name="image" class="hidden" accept=".jpg, .jpeg, .png, .webp" 
-                                    @change="const file = $event.target.files[0]; editPreviewUrl = file ? URL.createObjectURL(file) : null;">
+                                    @change="handleEditImageChange($event)">
                                 
                                 <!-- 1. Preview foto baru jika user memilih file baru -->
                                 <template x-if="editPreviewUrl">
