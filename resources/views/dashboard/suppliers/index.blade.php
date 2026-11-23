@@ -221,7 +221,7 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
                             <label class="block text-xs font-semibold text-slate-700 mb-1">Entry Code</label>
-                            <input type="text" name="entry_code" required placeholder="Enter entry code" value="{{ old('entry_code') }}"
+                            <input type="text" name="entry_code" required placeholder="SPL-XXX" value="{{ old('entry_code') }}"
                                 class="w-full h-10 border border-slate-200 rounded-lg px-3.5 text-xs text-slate-700 focus:outline-none focus:ring-0 focus:border-slate-300">
                         </div>
 
