@@ -20,7 +20,7 @@ class ProductController extends Controller
 
         // Data untuk 3 Card Statistik Real-Time
         $totalProducts = Product::count(); // Total seluruh produk terdaftar
-        $productsLowStock = Product::where('status', 'Low stock')->orWhere('stock', '<=', 5)->count(); // Produk stok menipis
+        $productsLowStock = Product::whereIn('status', ['Low stock', 'Low of Stock'])->orWhere('stock', '<=', 5)->count(); // Produk stok menipis
         $activeCategory = Category::has('products')->count(); // Kategori yang memiliki relasi produk aktif
 
         // Query Produk dengan Filter
@@ -32,6 +32,12 @@ class ProductController extends Controller
                 });
             })
             ->when($status, function ($query, $status) {
+                if (in_array($status, ['Low stock', 'Low of Stock'], true)) {
+                    return $query->whereIn('status', ['Low stock', 'Low of Stock']);
+                }
+                if (in_array($status, ['Out of stock', 'Out of Stock'], true)) {
+                    return $query->whereIn('status', ['Out of stock', 'Out of Stock']);
+                }
                 return $query->where('status', $status);
             })
             ->latest()
@@ -60,7 +66,7 @@ class ProductController extends Controller
             'buy_price'    => 'required|numeric|min:0|max:9999999999',
             'sell_price'   => 'required|numeric|min:0|max:9999999999',
             'stock'        => 'required|integer|min:0|max:999999',
-            'status'       => 'nullable|in:Available,Low stock,Out of stock,Inden',
+            'status'       => 'nullable|in:Available,Low stock,Low of Stock,Out of stock,Out of Stock,Inden',
             'image'        => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048', // Validasi ekstensi eksklusif dan batas ukuran 2MB
         ]);
 
@@ -71,9 +77,9 @@ class ProductController extends Controller
 
         // Penentuan status otomatis berdasarkan stok, atau menggunakan input manual jika ada
         $status = $request->status ?? 'Available';
-        if ($request->stock == 0) {
+        if ($request->stock == 0 && $status !== 'Inden') {
             $status = 'Out of stock';
-        } elseif ($request->stock <= 5 && $status !== 'Inden') {
+        } elseif ($request->stock > 0 && $request->stock <= 5 && $status !== 'Inden') {
             $status = 'Low stock';
         }
 
@@ -105,7 +111,7 @@ class ProductController extends Controller
             'buy_price'    => 'required|numeric|min:0|max:9999999999',
             'sell_price'   => 'required|numeric|min:0|max:9999999999',
             'stock'        => 'required|integer|min:0|max:999999',
-            'status'       => 'nullable|in:Available,Low stock,Out of stock,Inden',
+            'status'       => 'nullable|in:Available,Low stock,Low of Stock,Out of stock,Out of Stock,Inden',
             'image'        => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048', // Validasi ekstensi eksklusif dan batas ukuran 2MB
         ]);
 
@@ -119,9 +125,9 @@ class ProductController extends Controller
 
         // Penentuan status otomatis berdasarkan stok, namun tetap menghormati status 'Inden' atau input manual
         $status = $request->status ?? $product->status;
-        if ($request->stock == 0) {
+        if ($request->stock == 0 && $status !== 'Inden') {
             $status = 'Out of stock';
-        } elseif ($request->stock <= 5 && $status !== 'Inden') {
+        } elseif ($request->stock > 0 && $request->stock <= 5 && $status !== 'Inden') {
             $status = 'Low stock';
         }
 

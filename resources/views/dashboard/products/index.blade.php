@@ -44,11 +44,11 @@
                         <span>
                             @if(request('status') == 'Available')
                                 Status: Available
-                            @elseif(request('status') == 'Low stock')
+                            @elseif(in_array(request('status'), ['Low of Stock', 'Low stock'], true))
                                 Status: Low stock
                             @elseif(request('status') == 'Inden')
                                 Status: Inden
-                            @elseif(request('status') == 'Out of stock')
+                            @elseif(in_array(request('status'), ['Out of Stock', 'Out of stock'], true))
                                 Status: Out of stock
                             @else
                                 Status: All
@@ -70,11 +70,11 @@
                             <span>
                                 @if(request('status') == 'Available')
                                     Status: Available
-                                @elseif(request('status') == 'Low stock')
+                                @elseif(in_array(request('status'), ['Low of Stock', 'Low stock'], true))
                                     Status: Low stock
                                 @elseif(request('status') == 'Inden')
                                     Status: Inden
-                                @elseif(request('status') == 'Out of stock')
+                                @elseif(in_array(request('status'), ['Out of Stock', 'Out of stock'], true))
                                     Status: Out of stock
                                 @else
                                     Status: All
@@ -96,16 +96,16 @@
                                 class="block px-3 py-2.5 transition-colors {{ request('status') == 'Available' ? 'font-semibold' : null }}">
                                 Status: Available
                             </a>
-                            <a href="{{ request()->fullUrlWithQuery(['status' => 'Low stock']) }}" 
-                                class="block px-3 py-2.5 transition-colors {{ request('status') == 'Low stock' ? 'font-semibold' : null }}">
+                            <a href="{{ request()->fullUrlWithQuery(['status' => 'Low of Stock']) }}" 
+                                class="block px-3 py-2.5 transition-colors {{ in_array(request('status'), ['Low of Stock', 'Low stock'], true) ? 'font-semibold' : null }}">
                                 Status: Low stock
                             </a>
                             <a href="{{ request()->fullUrlWithQuery(['status' => 'Inden']) }}" 
                                 class="block px-3 py-2.5 transition-colors {{ request('status') == 'Inden' ? 'font-semibold' : null }}">
                                 Status: Inden
                             </a>
-                            <a href="{{ request()->fullUrlWithQuery(['status' => 'Out of stock']) }}" 
-                                class="block px-3 py-2.5 transition-colors {{ request('status') == 'Out of stock' ? 'font-semibold' : null }}">
+                            <a href="{{ request()->fullUrlWithQuery(['status' => 'Out of Stock']) }}" 
+                                class="block px-3 py-2.5 transition-colors {{ in_array(request('status'), ['Out of Stock', 'Out of stock'], true) ? 'font-semibold' : null }}">
                                 Status: Out of stock
                             </a>
                         </div>
@@ -217,7 +217,7 @@
         <span class="inline-flex items-center justify-center w-24 py-1 rounded-md text-[11px] font-semibold border-2 border-[#16A34A] text-[#000000] bg-white">
             Available
         </span>
-    @elseif($product->status === 'Low stock')
+    @elseif(in_array($product->status, ['Low of Stock', 'Low stock'], true))
         <span class="inline-flex items-center justify-center w-24 py-1 rounded-md text-[11px] font-semibold border-2 border-[#F59E0B] text-[#000000] bg-white">
             Low stock
         </span>
@@ -393,9 +393,9 @@
                                 </div>
                                 <div class="py-1 border-slate-100">
                                     <div @click="selectedStatus = 'Available'; statusOpen = false;" class="px-3.5 py-2.5 transition-colors cursor-pointer" :class="selectedStatus == 'Available' ? 'font-semibold' : ''">Available</div>
-                                    <div @click="selectedStatus = 'Low stock'; statusOpen = false;" class="px-3.5 py-2.5 transition-colors cursor-pointer" :class="selectedStatus == 'Low stock' ? 'font-semibold' : ''">Low stock</div>
+                                    <div @click="selectedStatus = 'Low of Stock'; statusOpen = false;" class="px-3.5 py-2.5 transition-colors cursor-pointer" :class="selectedStatus == 'Low of Stock' ? 'font-semibold' : ''">Low of Stock</div>
                                     <div @click="selectedStatus = 'Inden'; statusOpen = false;" class="px-3.5 py-2.5 transition-colors cursor-pointer" :class="selectedStatus == 'Inden' ? 'font-semibold' : ''">Inden</div>
-                                    <div @click="selectedStatus = 'Out of stock'; statusOpen = false;" class="px-3.5 py-2.5 transition-colors cursor-pointer" :class="selectedStatus == 'Out of stock' ? 'font-semibold' : ''">Out of stock</div>
+                                    <div @click="selectedStatus = 'Out of Stock'; statusOpen = false;" class="px-3.5 py-2.5 transition-colors cursor-pointer" :class="selectedStatus == 'Out of Stock' ? 'font-semibold' : ''">Out of Stock</div>
                                 </div>
                             </div>
                         </div>
@@ -590,9 +590,9 @@
                                 </div>
                                 <div class="py-1 border-slate-100">
                                     <div @click="selectedProduct.status = 'Available'; editStatusOpen = false;" class="px-3.5 py-2.5 transition-colors cursor-pointer" :class="selectedProduct.status == 'Available' ? 'font-semibold' : ''">Available</div>
-                                    <div @click="selectedProduct.status = 'Low stock'; editStatusOpen = false;" class="px-3.5 py-2.5 transition-colors cursor-pointer" :class="selectedProduct.status == 'Low stock' ? 'font-semibold' : ''">Low stock</div>
+                                    <div @click="selectedProduct.status = 'Low of Stock'; editStatusOpen = false;" class="px-3.5 py-2.5 transition-colors cursor-pointer" :class="selectedProduct.status == 'Low of Stock' ? 'font-semibold' : ''">Low of Stock</div>
                                     <div @click="selectedProduct.status = 'Inden'; editStatusOpen = false;" class="px-3.5 py-2.5 transition-colors cursor-pointer" :class="selectedProduct.status == 'Inden' ? 'font-semibold' : ''">Inden</div>
-                                    <div @click="selectedProduct.status = 'Out of stock'; editStatusOpen = false;" class="px-3.5 py-2.5 transition-colors cursor-pointer" :class="selectedProduct.status == 'Out of stock' ? 'font-semibold' : ''">Out of stock</div>
+                                    <div @click="selectedProduct.status = 'Out of Stock'; editStatusOpen = false;" class="px-3.5 py-2.5 transition-colors cursor-pointer" :class="selectedProduct.status == 'Out of Stock' ? 'font-semibold' : ''">Out of Stock</div>
                                 </div>
                             </div>
                         </div>
