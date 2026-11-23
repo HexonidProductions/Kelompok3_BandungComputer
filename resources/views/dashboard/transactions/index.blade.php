@@ -382,7 +382,7 @@
                         <div class="grid grid-cols-2 gap-4 mb-4 text-xs">
                             <div>
                                 <label class="block font-semibold text-slate-700 mb-1">Receipt Number</label>
-                                <input type="text" x-model="selectedTx.receipt_number" readonly class="w-full border border-slate-200 bg-slate-50 rounded-lg px-3 py-2 text-slate-500 focus:outline-none focus:ring-0 focus:border-slate-300 placeholder:text-[13px]" placeholder="Receipt Number">
+                                <input type="text" x-model="selectedTx.receipt_number" readonly class="w-full border border-slate-200 bg-slate-50 rounded-lg px-3 py-2 text-slate-500 focus:outline-none focus:ring-0 focus:border-slate-300 placeholder:text-[13px]" placeholder="INV-2602-XXX">
                             </div>
 
                             <!-- Edit Type Dropdown -->
@@ -820,7 +820,7 @@
                         <div class="grid grid-cols-2 gap-4 mb-4 text-xs">
                             <div>
                                 <label class="block font-semibold text-slate-700 mb-1">Receipt Number</label>
-                                <input type="text" name="receipt_number" required class="w-full border border-slate-200 rounded-lg px-3 py-2 text-slate-700 focus:outline-none focus:ring-0 focus:border-slate-300 placeholder:text-[13px]" placeholder="Receipt Number">
+                                <input type="text" name="receipt_number" required class="w-full border border-slate-200 rounded-lg px-3 py-2 text-slate-700 focus:outline-none focus:ring-0 focus:border-slate-300 placeholder:text-[13px]" placeholder="INV-2602-XXX">
                             </div>
 
                             <!-- Add Type Dropdown -->
