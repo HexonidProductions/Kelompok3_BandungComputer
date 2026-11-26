@@ -6,7 +6,15 @@
     editOpen: false, 
     editUrl: '', 
     deleteUrl: '',
-    selectedTx: {}
+    selectedTx: {},
+    formatRupiah(val, maxDigits = 10) {
+        const digits = String(val ?? '').replace(/\D/g, '').slice(0, maxDigits);
+        if (!digits) return '';
+        return digits.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+    },
+    rawDigits(val, maxDigits = 10) {
+        return String(val ?? '').replace(/\D/g, '').slice(0, maxDigits);
+    }
 }" class="space-y-6">
 
     <!-- Header & Action Bar -->
@@ -215,7 +223,10 @@
                                     @click="
                                         editUrl = '{{ route('transactions.update', $tx->id) }}';
                                         deleteUrl = '{{ route('transactions.destroy', $tx->id) }}';
-                                        selectedTx = {{ json_encode($tx) }};
+                                        selectedTx = Object.assign({}, {{ json_encode($tx) }}, {
+                                            shipping_fee: formatRupiah('{{ $tx->shipping_fee ?? '' }}'),
+                                            total_amount: formatRupiah('{{ $tx->total_amount ?? '' }}')
+                                        });
                                         editOpen = true;
                                     "
                                     class="inline-flex items-center justify-center p-1 transition-all cursor-pointer"
@@ -275,7 +286,7 @@
                             productId: '',
                             productName: '',
                             itemQty: 1,
-                            itemPrice: 0,
+                            itemPriceDisplay: '',
                             selectedStock: 0,
                             editCashierOpen: false,
                             
@@ -285,6 +296,8 @@
                                         if (!value.admin_id && value.admin?.id) {
                                             value.admin_id = value.admin.id;
                                         }
+                                        value.shipping_fee = formatRupiah(value.shipping_fee);
+                                        value.total_amount = formatRupiah(value.total_amount);
                                     }
                                     if (value && (value.items || value.sale_items)) {
                                         let rawItems = value.items || value.sale_items;
@@ -318,7 +331,7 @@
                                 this.productId = '';
                                 this.productName = '';
                                 this.itemQty = 1;
-                                this.itemPrice = 0;
+                                this.itemPriceDisplay = '';
                                 this.selectedStock = 0;
                                 this.editingIndex = null;
                                 this.itemModalOpen = true;
@@ -329,7 +342,7 @@
                                 this.productId = this.items[index].product_id || '';
                                 this.productName = this.items[index].name || this.items[index].product_name || '';
                                 this.itemQty = this.items[index].quantity || 1;
-                                this.itemPrice = this.items[index].price || 0;
+                                this.itemPriceDisplay = formatRupiah(this.items[index].price || 0);
                                 this.selectedStock = 999;
                                 this.itemModalOpen = true;
                             },
@@ -356,7 +369,7 @@
                                     name: this.productName,
                                     product_name: this.productName,
                                     quantity: Number(this.itemQty) || 1,
-                                    price: Number(this.itemPrice) || 0
+                                    price: Number(rawDigits(this.itemPriceDisplay)) || 0
                                 };
 
                                 if (this.editingIndex !== null) {
@@ -378,6 +391,8 @@
                         @method('PUT')
 
                         <input type="hidden" name="items" :value="JSON.stringify(items)">
+                        <input type="hidden" name="shipping_fee" :value="rawDigits(selectedTx.shipping_fee)">
+                        <input type="hidden" name="total_amount" :value="rawDigits(selectedTx.total_amount)">
 
                         <div class="grid grid-cols-2 gap-4 mb-4 text-xs">
                             <div>
@@ -387,7 +402,7 @@
 
                             <!-- Edit Type Dropdown -->
                             <div>
-                                <label class="block font-semibold text-slate-700 mb-1">Type</label>
+                                <label class="block font-semibold text-slate-700 mb-1">Type <span class="text-red-500">*</span></label>
                                 <input type="hidden" name="sale_type" x-model="selectedTx.sale_type">
                                 <div x-data="{ open: false }" class="relative" @click.away="open = false">
                                     <button type="button" 
@@ -415,7 +430,7 @@
 
                             <!-- Edit Cashier Dropdown -->
                             <div>
-                                <label class="block font-semibold text-slate-700 mb-1">Cashier</label>
+                                <label class="block font-semibold text-slate-700 mb-1">Cashier <span class="text-red-500">*</span></label>
                                 <input type="hidden" name="admin_id" x-model="selectedTx.admin_id" required>
                                 <div class="relative" @click.away="editCashierOpen = false">
                                     <button type="button" 
@@ -454,7 +469,7 @@
                                 </div>
                             </div>
 
-                            <!-- Edit Customer Input Field -->
+                            <!-- Edit Customer Input Field (Opsional) -->
                             <div>
                                 <label class="block font-semibold text-slate-700 mb-1">Customer</label>
                                 <input type="text" name="customer_name" x-model="selectedTx.customer_name" class="w-full h-[40px] border border-slate-200 rounded-lg px-3 py-2 text-slate-700 bg-white focus:outline-none focus:ring-0 focus:border-slate-300 text-xs shadow-sm" placeholder="Enter customer name">
@@ -462,7 +477,7 @@
 
                             <!-- Edit Payment Method Dropdown -->
                             <div>
-                                <label class="block font-semibold text-slate-700 mb-1">Payment Method</label>
+                                <label class="block font-semibold text-slate-700 mb-1">Payment Method <span class="text-red-500">*</span></label>
                                 <input type="hidden" name="payment_method" x-model="selectedTx.payment_method">
                                 <div x-data="{ open: false }" class="relative" @click.away="open = false">
                                     <button type="button" 
@@ -491,7 +506,7 @@
 
                             <!-- Edit Payment Status Dropdown -->
                             <div>
-                                <label class="block font-semibold text-slate-700 mb-1">Payment Status</label>
+                                <label class="block font-semibold text-slate-700 mb-1">Payment Status <span class="text-red-500">*</span></label>
                                 <input type="hidden" name="payment_status" x-model="selectedTx.payment_status">
                                 <div x-data="{ open: false }" class="relative" @click.away="open = false">
                                     <button type="button" 
@@ -520,15 +535,21 @@
 
                             <div>
                                 <label class="block font-semibold text-slate-700 mb-1">Shipping Fee</label>
-                                <input type="number" name="shipping_fee" x-model="selectedTx.shipping_fee" min="0" max="9999999999" oninput="if(this.value.length > 10) this.value = this.value.slice(0, 10);" class="w-full border border-slate-200 rounded-lg px-3 py-2 text-slate-700 focus:outline-none focus:ring-0 focus:border-slate-300 placeholder:text-[13px] [appearance: textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none" placeholder="Rp 0">
+                                <input type="text" 
+                                    inputmode="numeric"
+                                    x-model="selectedTx.shipping_fee" 
+                                    @input="selectedTx.shipping_fee = formatRupiah(selectedTx.shipping_fee)"
+                                    class="w-full h-[40px] border border-slate-200 rounded-lg px-3 py-2 text-slate-700 focus:outline-none focus:ring-0 focus:border-slate-300 text-xs placeholder:text-[13px]" 
+                                    placeholder="Rp 0">
                             </div>
 
                             <div>
                                 <label class="block font-semibold text-slate-700 mb-1">Total Amount</label>
-                                <input type="number" name="total_amount" x-model="selectedTx.total_amount" min="0" max="9999999999" oninput="if(this.value.length > 10) this.value = this.value.slice(0, 10);"
-                                readonly tabindex="-1"
-                                class="w-full border border-slate-200 bg-slate-100 rounded-lg px-3 py-2 text-xs cursor-not-allowed focus:outline-none focus:ring-0 focus:border-slate-300 pointer-events-none"
-                                placeholder="Rp 0">
+                                <input type="text" 
+                                    x-model="selectedTx.total_amount" 
+                                    readonly tabindex="-1"
+                                    class="w-full h-[40px] border border-slate-200 bg-slate-100 rounded-lg px-3 py-2 text-xs cursor-not-allowed focus:outline-none focus:ring-0 focus:border-slate-300 pointer-events-none"
+                                    placeholder="Rp 0">
                             </div>
 
                         </div>
@@ -537,7 +558,7 @@
                         <div class="mb-4 text-xs">
                             <label class="block font-semibold text-slate-700 mb-1">
                                 Note
-                                <span x-show="selectedTx.payment_status === 'inden'" class="text-red-600 font-semibold">*</span>
+                                <span x-show="selectedTx.payment_status === 'inden'" class="text-red-500 font-semibold">*</span>
                             </label>
                             <textarea name="note" 
                                 x-model="selectedTx.note" 
@@ -547,7 +568,7 @@
                                 placeholder="Enter buyer identity & DP details (required for Inden)"></textarea>
                         </div>
 
-                        <!-- Shipping Address -->
+                        <!-- Shipping Address (Opsional) -->
                         <div class="mb-5 text-xs">
                             <label class="block font-semibold text-slate-700 mb-1">Shipping Address</label>
                             <textarea name="shipping_address" x-model="selectedTx.shipping_address" rows="2" class="w-full border border-slate-200 rounded-lg px-3 py-2 text-slate-700 focus:outline-none focus:ring-0 focus:border-slate-300 placeholder:text-[13px]" placeholder="Enter shipping address"></textarea>
@@ -603,7 +624,7 @@
                                 
                                 <div class="space-y-3 text-xs mb-4">
                                     <div>
-                                        <label class="block font-semibold text-slate-700 mb-1">Product</label>
+                                        <label class="block font-semibold text-slate-700 mb-1">Product <span class="text-red-500">*</span></label>
                                         
                                         <!-- Custom Dropdown Product -->
                                         <div x-data="{ productOpen: false }" class="relative" @click.away="productOpen = false">
@@ -631,7 +652,7 @@
                                                             <div @click="
                                                                 productId = '{{ $prod->id }}';
                                                                 productName = '{{ $prod->product_name }}';
-                                                                itemPrice = Number('{{ $prod->price }}');
+                                                                itemPriceDisplay = formatRupiah('{{ $prod->price }}');
                                                                 selectedStock = Number('{{ $prod->stock }}');
                                                                 productOpen = false;
                                                             " class="px-3 py-2.5 cursor-pointer text-xs" :class="productName == '{{ $prod->product_name }}' ? 'font-semibold' : null">
@@ -641,7 +662,7 @@
                                                             <div @click="
                                                                 productId = '{{ $prod->id }}';
                                                                 productName = '{{ $prod->product_name }}';
-                                                                itemPrice = Number('{{ $prod->price }}');
+                                                                itemPriceDisplay = formatRupiah('{{ $prod->price }}');
                                                                 selectedStock = 0;
                                                                 productOpen = false;
                                                             " class="px-3 py-2.5 cursor-pointer text-xs text-blue-600" :class="productName == '{{ $prod->product_name }}' ? 'font-semibold' : null">
@@ -656,12 +677,17 @@
 
                                     <div class="grid grid-cols-2 gap-3">
                                         <div>
-                                            <label class="block font-semibold text-slate-700 mb-1">Quantity</label>
+                                            <label class="block font-semibold text-slate-700 mb-1">Quantity <span class="text-red-500">*</span></label>
                                             <input type="number" min="1" max="9999" oninput="if(this.value.length > 4) this.value = this.value.slice(0, 4);" x-model.number="itemQty" class="w-full border border-slate-200 rounded-lg px-3 py-2 text-slate-700 focus:outline-none focus:border-slate-300 focus:ring-0 [appearance: textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none" placeholder="1">
                                         </div>
                                         <div>
-                                            <label class="block font-semibold text-slate-700 mb-1">Unit Price</label>
-                                            <input type="number" min="0" max="9999999999" oninput="if(this.value.length > 10) this.value = this.value.slice(0, 10);" x-model.number="itemPrice" class="w-full border border-slate-200 rounded-lg px-3 py-2 text-slate-700 focus:outline-none focus:border-slate-300 focus:ring-0 [appearance: textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none" placeholder="Rp 0">
+                                            <label class="block font-semibold text-slate-700 mb-1">Unit Price <span class="text-red-500">*</span></label>
+                                            <input type="text" 
+                                                inputmode="numeric"
+                                                x-model="itemPriceDisplay" 
+                                                @input="itemPriceDisplay = formatRupiah(itemPriceDisplay)"
+                                                class="w-full border border-slate-200 rounded-lg px-3 py-2 text-slate-700 focus:outline-none focus:border-slate-300 focus:ring-0" 
+                                                placeholder="Rp 0">
                                         </div>
                                     </div>
                                 </div>
@@ -740,20 +766,22 @@
                             paymentStatus: '',
                             adminId: '{{ auth()->id() }}',
                             adminName: '{{ optional($admins->firstWhere('id', auth()->id()))->name ?? 'Select Cashier' }}',
+                            shippingFeeDisplay: '',
+                            totalAmountDisplay: '',
                             items: [],
                             itemModalOpen: false,
                             editingIndex: null,
                             productId: '',
                             productName: '',
                             itemQty: 1,
-                            itemPrice: 0,
+                            itemPriceDisplay: '',
                             selectedStock: 0,
                             
                             openAddItem() {
                                 this.productId = '';
                                 this.productName = '';
                                 this.itemQty = 1;
-                                this.itemPrice = 0;
+                                this.itemPriceDisplay = '';
                                 this.selectedStock = 0;
                                 this.editingIndex = null;
                                 this.itemModalOpen = true;
@@ -764,7 +792,7 @@
                                 this.productId = this.items[index].product_id || '';
                                 this.productName = this.items[index].name || this.items[index].product_name || '';
                                 this.itemQty = this.items[index].quantity || 1;
-                                this.itemPrice = this.items[index].price || 0;
+                                this.itemPriceDisplay = formatRupiah(this.items[index].price || 0);
                                 this.selectedStock = 999;
                                 this.itemModalOpen = true;
                             },
@@ -791,7 +819,7 @@
                                     name: this.productName,
                                     product_name: this.productName,
                                     quantity: Number(this.itemQty) || 1,
-                                    price: Number(this.itemPrice) || 0
+                                    price: Number(rawDigits(this.itemPriceDisplay)) || 0
                                 };
 
                                 if (this.editingIndex !== null) {
@@ -815,17 +843,19 @@
                         <input type="hidden" name="admin_id" x-model="adminId" required>
                         <input type="hidden" name="payment_method" :value="paymentMethod">
                         <input type="hidden" name="payment_status" :value="paymentStatus">
+                        <input type="hidden" name="shipping_fee" :value="rawDigits(shippingFeeDisplay)">
+                        <input type="hidden" name="total_amount" :value="rawDigits(totalAmountDisplay)">
                         <input type="hidden" name="items" :value="JSON.stringify(items)">
 
                         <div class="grid grid-cols-2 gap-4 mb-4 text-xs">
                             <div>
-                                <label class="block font-semibold text-slate-700 mb-1">Receipt Number</label>
+                                <label class="block font-semibold text-slate-700 mb-1">Receipt Number <span class="text-red-500">*</span></label>
                                 <input type="text" name="receipt_number" required class="w-full border border-slate-200 rounded-lg px-3 py-2 text-slate-700 focus:outline-none focus:ring-0 focus:border-slate-300 placeholder:text-[13px]" placeholder="INV-2602-XXX">
                             </div>
 
                             <!-- Add Type Dropdown -->
                             <div>
-                                <label class="block font-semibold text-slate-700 mb-1">Type</label>
+                                <label class="block font-semibold text-slate-700 mb-1">Type <span class="text-red-500">*</span></label>
                                 <div x-data="{ open: false }" class="relative" @click.away="open = false">
                                     <button type="button" 
                                         @click="open = !open" 
@@ -852,7 +882,7 @@
 
                             <!-- Add Cashier Dropdown -->
                             <div>
-                                <label class="block font-semibold text-slate-700 mb-1">Cashier</label>
+                                <label class="block font-semibold text-slate-700 mb-1">Cashier <span class="text-red-500">*</span></label>
                                 <div x-data="{ open: false }" class="relative" @click.away="open = false">
                                     <button type="button" 
                                         @click="open = !open" 
@@ -882,7 +912,7 @@
                                 </div>
                             </div>
 
-                            <!-- Add Customer Input Field -->
+                            <!-- Add Customer Input Field (Opsional) -->
                             <div>
                                 <label class="block font-semibold text-slate-700 mb-1">Customer</label>
                                 <input type="text" name="customer_name" class="w-full h-[40px] border border-slate-200 rounded-lg px-3 py-2 text-slate-700 bg-white focus:outline-none focus:ring-0 focus:border-slate-300 text-xs shadow-sm" placeholder="Enter customer name">
@@ -890,7 +920,7 @@
 
                             <!-- Add Payment Method Dropdown -->
                             <div>
-                                <label class="block font-semibold text-slate-700 mb-1">Payment Method</label>
+                                <label class="block font-semibold text-slate-700 mb-1">Payment Method <span class="text-red-500">*</span></label>
                                 <div x-data="{ open: false }" class="relative" @click.away="open = false">
                                     <button type="button" 
                                         @click="open = !open" 
@@ -918,7 +948,7 @@
 
                             <!-- Add Payment Status Dropdown -->
                             <div>
-                                <label class="block font-semibold text-slate-700 mb-1">Payment Status</label>
+                                <label class="block font-semibold text-slate-700 mb-1">Payment Status <span class="text-red-500">*</span></label>
                                 <div x-data="{ open: false }" class="relative" @click.away="open = false">
                                     <button type="button" 
                                         @click="open = !open" 
@@ -945,13 +975,25 @@
                             </div>
 
                             <div>
-                                <label class="block font-semibold text-slate-700 mb-1">Shipping Fee</label>
-                                <input type="number" name="shipping_fee" min="0" max="9999999999" oninput="if(this.value.length > 10) this.value = this.value.slice(0, 10);" required class="w-full border border-slate-200 rounded-lg px-3 py-2 text-slate-700 focus:outline-none focus:ring-0 focus:border-slate-300 placeholder:text-[13px] [appearance: textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none" placeholder="Rp 0">
+                                <label class="block font-semibold text-slate-700 mb-1">Shipping Fee <span class="text-red-500">*</span></label>
+                                <input type="text" 
+                                    inputmode="numeric"
+                                    x-model="shippingFeeDisplay"
+                                    @input="shippingFeeDisplay = formatRupiah(shippingFeeDisplay)"
+                                    required 
+                                    class="w-full h-[40px] border border-slate-200 rounded-lg px-3 py-2 text-slate-700 focus:outline-none focus:ring-0 focus:border-slate-300 text-xs placeholder:text-[13px]" 
+                                    placeholder="Rp 0">
                             </div>
 
                             <div>
-                                <label class="block font-semibold text-slate-700 mb-1">Total Amount</label>
-                                <input type="number" name="total_amount" min="0" max="9999999999" oninput="if(this.value.length > 10) this.value = this.value.slice(0, 10);" required class="w-full border border-slate-200 rounded-lg px-3 py-2 text-slate-700 focus:outline-none focus:ring-0 focus:border-slate-300 placeholder:text-[13px] [appearance: textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none" placeholder="Rp 0">
+                                <label class="block font-semibold text-slate-700 mb-1">Total Amount <span class="text-red-500">*</span></label>
+                                <input type="text" 
+                                    inputmode="numeric"
+                                    x-model="totalAmountDisplay"
+                                    @input="totalAmountDisplay = formatRupiah(totalAmountDisplay)"
+                                    required 
+                                    class="w-full h-[40px] border border-slate-200 rounded-lg px-3 py-2 text-slate-700 focus:outline-none focus:ring-0 focus:border-slate-300 text-xs placeholder:text-[13px]" 
+                                    placeholder="Rp 0">
                             </div>
                         </div>
 
@@ -959,7 +1001,7 @@
                         <div class="mb-4 text-xs">
                             <label class="block font-semibold text-slate-700 mb-1">
                                 Note
-                                <span x-show="paymentStatus === 'inden'" class="text-red-600 font-semibold">*</span>
+                                <span x-show="paymentStatus === 'inden'" class="text-red-500 font-semibold">*</span>
                             </label>
                             <textarea name="note" 
                                 rows="2" 
@@ -968,7 +1010,7 @@
                                 placeholder="Enter buyer identity & DP details (required for Inden)"></textarea>
                         </div>
 
-                        <!-- Shipping Address -->
+                        <!-- Shipping Address (Opsional) -->
                         <div class="mb-5 text-xs">
                             <label class="block font-semibold text-slate-700 mb-1">Shipping Address</label>
                             <textarea name="shipping_address" rows="2" class="w-full border border-slate-200 rounded-lg px-3 py-2 text-slate-700 focus:outline-none focus:ring-0 focus:border-slate-300 placeholder:text-[13px]" placeholder="Enter shipping address"></textarea>
@@ -1024,7 +1066,7 @@
                                 
                                 <div class="space-y-3 text-xs mb-4">
                                     <div>
-                                        <label class="block font-semibold text-slate-700 mb-1">Product</label>
+                                        <label class="block font-semibold text-slate-700 mb-1">Product <span class="text-red-500">*</span></label>
                                         
                                         <!-- Custom Dropdown Product -->
                                         <div x-data="{ productOpen: false }" class="relative" @click.away="productOpen = false">
@@ -1052,7 +1094,7 @@
                                                             <div @click="
                                                                 productId = '{{ $prod->id }}';
                                                                 productName = '{{ $prod->product_name }}';
-                                                                itemPrice = Number('{{ $prod->price }}');
+                                                                itemPriceDisplay = formatRupiah('{{ $prod->price }}');
                                                                 selectedStock = Number('{{ $prod->stock }}');
                                                                 productOpen = false;
                                                             " class="px-3 py-2.5 cursor-pointer text-xs" :class="productName == '{{ $prod->product_name }}' ? 'font-semibold' : null">
@@ -1062,7 +1104,7 @@
                                                             <div @click="
                                                                 productId = '{{ $prod->id }}';
                                                                 productName = '{{ $prod->product_name }}';
-                                                                itemPrice = Number('{{ $prod->price }}');
+                                                                itemPriceDisplay = formatRupiah('{{ $prod->price }}');
                                                                 selectedStock = 0;
                                                                 productOpen = false;
                                                             " class="px-3 py-2.5 cursor-pointer text-xs text-blue-600" :class="productName == '{{ $prod->product_name }}' ? 'font-semibold' : null">
@@ -1077,12 +1119,17 @@
 
                                     <div class="grid grid-cols-2 gap-3">
                                         <div>
-                                            <label class="block font-semibold text-slate-700 mb-1">Quantity</label>
+                                            <label class="block font-semibold text-slate-700 mb-1">Quantity <span class="text-red-500">*</span></label>
                                             <input type="number" min="1" max="9999" oninput="if(this.value.length > 4) this.value = this.value.slice(0, 4);" x-model.number="itemQty" class="w-full border border-slate-200 rounded-lg px-3 py-2 text-slate-700 focus:outline-none focus:border-slate-300 focus:ring-0 [appearance: textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none" placeholder="1">
                                         </div>
                                         <div>
-                                            <label class="block font-semibold text-slate-700 mb-1">Unit Price</label>
-                                            <input type="number" min="0" max="9999999999" oninput="if(this.value.length > 10) this.value = this.value.slice(0, 10);" x-model.number="itemPrice" class="w-full border border-slate-200 rounded-lg px-3 py-2 text-slate-700 focus:outline-none focus:border-slate-300 focus:ring-0 [appearance: textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none" placeholder="Rp 0">
+                                            <label class="block font-semibold text-slate-700 mb-1">Unit Price <span class="text-red-500">*</span></label>
+                                            <input type="text" 
+                                                inputmode="numeric"
+                                                x-model="itemPriceDisplay" 
+                                                @input="itemPriceDisplay = formatRupiah(itemPriceDisplay)"
+                                                class="w-full border border-slate-200 rounded-lg px-3 py-2 text-slate-700 focus:outline-none focus:border-slate-300 focus:ring-0" 
+                                                placeholder="Rp 0">
                                         </div>
                                     </div>
                                 </div>

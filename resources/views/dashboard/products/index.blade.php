@@ -8,7 +8,15 @@
     deleteUrl: '',
     selectedProduct: {},
     addPreviewUrl: null,
-    editPreviewUrl: null
+    editPreviewUrl: null,
+    formatRupiah(val) {
+        const digits = String(val ?? '').replace(/\D/g, '').slice(0, 10);
+        if (!digits) return '';
+        return digits.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+    },
+    rawDigits(val) {
+        return String(val ?? '').replace(/\D/g, '').slice(0, 10);
+    }
 }">
 
     <!-- Header & Action Bar -->
@@ -213,24 +221,24 @@
                             </td>
                             <td class="py-3.5 px-3 whitespace-nowrap font-semibold">{{ $product->stock }}</td>
                             <td class="py-3.5 px-3 text-center whitespace-nowrap">
-    @if($product->status === 'Available')
-        <span class="inline-flex items-center justify-center w-24 py-1 rounded-md text-[11px] font-semibold border-2 border-[#16A34A] text-[#000000] bg-white">
-            Available
-        </span>
-    @elseif(in_array($product->status, ['Low of Stock', 'Low stock'], true))
-        <span class="inline-flex items-center justify-center w-24 py-1 rounded-md text-[11px] font-semibold border-2 border-[#F59E0B] text-[#000000] bg-white">
-            Low stock
-        </span>
-    @elseif($product->status === 'Inden')
-        <span class="inline-flex items-center justify-center w-24 py-1 rounded-md text-[11px] font-semibold border-2 border-[#2563EB] text-[#000000] bg-white">
-            Inden
-        </span>
-    @else
-        <span class="inline-flex items-center justify-center w-24 py-1 rounded-md text-[11px] font-semibold border-2 border-[#DC2626] text-[#000000] bg-white">
-            Out of stock
-        </span>
-    @endif
-</td>
+                                @if($product->status === 'Available')
+                                    <span class="inline-flex items-center justify-center w-24 py-1 rounded-md text-[11px] font-semibold border-2 border-[#16A34A] text-[#000000] bg-white">
+                                        Available
+                                    </span>
+                                @elseif(in_array($product->status, ['Low of Stock', 'Low stock'], true))
+                                    <span class="inline-flex items-center justify-center w-24 py-1 rounded-md text-[11px] font-semibold border-2 border-[#F59E0B] text-[#000000] bg-white">
+                                        Low stock
+                                    </span>
+                                @elseif($product->status === 'Inden')
+                                    <span class="inline-flex items-center justify-center w-24 py-1 rounded-md text-[11px] font-semibold border-2 border-[#2563EB] text-[#000000] bg-white">
+                                        Inden
+                                    </span>
+                                @else
+                                    <span class="inline-flex items-center justify-center w-24 py-1 rounded-md text-[11px] font-semibold border-2 border-[#DC2626] text-[#000000] bg-white">
+                                        Out of stock
+                                    </span>
+                                @endif
+                            </td>
                             <td class="py-3.5 px-3 whitespace-nowrap text-slate-500">{{ $product->updated_at->format('Y-m-d H:i:s') }}</td>
                             <td class="py-3.5 px-3 text-center">
                                 <!-- Action Button: Options -->
@@ -238,7 +246,10 @@
                                     @click="
                                         editUrl = '{{ route('products.update', $product->id) }}';
                                         deleteUrl = '{{ route('products.destroy', $product->id) }}';
-                                        selectedProduct = {{ json_encode($product) }};
+                                        selectedProduct = Object.assign({}, {{ json_encode($product) }}, {
+                                            buy_price: formatRupiah('{{ $product->buy_price ?? '' }}'),
+                                            sell_price: formatRupiah('{{ $product->sell_price ?? '' }}')
+                                        });
                                         editPreviewUrl = null;
                                         editOpen = true;
                                     "
@@ -284,6 +295,8 @@
                 categoryId: '', 
                 statusOpen: false, 
                 selectedStatus: 'Available',
+                addBuyPriceDisplay: '',
+                addSellPriceDisplay: '',
                 addPreviewUrl: null,
                 handleImageChange(e) {
                     const file = e.target.files[0];
@@ -321,21 +334,21 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <!-- Product Name -->
                         <div>
-                            <label class="block text-xs font-semibold text-slate-700 mb-1">Product Name</label>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Product Name <span class="text-red-500">*</span></label>
                             <input type="text" name="product_name" required placeholder="Enter product name" 
                                 class="w-full h-10 border border-slate-200 rounded-lg px-3.5 text-xs text-slate-700 focus:outline-none focus:ring-0 focus:border-slate-300">
                         </div>
 
                         <!-- Product Code -->
                         <div>
-                            <label class="block text-xs font-semibold text-slate-700 mb-1">Product Code</label>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Product Code <span class="text-red-500">*</span></label>
                             <input type="text" name="product_code" required placeholder="KATEGORI-BRAND-VARIANT" 
                                 class="w-full h-10 border border-slate-200 rounded-lg px-3.5 text-xs text-slate-700 focus:outline-none focus:ring-0 focus:border-slate-300">
                         </div>
 
                         <!-- Category -->
                         <div>
-                            <label class="block text-xs font-semibold text-slate-700 mb-1">Category</label>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Category <span class="text-red-500">*</span></label>
                             <input type="hidden" name="category_id" x-model="categoryId" required>
                             
                             <div class="relative" @click.away="categoryOpen = false">
@@ -374,29 +387,41 @@
 
                         <!-- Stock Amount -->
                         <div>
-                            <label class="block text-xs font-semibold text-slate-700 mb-1">Stock Amount</label>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Stock Amount <span class="text-red-500">*</span></label>
                             <input type="number" name="stock" min="0" max="999999" oninput="if(this.value.length > 6) this.value = this.value.slice(0, 6);" required value="0" 
                                 class="w-full h-10 border border-slate-200 rounded-lg px-3.5 text-xs text-slate-700 focus:outline-none focus:ring-0 focus:border-slate-300 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none">
                         </div>
 
                         <!-- Buy Price -->
                         <div>
-                            <label class="block text-xs font-semibold text-slate-700 mb-1">Buy Price</label>
-                            <input type="number" name="buy_price" min="0" max="9999999999" oninput="if(this.value.length > 10) this.value = this.value.slice(0, 10);" required placeholder="Rp 0" 
-                                class="w-full h-10 border border-slate-200 rounded-lg px-3.5 text-xs text-slate-700 focus:outline-none focus:ring-0 focus:border-slate-300 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none">
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Buy Price <span class="text-red-500">*</span></label>
+                            <input type="text" 
+                                inputmode="numeric"
+                                x-model="addBuyPriceDisplay"
+                                @input="addBuyPriceDisplay = formatRupiah(addBuyPriceDisplay)"
+                                required 
+                                placeholder="Rp 0" 
+                                class="w-full h-10 border border-slate-200 rounded-lg px-3.5 text-xs text-slate-700 focus:outline-none focus:ring-0 focus:border-slate-300">
+                            <input type="hidden" name="buy_price" :value="rawDigits(addBuyPriceDisplay)">
                         </div>
 
                         <!-- Sell Price -->
                         <div>
-                            <label class="block text-xs font-semibold text-slate-700 mb-1">Sell Price</label>
-                            <input type="number" name="sell_price" min="0" max="9999999999" oninput="if(this.value.length > 10) this.value = this.value.slice(0, 10);" required placeholder="Rp 0" 
-                                class="w-full h-10 border border-slate-200 rounded-lg px-3.5 text-xs text-slate-700 focus:outline-none focus:ring-0 focus:border-slate-300 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none">
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Sell Price <span class="text-red-500">*</span></label>
+                            <input type="text" 
+                                inputmode="numeric"
+                                x-model="addSellPriceDisplay"
+                                @input="addSellPriceDisplay = formatRupiah(addSellPriceDisplay)"
+                                required 
+                                placeholder="Rp 0" 
+                                class="w-full h-10 border border-slate-200 rounded-lg px-3.5 text-xs text-slate-700 focus:outline-none focus:ring-0 focus:border-slate-300">
+                            <input type="hidden" name="sell_price" :value="rawDigits(addSellPriceDisplay)">
                         </div>
                     </div>
 
                     <!-- Status Dropdown -->
                     <div>
-                        <label class="block text-xs font-semibold text-slate-700 mb-1">Status</label>
+                        <label class="block text-xs font-semibold text-slate-700 mb-1">Status <span class="text-red-500">*</span></label>
                         <input type="hidden" name="status" x-model="selectedStatus" required>
                         
                         <div class="relative w-full" @click.away="statusOpen = false">
@@ -431,14 +456,14 @@
                     </div>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-                        <!-- Product Description -->
+                        <!-- Product Description (Opsional) -->
                         <div>
                             <label class="block text-xs font-semibold text-slate-700 mb-1">Product Description</label>
                             <textarea name="description" rows="4" placeholder="Enter product description" 
                                 class="w-full h-[200px] border border-slate-200 rounded-lg text-xs text-slate-700 bg-white placeholder-slate-400 focus:outline-none focus:ring-0 focus:border-slate-300 resize-none"></textarea>
                         </div>
 
-                        <!-- Product Image Upload Preview -->
+                        <!-- Product Image Upload Preview (Opsional) -->
                         <div>
                             <label class="block text-xs font-semibold text-slate-700 mb-1">Product Image</label>
                             <label class="group flex flex-col items-center justify-center border border-slate-200 rounded-xl h-[200px] cursor-pointer transition-all relative overflow-hidden">
@@ -529,21 +554,21 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <!-- Product Name -->
                         <div>
-                            <label class="block text-xs font-semibold text-slate-700 mb-1">Product Name</label>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Product Name <span class="text-red-500">*</span></label>
                             <input type="text" name="product_name" x-model="selectedProduct.product_name" required 
                                 class="w-full h-10 px-3.5 border border-slate-200 rounded-lg text-xs text-slate-700 bg-white focus:outline-none focus:ring-0 focus:border-slate-300">
                         </div>
 
                         <!-- Product Code -->
                         <div>
-                            <label class="block text-xs font-semibold text-slate-700 mb-1">Product Code</label>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Product Code <span class="text-red-500">*</span></label>
                             <input type="text" name="product_code" x-model="selectedProduct.product_code" required 
                                 class="w-full h-10 px-3.5 border border-slate-200 rounded-lg text-xs text-slate-700 bg-white focus:outline-none focus:ring-0 focus:border-slate-300">
                         </div>
 
                         <!-- Category -->
                         <div>
-                            <label class="block text-xs font-semibold text-slate-700 mb-1">Category</label>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Category <span class="text-red-500">*</span></label>
                             <input type="hidden" name="category_id" x-model="selectedProduct.category_id" required>
                             
                             <div class="relative" @click.away="editCategoryOpen = false">
@@ -598,29 +623,41 @@
 
                         <!-- Stock Amount -->
                         <div>
-                            <label class="block text-xs font-semibold text-slate-700 mb-1">Stock Amount</label>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Stock Amount <span class="text-red-500">*</span></label>
                             <input type="number" name="stock" x-model="selectedProduct.stock" min="0" max="999999" oninput="if(this.value.length > 6) this.value = this.value.slice(0, 6);" required 
                                 class="w-full h-10 px-3.5 border border-slate-200 rounded-lg text-xs text-slate-700 focus:outline-none focus:ring-0 focus:border-slate-300 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none">
                         </div>
 
                         <!-- Buy Price -->
                         <div>
-                            <label class="block text-xs font-semibold text-slate-700 mb-1">Buy Price</label>
-                            <input type="number" name="buy_price" x-model="selectedProduct.buy_price" min="0" max="9999999999" oninput="if(this.value.length > 10) this.value = this.value.slice(0, 10);" required 
-                                class="w-full h-10 px-3.5 border border-slate-200 rounded-lg text-xs text-slate-700 focus:outline-none focus:ring-0 focus:border-slate-300 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none">
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Buy Price <span class="text-red-500">*</span></label>
+                            <input type="text" 
+                                inputmode="numeric"
+                                x-model="selectedProduct.buy_price" 
+                                @input="selectedProduct.buy_price = formatRupiah(selectedProduct.buy_price)"
+                                required 
+                                placeholder="Rp 0"
+                                class="w-full h-10 px-3.5 border border-slate-200 rounded-lg text-xs text-slate-700 focus:outline-none focus:ring-0 focus:border-slate-300">
+                            <input type="hidden" name="buy_price" :value="rawDigits(selectedProduct.buy_price)">
                         </div>
 
                         <!-- Sell Price -->
                         <div>
-                            <label class="block text-xs font-semibold text-slate-700 mb-1">Sell Price</label>
-                            <input type="number" name="sell_price" x-model="selectedProduct.sell_price" min="0" max="9999999999" oninput="if(this.value.length > 10) this.value = this.value.slice(0, 10);" required 
-                                class="w-full h-10 px-3.5 border border-slate-200 rounded-lg text-xs text-slate-700 focus:outline-none focus:ring-0 focus:border-slate-300 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none">
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Sell Price <span class="text-red-500">*</span></label>
+                            <input type="text" 
+                                inputmode="numeric"
+                                x-model="selectedProduct.sell_price" 
+                                @input="selectedProduct.sell_price = formatRupiah(selectedProduct.sell_price)"
+                                required 
+                                placeholder="Rp 0"
+                                class="w-full h-10 px-3.5 border border-slate-200 rounded-lg text-xs text-slate-700 focus:outline-none focus:ring-0 focus:border-slate-300">
+                            <input type="hidden" name="sell_price" :value="rawDigits(selectedProduct.sell_price)">
                         </div>
                     </div>
 
                     <!-- Status Dropdown -->
                     <div>
-                        <label class="block text-xs font-semibold text-slate-700 mb-1">Status</label>
+                        <label class="block text-xs font-semibold text-slate-700 mb-1">Status <span class="text-red-500">*</span></label>
                         <input type="hidden" name="status" x-model="selectedProduct.status" required>
                         
                         <div class="relative w-full" @click.away="editStatusOpen = false">
@@ -655,14 +692,14 @@
                     </div>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-                        <!-- Product Description -->
+                        <!-- Product Description (Opsional) -->
                         <div>
                             <label class="block text-xs font-semibold text-slate-700 mb-1">Product Description</label>
                             <textarea name="description" x-model="selectedProduct.description" rows="4" 
                                 class="w-full h-[200px] border border-slate-200 rounded-lg text-xs text-slate-700 bg-white placeholder-slate-400 focus:outline-none focus:ring-0 focus:border-slate-300 resize-none"></textarea>
                         </div>
 
-                        <!-- Product Image Upload Preview -->
+                        <!-- Product Image Upload Preview (Opsional) -->
                         <div>
                             <label class="block text-xs font-semibold text-slate-700 mb-1">Product Image</label>
                             <label class="group flex flex-col items-center justify-center border border-slate-200 rounded-xl h-[200px] cursor-pointer transition-all relative overflow-hidden">

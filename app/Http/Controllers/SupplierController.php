@@ -48,7 +48,7 @@ class SupplierController extends Controller
     }
 
     /**
-     * Menyimpan data supplier baru.
+     * Menyimpan data supplier baru dengan status otomatis Active.
      */
     public function store(Request $request)
     {
@@ -57,7 +57,6 @@ class SupplierController extends Controller
             'supplier_name'      => 'required|string|max:255',
             'phone_number'       => 'required|string|max:15',
             'address'            => 'required|string',
-            'status'             => 'required|in:Active,Not Active',
         ]);
 
         StockEntry::create([
@@ -65,7 +64,7 @@ class SupplierController extends Controller
             'supplier_name'      => $request->supplier_name,
             'phone_number'       => $request->phone_number,
             'address'            => $request->address,
-            'status'             => $request->status,
+            'status'             => 'Active',
         ]);
 
         return redirect()->route('suppliers.index')->with('success', 'Supplier added successfully!');

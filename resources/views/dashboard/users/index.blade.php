@@ -175,23 +175,24 @@
                     @csrf
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
-                            <label class="block text-xs font-semibold text-slate-700 mb-1">Name</label>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Name <span class="text-red-500">*</span></label>
                             <input type="text" name="name" required placeholder="Enter full name" value="{{ old('name') }}"
                                 class="w-full h-10 border border-slate-200 rounded-lg px-3.5 text-xs text-slate-700 focus:outline-none focus:ring-0 focus:border-slate-300">
                         </div>
 
                         <div>
-                            <label class="block text-xs font-semibold text-slate-700 mb-1">Email</label>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Email <span class="text-red-500">*</span></label>
                             <input type="email" name="email" required placeholder="Enter email address" value="{{ old('email') }}"
                                 class="w-full h-10 border border-slate-200 rounded-lg px-3.5 text-xs text-slate-700 focus:outline-none focus:ring-0 focus:border-slate-300">
                         </div>
 
                         <div>
-                            <label class="block text-xs font-semibold text-slate-700 mb-1">Password</label>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Password <span class="text-red-500">*</span></label>
                             <input type="password" name="password" required placeholder="Enter password" 
                                 class="w-full h-10 border border-slate-200 rounded-lg px-3.5 text-xs text-slate-700 focus:outline-none focus:ring-0 focus:border-slate-300">
                         </div>
 
+                        <!-- Phone Number (Opsional) -->
                         <div>
                             <label class="block text-xs font-semibold text-slate-700 mb-1">Phone Number</label>
                             <input type="text" name="phone_number" placeholder="Enter phone number" value="{{ old('phone_number') }}"
@@ -201,7 +202,7 @@
 
                         <!-- Role Dropdown Add Modal -->
                         <div class="md:col-span-2" x-data="{ createRoleOpen: false, createRoleValue: '', createRoleName: 'Select User Role' }">
-                            <label class="block text-xs font-semibold text-slate-700 mb-1">Role</label>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Role <span class="text-red-500">*</span></label>
                             <input type="hidden" name="role" x-model="createRoleValue" required>
                             
                             <div class="relative" @click.away="createRoleOpen = false">
@@ -225,6 +226,7 @@
                             </div>
                         </div>
 
+                        <!-- Address (Opsional) -->
                         <div class="md:col-span-2">
                             <label class="block text-xs font-semibold text-slate-700 mb-1">Address</label>
                             <textarea name="address" rows="3" placeholder="Enter address" 
@@ -260,23 +262,25 @@
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
-                            <label class="block text-xs font-semibold text-slate-700 mb-1">Name</label>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Name <span class="text-red-500">*</span></label>
                             <input type="text" name="name" x-model="selectedUser.name" required 
                                 class="w-full h-10 px-3.5 border border-slate-200 rounded-lg text-xs text-slate-700 bg-white focus:outline-none focus:ring-0 focus:border-slate-300">
                         </div>
 
                         <div>
-                            <label class="block text-xs font-semibold text-slate-700 mb-1">Email</label>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Email <span class="text-red-500">*</span></label>
                             <input type="email" name="email" x-model="selectedUser.email" required 
                                 class="w-full h-10 px-3.5 border border-slate-200 rounded-lg text-xs text-slate-700 bg-white focus:outline-none focus:ring-0 focus:border-slate-300">
                         </div>
 
+                        <!-- Password (Opsional saat Edit) -->
                         <div>
                             <label class="block text-xs font-semibold text-slate-700 mb-1">Password <span class="text-[10px] text-slate-400 font-normal">(Leave blank if unchanged)</span></label>
                             <input type="password" name="password" placeholder="New password" 
                                 class="w-full h-10 px-3.5 border border-slate-200 rounded-lg text-xs text-slate-700 bg-white focus:outline-none focus:ring-0 focus:border-slate-300">
                         </div>
 
+                        <!-- Phone Number (Opsional) -->
                         <div>
                             <label class="block text-xs font-semibold text-slate-700 mb-1">Phone Number</label>
                             <input type="text" name="phone_number" x-model="selectedUser.phone_number" 
@@ -286,7 +290,7 @@
 
                         <!-- Role Dropdown Edit Modal -->
                         <div class="md:col-span-2" x-data="{ editRoleOpen: false }">
-                            <label class="block text-xs font-semibold text-slate-700 mb-1">Role</label>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Role <span class="text-red-500">*</span></label>
                             <input type="hidden" name="role" x-model="selectedUser.role" required>
                             
                             <div class="relative" @click.away="editRoleOpen = false">
@@ -310,6 +314,7 @@
                             </div>
                         </div>
 
+                        <!-- Address (Opsional) -->
                         <div class="md:col-span-2">
                             <label class="block text-xs font-semibold text-slate-700 mb-1">Address</label>
                             <textarea name="address" x-model="selectedUser.address" rows="3" 

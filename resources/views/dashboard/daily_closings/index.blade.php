@@ -8,7 +8,15 @@
     deleteUrl: '', 
     adminName: '', 
     totalIncome: '', 
-    note: '' 
+    note: '',
+    formatRupiah(val) {
+        const digits = String(val ?? '').replace(/\D/g, '').slice(0, 12);
+        if (!digits) return '';
+        return digits.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+    },
+    rawDigits(val) {
+        return String(val ?? '').replace(/\D/g, '').slice(0, 12);
+    }
 }" class="space-y-6">
 
     <!-- Header Utama -->
@@ -118,7 +126,7 @@
                                         editUrl = '{{ route('daily-closings.update', $item->id) }}';
                                         deleteUrl = '{{ route('daily-closings.destroy', $item->id) }}';
                                         adminName = '{{ $item->admin->name ?? '' }}';
-                                        totalIncome = '{{ $item->total_income }}';
+                                        totalIncome = formatRupiah('{{ $item->total_income }}');
                                         note = '{{ addslashes($item->notes ?? '') }}';
                                         editOpen = true;
                                     "
@@ -157,6 +165,7 @@
             <!-- Modal Add History Data -->
             <div x-show="createOpen" 
                 x-cloak 
+                x-data="{ createIncomeDisplay: '' }"
                 class="fixed inset-0 z-50 flex items-center justify-center bg-white/10 backdrop-blur-[1px] p-4 transition-all"
                 @keydown.escape.window="createOpen = false">
 
@@ -169,7 +178,7 @@
                         <div class="grid grid-cols-2 gap-4 mb-4">
                             <!-- Admin Name -->
                             <div>
-                                <label class="block text-xs font-semibold text-slate-700 mb-1.5">Admin Name</label>
+                                <label class="block text-xs font-semibold text-slate-700 mb-1.5">Admin Name <span class="text-red-500">*</span></label>
                                 <input type="text"
                                     name="admin_name"
                                     value="{{ auth()->user()->name }}"
@@ -179,19 +188,19 @@
 
                             <!-- Total Income -->
                             <div>
-                                <label class="block text-xs font-semibold text-slate-700 mb-1.5">Total Income</label>
-                                <input type="number" 
-                                    name="total_income" 
+                                <label class="block text-xs font-semibold text-slate-700 mb-1.5">Total Income <span class="text-red-500">*</span></label>
+                                <input type="text" 
+                                    inputmode="numeric"
+                                    x-model="createIncomeDisplay"
+                                    @input="createIncomeDisplay = formatRupiah(createIncomeDisplay)"
                                     required 
-                                    min="0"
-                                    max="9999999999"
-                                    oninput="if(this.value.length > 12) this.value = this.value.slice(0, 12);"
-                                    class="w-full border border-slate-200 rounded-lg px-3 py-2 text-xs focus:outline-none focus:ring-0 focus:border-slate-300 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none" 
+                                    class="w-full border border-slate-200 rounded-lg px-3 py-2 text-xs focus:outline-none focus:ring-0 focus:border-slate-300" 
                                     placeholder="Rp 0">
+                                <input type="hidden" name="total_income" :value="rawDigits(createIncomeDisplay)">
                             </div>
                         </div>
 
-                        <!-- Note -->
+                        <!-- Note (Opsional) -->
                         <div class="mb-6">
                             <label class="block text-xs font-semibold text-slate-700 mb-1.5">Note</label>
                             <textarea name="notes" 
@@ -245,20 +254,19 @@
 
                             <!-- Total Income -->
                             <div>
-                                <label class="block text-xs font-semibold text-slate-700 mb-1.5">Total Income</label>
-                                <input type="number" 
-                                    name="total_income" 
+                                <label class="block text-xs font-semibold text-slate-700 mb-1.5">Total Income <span class="text-red-500">*</span></label>
+                                <input type="text" 
+                                    inputmode="numeric"
                                     x-model="totalIncome" 
+                                    @input="totalIncome = formatRupiah(totalIncome)"
                                     required 
-                                    min="0"
-                                    max="9999999999"
-                                    oninput="if(this.value.length > 12) this.value = this.value.slice(0, 12);"
-                                    class="w-full border border-slate-200 rounded-lg px-3 py-2 text-xs focus:outline-none focus:ring-0 focus:border-slate-300 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none" 
+                                    class="w-full border border-slate-200 rounded-lg px-3 py-2 text-xs focus:outline-none focus:ring-0 focus:border-slate-300" 
                                     placeholder="Rp 0">
+                                <input type="hidden" name="total_income" :value="rawDigits(totalIncome)">
                             </div>
                         </div>
 
-                        <!-- Note -->
+                        <!-- Note (Opsional) -->
                         <div class="mb-6">
                             <label class="block text-xs font-semibold text-slate-700 mb-1.5">Note</label>
                             <textarea name="notes" 

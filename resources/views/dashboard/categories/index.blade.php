@@ -1,12 +1,22 @@
 @extends('layouts.app')
 
 @section('content')
+@php
+    $existingCategoryNames = $categories
+        ->pluck('category_name')
+        ->filter()
+        ->map(fn ($name) => mb_strtolower(trim($name)))
+        ->unique()
+        ->values();
+@endphp
+
 <div x-data="{ 
-    createOpen: false, 
-    editOpen: false, 
-    editUrl: '', 
+    createOpen: {{ $errors->has('category_name') && old('_form_type') === 'create' ? 'true' : 'false' }}, 
+    editOpen: {{ $errors->has('category_name') && old('_form_type') === 'edit' ? 'true' : 'false' }}, 
+    editUrl: '{{ old('_edit_url', '') }}', 
     deleteUrl: '', 
-    categoryName: '' 
+    categoryName: '{{ addslashes(old('category_name', '')) }}',
+    isSwalOpen: false
 }" class="space-y-6">
 
     <!-- Header & Action Bar -->
@@ -30,7 +40,7 @@
 
             <!-- Add Category Button -->
             <button type="button" 
-                @click="createOpen = true" 
+                @click="categoryName = ''; createOpen = true;" 
                 class="inline-flex items-center gap-1.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold px-4 py-2 rounded-lg shadow-sm transition-all cursor-pointer">
                 <span>+</span> Add Category
             </button>
@@ -107,17 +117,21 @@
             <div x-show="createOpen" 
                 x-cloak 
                 class="fixed inset-0 z-50 flex items-center justify-center bg-white/10 backdrop-blur-[1px] p-4 transition-all"
-                @keydown.escape.window="createOpen = false">
+                @keydown.escape.window="if (!isSwalOpen) createOpen = false">
 
-                <div class="bg-white rounded-xl shadow-2xl w-full max-w-md p-6 relative" @click.away="createOpen = false">
+                <div class="bg-white rounded-xl shadow-2xl w-full max-w-md p-6 relative" @click.away="if (!isSwalOpen) createOpen = false">
                     <h3 class="text-base font-bold text-slate-900 mb-5">Add New Category</h3>
 
-                    <form action="{{ route('categories.store') }}" method="POST">
+                    <form id="createCategoryForm" action="{{ route('categories.store') }}" method="POST">
                         @csrf
+                        <input type="hidden" name="_form_type" value="create">
+
                         <div class="mb-6">
-                            <label class="block text-xs font-semibold text-slate-700 mb-1.5">Category Name</label>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1.5">Category Name <span class="text-red-500">*</span></label>
                             <input type="text" 
+                                id="createCategoryNameInput"
                                 name="category_name" 
+                                value="{{ old('_form_type') === 'create' ? old('category_name') : '' }}"
                                 required 
                                 class="w-full border border-slate-200 rounded-lg px-3 py-2 text-xs focus:outline-none focus:ring-0 focus:border-slate-300"
                                 placeholder="Enter category name">
@@ -130,7 +144,6 @@
                                 Cancel
                             </button>
                             <button type="submit" 
-                                @click="if (!confirm('Are you sure you want to add this category?')) $event.preventDefault()" 
                                 class="w-20 h-8 flex items-center justify-center bg-blue-600 hover:bg-blue-700 text-white rounded-[5px] text-xs font-medium transition-colors shadow-sm cursor-pointer">
                                 Save
                             </button>
@@ -142,20 +155,22 @@
             <!-- Modal Edit Category -->
             <div x-show="editOpen" 
                 x-cloak 
-                x-data="{ isSwalOpen: false }"
                 class="fixed inset-0 z-50 flex items-center justify-center bg-white/10 backdrop-blur-[1px] p-4 transition-all"
                 @keydown.escape.window="if (!isSwalOpen) editOpen = false">
 
                 <div class="bg-white rounded-xl shadow-2xl w-full max-w-md p-6 relative" @click.away="if (!isSwalOpen) editOpen = false">
                     <h3 class="text-base font-bold text-slate-900 mb-5">Edit Category</h3>
 
-                    <form :action="editUrl" method="POST">
+                    <form id="editCategoryForm" :action="editUrl" method="POST">
                         @csrf
                         @method('PUT')
+                        <input type="hidden" name="_form_type" value="edit">
+                        <input type="hidden" name="_edit_url" :value="editUrl">
 
                         <div class="mb-6">
-                            <label class="block text-xs font-semibold text-slate-700 mb-1.5">Category Name</label>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1.5">Category Name <span class="text-red-500">*</span></label>
                             <input type="text" 
+                                id="editCategoryNameInput"
                                 name="category_name" 
                                 x-model="categoryName" 
                                 required 
@@ -205,7 +220,6 @@
 
                             <!-- Save Button -->
                             <button type="submit" 
-                                @click="if (!confirm('Are you sure you want to save these changes?')) $event.preventDefault()" 
                                 class="w-20 h-8 flex items-center justify-center bg-blue-600 hover:bg-blue-700 text-white rounded-[5px] text-xs font-medium transition-colors shadow-sm cursor-pointer">
                                 Save
                             </button>
@@ -221,6 +235,183 @@
         @csrf
         @method('DELETE')
     </form>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const existingCategories = @json($existingCategoryNames);
+            const normalizeName = (val) => (val || '').trim().replace(/\s+/g, ' ').toLowerCase();
+
+            const getAlpineRoot = () => {
+                const el = document.querySelector('[x-data]');
+                return el && el.__x ? el.__x.$data : null;
+            };
+
+            const showDuplicateSwal = (nameText, onCloseCallback) => {
+                const alpineData = getAlpineRoot();
+                if (alpineData) alpineData.isSwalOpen = true;
+
+                if (typeof Swal === 'undefined') {
+                    alert(`Kategori "${nameText}" sudah terdaftar. Gunakan nama kategori yang berbeda.`);
+                    if (alpineData) alpineData.isSwalOpen = false;
+                    if (typeof onCloseCallback === 'function') onCloseCallback();
+                    return;
+                }
+
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Kategori Sudah Ada',
+                    html: `Kategori <b>"${nameText}"</b> sudah terdaftar. Silakan masukkan nama kategori yang berbeda.`,
+                    confirmButtonColor: '#2563EB',
+                    confirmButtonText: 'Mengerti',
+                    returnFocus: false,
+                    didClose: () => {
+                        setTimeout(() => {
+                            if (alpineData) alpineData.isSwalOpen = false;
+                            if (typeof onCloseCallback === 'function') onCloseCallback();
+                        }, 100);
+                    }
+                });
+            };
+
+            const createForm = document.getElementById('createCategoryForm');
+            if (createForm) {
+                createForm.addEventListener('submit', function (e) {
+                    const input = document.getElementById('createCategoryNameInput');
+                    const rawVal = input ? input.value.trim().replace(/\s+/g, ' ') : '';
+                    if (input) input.value = rawVal;
+
+                    const normalized = normalizeName(rawVal);
+                    if (!normalized) return;
+
+                    if (existingCategories.includes(normalized)) {
+                        e.preventDefault();
+                        showDuplicateSwal(rawVal, () => {
+                            if (input) input.focus();
+                        });
+                        return;
+                    }
+
+                    e.preventDefault();
+                    const alpineData = getAlpineRoot();
+                    if (alpineData) alpineData.isSwalOpen = true;
+
+                    if (typeof Swal === 'undefined') {
+                        createForm.submit();
+                        return;
+                    }
+
+                    Swal.fire({
+                        title: 'Tambahkan Kategori?',
+                        text: `Kategori "${rawVal}" akan ditambahkan ke daftar.`,
+                        icon: 'question',
+                        iconColor: '#2563EB',
+                        showCancelButton: true,
+                        confirmButtonColor: '#2563EB',
+                        cancelButtonColor: '#64748b',
+                        confirmButtonText: 'Ya, simpan',
+                        cancelButtonText: 'Batal',
+                        reverseButtons: true,
+                        returnFocus: false,
+                        didClose: () => {
+                            setTimeout(() => {
+                                if (alpineData) alpineData.isSwalOpen = false;
+                            }, 100);
+                        }
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            createForm.submit();
+                        }
+                    });
+                });
+            }
+
+            const editForm = document.getElementById('editCategoryForm');
+            if (editForm) {
+                editForm.addEventListener('submit', function (e) {
+                    const input = document.getElementById('editCategoryNameInput');
+                    const rawVal = input ? input.value.trim().replace(/\s+/g, ' ') : '';
+                    if (input) input.value = rawVal;
+
+                    const normalized = normalizeName(rawVal);
+                    if (!normalized) return;
+
+                    if (existingCategories.includes(normalized)) {
+                        e.preventDefault();
+                        showDuplicateSwal(rawVal, () => {
+                            if (input) input.focus();
+                        });
+                        return;
+                    }
+
+                    e.preventDefault();
+                    const alpineData = getAlpineRoot();
+                    if (alpineData) alpineData.isSwalOpen = true;
+
+                    if (typeof Swal === 'undefined') {
+                        editForm.submit();
+                        return;
+                    }
+
+                    Swal.fire({
+                        title: 'Simpan Perubahan?',
+                        text: `Nama kategori akan diubah menjadi "${rawVal}".`,
+                        icon: 'question',
+                        iconColor: '#2563EB',
+                        showCancelButton: true,
+                        confirmButtonColor: '#2563EB',
+                        cancelButtonColor: '#64748b',
+                        confirmButtonText: 'Ya, simpan',
+                        cancelButtonText: 'Batal',
+                        reverseButtons: true,
+                        returnFocus: false,
+                        didClose: () => {
+                            setTimeout(() => {
+                                if (alpineData) alpineData.isSwalOpen = false;
+                            }, 100);
+                        }
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            editForm.submit();
+                        }
+                    });
+                });
+            }
+
+            @if(session('success'))
+                if (typeof Swal !== 'undefined') {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Berhasil',
+                        text: @json(session('success')),
+                        timer: 2500,
+                        showConfirmButton: false
+                    });
+                }
+            @endif
+
+            @if(session('error'))
+                if (typeof Swal !== 'undefined') {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Gagal',
+                        text: @json(session('error')),
+                        confirmButtonColor: '#2563EB'
+                    });
+                }
+            @endif
+
+            @if($errors->any())
+                if (typeof Swal !== 'undefined') {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Validasi Gagal',
+                        html: `{!! implode('<br>', $errors->all()) !!}`,
+                        confirmButtonColor: '#2563EB'
+                    });
+                }
+            @endif
+        });
+    </script>
 
 </div>
 @endsection

@@ -220,53 +220,27 @@
                     @csrf
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
-                            <label class="block text-xs font-semibold text-slate-700 mb-1">Entry Code</label>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Entry Code <span class="text-red-500">*</span></label>
                             <input type="text" name="entry_code" required placeholder="SPL-XXX" value="{{ old('entry_code') }}"
                                 class="w-full h-10 border border-slate-200 rounded-lg px-3.5 text-xs text-slate-700 focus:outline-none focus:ring-0 focus:border-slate-300">
                         </div>
 
                         <div>
-                            <label class="block text-xs font-semibold text-slate-700 mb-1">Supplier Name</label>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Supplier Name <span class="text-red-500">*</span></label>
                             <input type="text" name="supplier_name" required placeholder="Enter supplier name" value="{{ old('supplier_name') }}"
                                 class="w-full h-10 border border-slate-200 rounded-lg px-3.5 text-xs text-slate-700 focus:outline-none focus:ring-0 focus:border-slate-300">
                         </div>
 
-                        <div>
-                            <label class="block text-xs font-semibold text-slate-700 mb-1">Contact</label>
+                        <div class="md:col-span-2">
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Contact <span class="text-red-500">*</span></label>
                             <input type="text" name="phone_number" required placeholder="Enter contact" value="{{ old('phone_number') }}"
                                 maxlength="15" oninput="if(this.value.length > 15) this.value = this.value.slice(0, 15);"
                                 class="w-full h-10 border border-slate-200 rounded-lg px-3.5 text-xs text-slate-700 focus:outline-none focus:ring-0 focus:border-slate-300">
                         </div>
 
-                        <!-- Status Dropdown Add Modal -->
-                        <div x-data="{ createStatusOpen: false, createStatusValue: '', createStatusName: 'Select status' }" class="relative">
-                            <label class="block text-xs font-semibold text-slate-700 mb-1">Status</label>
-                            <input type="hidden" name="status" x-model="createStatusValue" required>
-                            
-                            <div class="relative" @click.away="createStatusOpen = false">
-                                <button type="button" 
-                                    @click="createStatusOpen = !createStatusOpen" 
-                                    class="w-full h-10 inline-flex items-center justify-between border border-slate-200 rounded-lg text-xs bg-white px-3.5 text-slate-700 focus:outline-none shadow-sm cursor-pointer">
-                                    <span :class="createStatusValue ? 'text-slate-700' : 'text-slate-400'" x-text="createStatusName"></span>
-                                    <img src="{{ asset('icons/Vector_option_arrow.png') }}" alt="Arrow" class="w-2.5 h-2.5 object-contain" :class="createStatusOpen ? 'rotate-180' : 'rotate-0'">
-                                </button>
-
-                                <div x-show="createStatusOpen" x-cloak class="absolute top-0 left-0 right-0 bg-white border border-slate-200 rounded-lg shadow-lg z-50 text-xs text-slate-700">
-                                    <div @click="createStatusOpen = !createStatusOpen" class="h-10 flex items-center justify-between px-3.5 cursor-pointer">
-                                        <span :class="createStatusValue ? 'text-slate-700' : 'text-slate-400'" x-text="createStatusName"></span>
-                                        <img src="{{ asset('icons/Vector_option_arrow.png') }}" alt="Arrow" class="w-2.5 h-2.5 object-contain" :class="createStatusOpen ? 'rotate-180' : 'rotate-0'">
-                                    </div>
-                                    <div class="py-1 border-slate-100">
-                                        <div @click="createStatusValue = 'Active'; createStatusName = 'Active'; createStatusOpen = false;" class="px-3.5 py-2.5 transition-colors cursor-pointer" :class="createStatusValue == 'Active' ? 'font-semibold' : null">Active</div>
-                                        <div @click="createStatusValue = 'Not Active'; createStatusName = 'Not Active'; createStatusOpen = false;" class="px-3.5 py-2.5 transition-colors cursor-pointer" :class="createStatusValue == 'Not Active' ? 'font-semibold' : null">Not Active</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
                         <!-- Address -->
                         <div class="relative md:col-span-2">
-                            <label class="block text-xs font-semibold text-slate-700 mb-1">Address</label>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Address <span class="text-red-500">*</span></label>
                             <textarea name="address" rows="3" required placeholder="Enter address"
                                 class="w-full border border-slate-200 rounded-lg p-3 text-xs text-slate-700 focus:outline-none focus:ring-0 focus:border-slate-300 resize-none">{{ old('address') }}</textarea>
                         </div>
@@ -299,19 +273,19 @@
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
-                            <label class="block text-xs font-semibold text-slate-700 mb-1">Entry Code</label>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Entry Code <span class="text-red-500">*</span></label>
                             <input type="text" name="entry_code" x-model="selectedSupplier.entry_code" required 
                                 class="w-full h-10 px-3.5 border border-slate-200 rounded-lg text-xs text-slate-700 bg-white focus:outline-none focus:ring-0 focus:border-slate-300">
                         </div>
 
                         <div>
-                            <label class="block text-xs font-semibold text-slate-700 mb-1">Supplier Name</label>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Supplier Name <span class="text-red-500">*</span></label>
                             <input type="text" name="supplier_name" x-model="selectedSupplier.supplier_name" required 
                                 class="w-full h-10 px-3.5 border border-slate-200 rounded-lg text-xs text-slate-700 bg-white focus:outline-none focus:ring-0 focus:border-slate-300">
                         </div>
 
                         <div>
-                            <label class="block text-xs font-semibold text-slate-700 mb-1">Contact</label>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Contact <span class="text-red-500">*</span></label>
                             <input type="text" name="phone_number" x-model="selectedSupplier.phone_number" required 
                                 maxlength="15" oninput="if(this.value.length > 15) this.value = this.value.slice(0, 15);"
                                 class="w-full h-10 px-3.5 border border-slate-200 rounded-lg text-xs text-slate-700 bg-white focus:outline-none focus:ring-0 focus:border-slate-300">
@@ -319,7 +293,7 @@
 
                         <!-- Status Dropdown Edit Modal -->
                         <div x-data="{ editStatusOpen: false }" class="relative">
-                            <label class="block text-xs font-semibold text-slate-700 mb-1">Status</label>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Status <span class="text-red-500">*</span></label>
                             <input type="hidden" name="status" x-model="selectedSupplier.status" required>
                             
                             <div class="relative" @click.away="editStatusOpen = false">
@@ -345,7 +319,7 @@
 
                         <!-- Address -->
                         <div class="relative md:col-span-2">
-                            <label class="block text-xs font-semibold text-slate-700 mb-1">Address</label>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Address <span class="text-red-500">*</span></label>
                             <textarea name="address" rows="3" x-model="selectedSupplier.address" required 
                                 class="w-full border border-slate-200 rounded-lg p-3 text-xs text-slate-700 focus:outline-none focus:ring-0 focus:border-slate-300 resize-none"></textarea>
                         </div>
